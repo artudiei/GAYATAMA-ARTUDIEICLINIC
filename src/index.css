@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    image-rendering: pixelated;
+  }
+  
+  html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #120E0C;
+    color: #F7F7F7;
+  }
+}
+
+/* Custom Pixel Art Borders & UI Utility Classes in Amber-Russet-Black Palette */
+.pixel-border {
+  border: 4px solid #854836;
+  box-shadow: 
+    inset -4px -4px 0px 0px #000000,
+    inset 4px 4px 0px 0px #FFB22C,
+    4px 4px 0px 0px rgba(0, 0, 0, 0.6);
+}
+
+.pixel-border-soft {
+  border: 3px solid #854836;
+  box-shadow: 
+    inset -2px -2px 0px 0px #000000,
+    inset 2px 2px 0px 0px #FFB22C,
+    3px 3px 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.pixel-border-accent {
+  border: 4px solid #FFB22C;
+  box-shadow: 
+    inset -4px -4px 0px 0px #854836,
+    inset 4px 4px 0px 0px #FFD382,
+    4px 4px 0px 0px rgba(0, 0, 0, 0.7);
+}
+
+.pixel-border-terracotta {
+  border: 4px solid #854836;
+  box-shadow: 
+    inset -4px -4px 0px 0px #5E2F22,
+    inset 4px 4px 0px 0px #A65E49,
+    4px 4px 0px 0px rgba(0, 0, 0, 0.6);
+}
+
+.pixel-card {
+  background-color: #221B17;
+  border: 3px solid #854836;
+  box-shadow: 
+    inset 2px 2px 0px 0px #3D2E27,
+    inset -2px -2px 0px 0px #000000,
+    3px 3px 0px 0px rgba(0, 0, 0, 0.6);
+}
+
+.pixel-btn {
+  background-color: #FFB22C;
+  border: 3px solid #000000;
+  color: #000000;
+  font-weight: 700;
+  transition: all 0.1s ease;
+  box-shadow: 
+    inset 2px 2px 0px 0px #FFD382,
+    inset -2px -2px 0px 0px #854836,
+    3px 3px 0px 0px rgba(0, 0, 0, 0.6);
+}
+
+.pixel-btn:hover {
+  background-color: #FFC45E;
+  transform: translateY(-1px);
+  box-shadow: 
+    inset 2px 2px 0px 0px #FFE1A8,
+    inset -2px -2px 0px 0px #854836,
+    4px 4px 0px 0px rgba(0, 0, 0, 0.7);
+}
+
+.pixel-btn:active {
+  transform: translateY(2px);
+  box-shadow: 
+    inset 2px 2px 0px 0px #000000,
+    inset -2px -2px 0px 0px #FFC45E,
+    1px 1px 0px 0px rgba(0, 0, 0, 0.6);
+}
+
+/* Custom Scrollbars in Amber/Russet Pixel Theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #120E0C;
+  border: 1px solid #1A1411;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #854836;
+  border: 1px solid #FFB22C;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFB22C;
+}
+
+/* Pulse & Floating Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-float {
+  animation: float 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

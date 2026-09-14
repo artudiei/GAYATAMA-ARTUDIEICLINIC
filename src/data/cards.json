@@ -1,0 +1,62 @@
+[
+  {
+    "id": "card_active_listening",
+    "name": "Dengar dengan Hati (Refleksi Empatis)",
+    "technique": "active_listening",
+    "hotsLevel": "C4",
+    "icon": "Ear",
+    "description": "Mendengarkan tanpa buru-buru menasihati atau menghakimi, memantulkan kembali perasaan yang dirasakannya.",
+    "clinicalRationale": "Membangun rasa aman dan menurunkan rasa terancam pada klien yang takut disalahkan (Carl Rogers Person-Centered).",
+    "tensionModifier": -18,
+    "rapportModifier": 22,
+    "cooldownTurns": 1
+  },
+  {
+    "id": "card_cbt_reframing",
+    "name": "Ajak Cek Fakta (Restrukturisasi Pikiran)",
+    "technique": "cbt_reframing",
+    "hotsLevel": "C5",
+    "icon": "Brain",
+    "description": "Menguji apakah ketakutan di kepalanya benar-benar fakta nyata atau cuma tebakan berlebihan (Overthinking).",
+    "clinicalRationale": "Membongkar jebakan pikiran 'Hitam-Putih' dan skenario terburuk menjadi sudut pandang yang lebih adil (Aaron Beck CBT).",
+    "tensionModifier": -14,
+    "rapportModifier": 18,
+    "cooldownTurns": 2
+  },
+  {
+    "id": "card_socratic_questioning",
+    "name": "Tanya Balik Lembut (Tanya Sokrates)",
+    "technique": "socratic_questioning",
+    "hotsLevel": "C5",
+    "icon": "HelpCircle",
+    "description": "Mengajukan pertanyaan pemantik sederhana agar dia sendiri yang menyadari kontradiksi di pikirannya.",
+    "clinicalRationale": "Mencegah penolakan karena klien sendiri yang menemukan jawabannya, bukan diceramahi.",
+    "tensionModifier": -10,
+    "rapportModifier": 16,
+    "cooldownTurns": 1
+  },
+  {
+    "id": "card_somatic_grounding",
+    "name": "Tarik Napas & Sadar Tubuh (Grounding)",
+    "technique": "somatic_grounding",
+    "hotsLevel": "C6",
+    "icon": "Sparkles",
+    "description": "Menenangkan detak jantung dan rasa sesak dengan fokus pada napas lambat dan sensasi fisik saat ini.",
+    "clinicalRationale": "Mengaktifkan sistem saraf relaksasi (parasimpatis) saat rasa panik atau cemas menyerang tubuh.",
+    "tensionModifier": -25,
+    "rapportModifier": 15,
+    "cooldownTurns": 2
+  },
+  {
+    "id": "card_gentle_confrontation",
+    "name": "Buka Duri dengan Hangat (Konfrontasi Lembut)",
+    "technique": "gentle_confrontation",
+    "hotsLevel": "C5",
+    "icon": "Flame",
+    "description": "Menunjukkan luka atau alasan sebenarnya di balik sikap galak atau defensifnya dengan penuh rasa hormat.",
+    "clinicalRationale": "Membantu klien melihat titik buta (blind spots) tanpa membuat dia merasa diserang.",
+    "tensionModifier": 10,
+    "rapportModifier": 24,
+    "cooldownTurns": 2
+  }
+]

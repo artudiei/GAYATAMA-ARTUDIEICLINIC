@@ -1,0 +1,613 @@
+{
+  "names": [
+    "Dimas (19 th)", "Nadia (17 th)", "Rian (21 th)", "Salsa (18 th)",
+    "Fajar (20 th)", "Kirana (16 th)", "Bimo (22 th)", "Dinda (19 th)",
+    "Arka (17 th)", "Zahra (20 th)", "Gilang (18 th)", "Clarissa (21 th)"
+  ],
+  "professions": [
+    "Siswa SMA Tingkat Akhir", "Mahasiswa Baru", "Ketua Kelompok Tugas Kampus",
+    "Anak Sulung yang Menanggung Ekspektasi Keluarga", "Siswa yang Sedang Ujian Kelulusan",
+    "Mahasiswa yang Sedang Magang Pertama Kali", "Remaja Pecinta Game & Hobi Seni"
+  ],
+  "paletteVariations": [
+    { "hair": "#2b1e1a", "shirt": "#52796f", "pants": "#2f3e46" },
+    { "hair": "#402619", "shirt": "#84a98c", "pants": "#354f52" },
+    { "hair": "#1f2421", "shirt": "#a36e52", "pants": "#3b342e" },
+    { "hair": "#4a3b32", "shirt": "#bc6c25", "pants": "#606c38" },
+    { "hair": "#283618", "shirt": "#738b71", "pants": "#2a3b32" }
+  ],
+  "archetypes": {
+    "anxious": {
+      "id": "anxious",
+      "name": "Si Pencemas & Overthinker",
+      "description": "Sering membayangkan skenario terburuk dari hal-hal kecil, seperti takut ditunjuk guru di kelas, panik jika chat grup belum dibalas, atau takut ditertawakan teman.",
+      "baseTensionRange": [70, 90],
+      "baseRapportRange": [20, 35],
+      "preferredTechniques": ["somatic_grounding", "active_listening"],
+      "aversionTechniques": ["gentle_confrontation"],
+      "theoryConnection": {
+        "framework": "Cognitive Behavioral Model of Anxiety & Parasympathetic Co-Regulation",
+        "primarySource": "Beck, A. T., & Clark, D. A. (1997). An information processing model of anxiety. Behavior Therapy, 28(1), 49-58.",
+        "secondarySource": "Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological Foundations of Emotions, Attachment, Communication, and Self-regulation. W. W. Norton & Co.",
+        "scientificExplanation": "Respon cemas berlebihan saat ditunjuk di kelas atau menunggu chat merupakan aktivasi sistem saraf simpatis (Fight or Flight) akibat amigdala yang menafsirkan rasa malu sosial sebagai ancaman fisik. Teknik Grounding somatis (napas lambat dan orientasi fisik) mengaktifkan saraf vagus (parasimpatis) untuk menenangkan detak jantung, sementara validasi kognitif memutus siklus overthinking (rumination)."
+      },
+      "complaints": [
+        "Jantung langsung berdebar kencang dan keringat dingin setiap kali guru/dosen mau menunjuk murid untuk maju ke depan",
+        "Pikiran tidak bisa berhenti memikirkan balasan chat singkat dari teman, takut kalau ada salah kata yang bikin mereka kesal",
+        "Susah tidur malam hari karena terus memutar ulang kejadian memalukan yang terjadi di sekolah beberapa hari lalu"
+      ],
+      "phaseTemplates": [
+        {
+          "phaseNumber": 1,
+          "phaseName": "Fase 1: Curhatan Pertama & Menenangkan Rasa Panik",
+          "clientSpeech": "Kak... tadi pagi di kelas pas guru mau tunjuk orang buat jawab di papan tulis, rasanya dadaku sesak banget. Tanganku dingin dan gemetar. Aku takut banget kalau sampai salah jawab terus diketawain satu kelas.",
+          "clientNonVerbal": "Bicara cepat, meremas ujung baju, napasnya terdengar pendek-pendek.",
+          "clientInnerDistress": "Pikiran batin: 'Gimana kalau aku kelihatan bodoh di depan semua orang?'",
+          "options": [
+            {
+              "id": "anx_p1_c4",
+              "text": "Wajar banget kalau kamu merasa deg-degan. Coba rasakan sejenak, saat rasa takut itu datang tadi pagi, apa yang paling pertama dirasakan oleh tubuhmu?",
+              "hots": "C4",
+              "hotsTitle": "C4: Mengajak Sadar Sinyal Tubuh (Body Awareness)",
+              "technique": "somatic_grounding",
+              "tensionChange": -22,
+              "rapportChange": 22,
+              "feedback": "Bagus sekali! Mengajak klien menyadari sensasi fisik membuat badai kepanikan di kepalanya melambat.",
+              "clientReaction": "Dadaku rasanya kayak dihimpit beban berat, Kak... terus napasku jadi pendek banget."
+            },
+            {
+              "id": "anx_p1_c5",
+              "text": "Pernah nggak kamu melihat teman sekelasmu salah jawab saat maju? Menurutmu, apakah kamu dan teman-teman langsung menganggap dia orang yang bodoh?",
+              "hots": "C5",
+              "hotsTitle": "C5: Menguji Kenyataan (Reality Check)",
+              "technique": "socratic_questioning",
+              "tensionChange": -12,
+              "rapportChange": 18,
+              "feedback": "Pertanyaan yang sangat mengena! Membantu dia menyadari bahwa orang lain tidak sekejam bayangan di kepalanya.",
+              "clientReaction": "Enggak sih... waktu temanku salah kemarin, kami cuma bantu kasih tahu jawaban yang benar, nggak ada yang ngejek."
+            },
+            {
+              "id": "anx_p1_c6",
+              "text": "Di ruangan ini kamu aman kok. Yuk, taruh kedua telapak kaki di lantai, dan coba bareng-bareng tarik napas perlahan... hembuskan pelan-pelan.",
+              "hots": "C6",
+              "hotsTitle": "C6: Mengajak Bernapas Bersama (Co-Regulation)",
+              "technique": "somatic_grounding",
+              "tensionChange": -28,
+              "rapportChange": 26,
+              "feedback": "Luar biasa! Bernapas bersama memberikan rasa tenang secara langsung pada sistem sarafnya.",
+              "clientReaction": "*Menarik napas panjang dan menghembuskannya pelan* ... Huft... rasanya dadaku mulai lebih lega sekarang, Kak."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 2,
+          "phaseName": "Fase 2: Mengurai Pikiran yang Berputar di Kepala",
+          "clientSpeech": "Tapi kepalaku suka bikin skenario yang aneh-aneh, Kak. Kalau ada teman yang balas chat cuma 'Y', aku langsung kepikiran seharian: 'Aku ada salah apa ya? Apa dia benci sama aku?'",
+          "clientNonVerbal": "Sedikit menunduk, tersenyum kecut mengakui kebiasaannya.",
+          "clientInnerDistress": "Pikiran batin: 'Aku selalu merasa bertanggung jawab atas suasana hati orang lain.'",
+          "options": [
+            {
+              "id": "anx_p2_c4",
+              "text": "Mari kita pisahkan: Menurutmu, pesan 'Y' itu fakta bahwa dia sedang benci kamu, atau cuma pikiran tebakanmu yang belum tentu benar?",
+              "hots": "C4",
+              "hotsTitle": "C4: Membedakan Fakta vs Tebakan Pikiran",
+              "technique": "cbt_reframing",
+              "tensionChange": -16,
+              "rapportChange": 22,
+              "feedback": "Sangat tajam! Membantu klien membedakan fakta nyata di dunia luar dengan asumsi cemas di kepalanya.",
+              "clientReaction": "Iya ya... bisa aja dia lagi di jalan, lagi buru-buru makan, atau baterai HP-nya mau habis."
+            },
+            {
+              "id": "anx_p2_c5",
+              "text": "Kalau dipikir-pikir, seberapa capek energimu habis cuma gara-gara nebak-nebak perasaan orang lain setiap hari?",
+              "hots": "C5",
+              "hotsTitle": "C5: Menyadari Dampak Capeknya Overthinking",
+              "technique": "socratic_questioning",
+              "tensionChange": -14,
+              "rapportChange": 18,
+              "feedback": "Membuka kesadaran klien bahwa overthinking sangat menguras energinya tanpa memberi solusi.",
+              "clientReaction": "Capek banget, Kak. Sampai nggak ada tenaga buat belajar atau ngerjain tugas sendiri."
+            },
+            {
+              "id": "anx_p2_c6",
+              "text": "Gimana kalau kita buat aturan baru: kalau pikiran curiga muncul, tulis dulu di kertas kecil dan baru boleh dipikirkan nanti sore jam 5?",
+              "hots": "C6",
+              "hotsTitle": "C6: Menjadwalkan Jam Cemas (Worry Time)",
+              "technique": "cbt_reframing",
+              "tensionChange": -20,
+              "rapportChange": 25,
+              "feedback": "Ide kreatif yang praktis! Menunda rasa cemas membuat pikiran tidak langsung terseret panik.",
+              "clientReaction": "Menarik juga! Jadi pagi sampai siang aku bisa fokus sekolah, cemasnya dijadwalin sore aja."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 3,
+          "phaseName": "Fase 3: Bekal Sederhana untuk Dibawa Pulang",
+          "clientSpeech": "Rasanya lega banget bisa cerita tanpa dihakimi atau dibilang 'lebay'. Tapi besok pas masuk sekolah lagi, gimana kalau rasa paniknya balik lagi?",
+          "clientNonVerbal": "Wajah terlihat jauh lebih cerah, tatapan matanya hangat dan tenang.",
+          "clientInnerDistress": "Kebutuhan: Ingin punya pegangan saat rasa panik muncul sendirian di sekolah.",
+          "options": [
+            {
+              "id": "anx_p3_c4",
+              "text": "Dari obrolan kita tadi, momen mana yang paling bikin hatimu langsung terasa plong dan tenang?",
+              "hots": "C4",
+              "hotsTitle": "C4: Mengingat Kembali Cara yang Berhasil",
+              "technique": "active_listening",
+              "tensionChange": -15,
+              "rapportChange": 20,
+              "feedback": "Menguatkan rasa percaya diri klien bahwa dia punya kemampuan untuk menenangkan dirinya sendiri.",
+              "clientReaction": "Pas kita latihan napas bareng dan pas aku sadar kalau pikiran burukku itu cuma tebakan, bukan kenyataan."
+            },
+            {
+              "id": "anx_p3_c5",
+              "text": "Kalau dinilai dari angka 1 sampai 10, seberapa berat rasa sesak di dadamu sekarang dibanding pas awal masuk ruangan tadi?",
+              "hots": "C5",
+              "hotsTitle": "C5: Mengecek Perubahan Rasa Nyaman",
+              "technique": "socratic_questioning",
+              "tensionChange": -18,
+              "rapportChange": 22,
+              "feedback": "Mengevaluasi skala rasa nyaman memberi bukti nyata pada klien bahwa kecemasan bisa reda.",
+              "clientReaction": "Tadi pas datang rasanya di angka 8 atau 9, sekarang udah turun ke angka 2. Jauh lebih enteng."
+            },
+            {
+              "id": "anx_p3_c6",
+              "text": "Yuk pilih satu benda kecil di kantongmu, misalnya gantungan kunci atau pulpen favorit, buat jadi pengingat untuk tarik napas dalam saat mulai panik di kelas.",
+              "hots": "C6",
+              "hotsTitle": "C6: Membuat Benda Jangkar Pengingat Tenang",
+              "technique": "somatic_grounding",
+              "tensionChange": -24,
+              "rapportChange": 28,
+              "feedback": "Sangat aplikatif! Benda kecil menjadi jangkar fisik untuk memicu rasa rileks di mana pun.",
+              "clientReaction": "Gantungan kunci kucing di tas sekolahku ini bakal jadi pengingat buat tenang dan napas dalam."
+            }
+          ]
+        }
+      ]
+    },
+    "perfectionist": {
+      "id": "perfectionist",
+      "name": "Si Penuntut Sempurna & Takut Salah",
+      "description": "Selalu merasa apa pun yang dikerjakan belum cukup bagus. Menunda tugas karena takut hasilnya tidak sempurna, dan merasa bersalah jika harus beristirahat.",
+      "baseTensionRange": [60, 80],
+      "baseRapportRange": [25, 40],
+      "preferredTechniques": ["cbt_reframing", "socratic_questioning"],
+      "aversionTechniques": ["somatic_grounding"],
+      "theoryConnection": {
+        "framework": "Cognitive Restructuring for Maladaptive Perfectionism & Self-Compassion",
+        "primarySource": "Burns, D. D. (1980). The perfectionist's script for self-defeat. Psychology Today, 14(6), 34-52.",
+        "secondarySource": "Neff, K. D. (2003). Self-Compassion: An Alternative Conceptualization of a Healthy Attitude Toward Oneself. Self and Identity, 2(2), 85-101.",
+        "scientificExplanation": "Perfeksionisme maladaptif berakar pada keyakinan irasional bahwa harga diri seseorang (self-worth) setara dengan performa tanpa cela (flawless achievement). Klien terjebak distorsi 'All-or-Nothing' di mana nilai 85 dianggap sebagai kegagalan total. Pendekatan Self-Compassion dan 'Good-Enough Manifesto' memisahkan identitas diri dari hasil pekerjaan, menurunkan stres tanpa mengorbankan kualitas."
+      },
+      "complaints": [
+        "Mendapat nilai 88 pada ujian, tapi menangis semalaman karena merasa bodoh dan mengecewakan orang tua",
+        "Sering menunda tugas sampai menit terakhir (prokrastinasi) karena takut ide yang dibuat belum sempurna",
+        "Merasa bersalah dan gelisah saat diajak nongkrong santai karena merasa 'harusnya aku lagi belajar/kerja'"
+      ],
+      "phaseTemplates": [
+        {
+          "phaseNumber": 1,
+          "phaseName": "Fase 1: Cerita Beban Ekspektasi & Rasa Bersalah",
+          "clientSpeech": "Kemarin pas pengumuman nilai tugas kelompok, kami dapat nilai 85. Teman-temanku pada senang dan bersorak, tapi aku malah stres banget. Aku ngerasa bersalah, andai aku periksa ulang semalaman mungkin kami bisa dapat 100.",
+          "clientNonVerbal": "Duduk sangat tegak, membawa catatan rapi, jarinya terus mengetuk meja.",
+          "clientInnerDistress": "Pikiran batin: 'Kalau aku nggak sempurna, aku nggak punya nilai apa-apa.'",
+          "options": [
+            {
+              "id": "perf_p1_c4",
+              "text": "Sepertinya kamu memegang prinsip 'kalau nggak dapat 100, berarti gagal'. Menurutmu, apakah nilai 85 itu benar-benar seburuk itu di mata dunia?",
+              "hots": "C4",
+              "hotsTitle": "C4: Mengurai Jebakan Pola 'Hitam-Putih'",
+              "technique": "cbt_reframing",
+              "tensionChange": -14,
+              "rapportChange": 20,
+              "feedback": "Tepat sasaran! Mengajak klien melihat bahwa dunia punya warna abu-abu di antara 'sempurna' dan 'hancur'.",
+              "clientReaction": "Secara logika sih nilai 85 itu bagus banget... tapi hatiku kayak nolak kalau belum 100."
+            },
+            {
+              "id": "perf_p1_c5",
+              "text": "Kalau ada sahabat terbaikmu dapat nilai 85 dan cerita ke kamu, apakah kamu bakal memarahi dia dan bilang dia orang yang gagal?",
+              "hots": "C5",
+              "hotsTitle": "C5: Membandingkan Sikap ke Teman vs Diri Sendiri",
+              "technique": "socratic_questioning",
+              "tensionChange": -16,
+              "rapportChange": 24,
+              "feedback": "Teknik standar ganda yang luar biasa! Menyadarkan betapa kejamnya dia memperlakukan dirinya sendiri.",
+              "clientReaction": "Tentu enggak, Kak! Aku pasti bakal traktir dia es krim dan bilang dia udah hebat... Ternyata aku jahat banget ya sama diriku sendiri."
+            },
+            {
+              "id": "perf_p1_c6",
+              "text": "Gimana kalau kita sebut suara yang selalu nuntut sempurna ini sebagai 'Si Pengkritik Bawel', supaya kamu tahu itu bukan suara hatimu yang asli?",
+              "hots": "C6",
+              "hotsTitle": "C6: Memberi Nama pada Suara Tuntutan Diri",
+              "technique": "cbt_reframing",
+              "tensionChange": -18,
+              "rapportChange": 22,
+              "feedback": "Keren! Memisahkan identitas diri dari suara tuntutan membuat hatinya jauh lebih merdeka.",
+              "clientReaction": "Bener juga. Suara itu persis kayak suara omongan orang-orang yang dulu suka banding-bandingin aku."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 2,
+          "phaseName": "Fase 2: Menyadari Harga Mahal dari Tuntutan Sempurna",
+          "clientSpeech": "Aku takut kalau aku nggak pasang target tinggi, aku bakal jadi malas dan masa depanku hancur. Tapi tubuhku capek banget, tiap malam susah tidur dan sering migrain.",
+          "clientNonVerbal": "Mengusap keningnya, pundaknya sedikit lemas.",
+          "clientInnerDistress": "Pikiran batin: 'Aku takut kehilangan kendali dan tertinggal dari orang lain.'",
+          "options": [
+            {
+              "id": "perf_p2_c4",
+              "text": "Menurutmu, apa bedanya 'berusaha memberikan yang terbaik dengan senang hati' dengan 'memaksa diri sempurna karena takut dihukum'?",
+              "hots": "C4",
+              "hotsTitle": "C4: Membedakan Semangat Belajar vs Rasa Takut",
+              "technique": "cbt_reframing",
+              "tensionChange": -15,
+              "rapportChange": 22,
+              "feedback": "Membantu klien memahami bahwa dia tetap bisa berprestasi tanpa harus tersiksa rasa takut.",
+              "clientReaction": "Berusaha terbaik itu bikin senang pas belajar, tapi kalau perfeksionis... rasanya kayak dikejar monster tiap detik."
+            },
+            {
+              "id": "perf_p2_c5",
+              "text": "Berapa banyak jam tidur, kesehatan, dan waktu kumpul bareng teman yang udah kamu korbankan demi ngejar nilai sempurna selama ini?",
+              "hots": "C5",
+              "hotsTitle": "C5: Menghitung Pengorbanan yang Sudah Hilang",
+              "technique": "socratic_questioning",
+              "tensionChange": -12,
+              "rapportChange": 18,
+              "feedback": "Pertanyaan evaluasi yang membuka mata bahwa harga yang dia bayar sudah terlalu mahal.",
+              "clientReaction": "Banyak banget... aku hampir nggak punya waktu buat hobi menggambarku lagi."
+            },
+            {
+              "id": "perf_p2_c6",
+              "text": "Yuk kita buat kesepakatan: target tugas harianmu cukup 'Bagus & Selesai di 85%', bukan harus karya mahakarya 100% yang bikin stres.",
+              "hots": "C6",
+              "hotsTitle": "C6: Menetapkan Batasan 'Sudah Cukup Baik'",
+              "technique": "cbt_reframing",
+              "tensionChange": -20,
+              "rapportChange": 25,
+              "feedback": "Memberi izin resmi untuk 'cukup baik' menurunkan beban mental perfeksionis secara drastis.",
+              "clientReaction": "Aku suka ide target 85% itu. Yang penting tugas selesai tepat waktu dan aku bisa tidur nyenyak."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 3,
+          "phaseName": "Fase 3: Izin untuk Beristirahat Tanpa Rasa Bersalah",
+          "clientSpeech": "Aku mau bisa menikmati rebahan atau nonton film di akhir pekan tanpa rasa bersalah. Aku mau merasa cukup dengan apa yang sudah kuperjuangkan hari ini.",
+          "clientNonVerbal": "Menarik napas lega dan menyandarkan punggungnya di sofa.",
+          "clientInnerDistress": "Kesiapan batin: Ingin menyayangi diri sendiri apa adanya.",
+          "options": [
+            {
+              "id": "perf_p3_c4",
+              "text": "Apa saja hal-hal kecil hari ini yang sebenarnya sudah kamu selesaikan dengan sangat baik dan patut kamu syukuri?",
+              "hots": "C4",
+              "hotsTitle": "C4: Mengapresiasi Usaha yang Sudah Berjalan",
+              "technique": "active_listening",
+              "tensionChange": -15,
+              "rapportChange": 20,
+              "feedback": "Membiasakan klien melihat hal-hal positif yang sudah tercapai daripada mencela kekurangan kecil.",
+              "clientReaction": "Aku sudah hadir tepat waktu, bantu temanku ngerjain bagian sulit, dan berani cerita ke sini."
+            },
+            {
+              "id": "perf_p3_c5",
+              "text": "Kalau HP-mu baterainya tinggal 5%, kamu bakal cas dia atau tetap kamu paksa dipakai sampai mati total?",
+              "hots": "C5",
+              "hotsTitle": "C5: Menggunakan Analogi Baterai Tubuh",
+              "technique": "socratic_questioning",
+              "tensionChange": -16,
+              "rapportChange": 22,
+              "feedback": "Analogi sederhana yang menyadarkan bahwa istirahat adalah kebutuhan wajib, bukan hadiah kemewahan.",
+              "clientReaction": "Pasti dicas dulu lah, Kak... Oh, tubuh dan otakku juga sama ya, butuh dicas biar nggak rusak."
+            },
+            {
+              "id": "perf_p3_c6",
+              "text": "Mulai malam ini, pasang alarm jam 9 malam sebagai tanda 'Toko Tutup'—saatnya tutup buku, putar lagu santai, dan kasih reward ke dirimu.",
+              "hots": "C6",
+              "hotsTitle": "C6: Membuat Ritual 'Tutup Toko' Malam Hari",
+              "technique": "somatic_grounding",
+              "tensionChange": -22,
+              "rapportChange": 26,
+              "feedback": "Ritual waktu tidur yang nyata dan asyik untuk memutus kebiasaan belajar berlebihan.",
+              "clientReaction": "Siap! Alarm jam 9 malam tanda 'Toko Tutup' bakal aku pasang di HP mulai hari ini."
+            }
+          ]
+        }
+      ]
+    },
+    "defensive": {
+      "id": "defensive",
+      "name": "Si Keras di Luar, Rapuh di Dalam",
+      "description": "Mudah tersinggung dan memasang perisai pertahanan jika dikritik. Sering merasa orang lain sengaja menyudutkannya atau tidak menghargai usahanya.",
+      "baseTensionRange": [65, 85],
+      "baseRapportRange": [15, 30],
+      "preferredTechniques": ["active_listening", "validation"],
+      "aversionTechniques": ["gentle_confrontation"],
+      "theoryConnection": {
+        "framework": "Person-Centered Unconditional Regard & Defense Mechanism Theory",
+        "primarySource": "Rogers, C. R. (1957). The necessary and sufficient conditions of therapeutic personality change. Journal of Consulting Psychology, 21(2), 95-103.",
+        "secondarySource": "Freud, A. (1936). The Ego and the Mechanisms of Defense. International Universities Press.",
+        "scientificExplanation": "Sikap defensif dan mudah tersinggung merupakan mekanisme pertahanan ego (proyeksi dan reaktivitas) untuk menutupi rasa takut dianggap tidak kompeten atau ditolak. Ketika terapis tidak membalas dengan penghakiman melainkan memberikan Unconditional Positive Regard (penerimaan tanpa syarat), rasa terancam pada amygdala menurun drastis sehingga klien bersedia membuka diri."
+      },
+      "complaints": [
+        "Sering dibilang 'gampang ngambek' di kelompok, padahal merasa teman-teman yang kerjanya asal-asalan",
+        "Merasa serba salah kalau bicara dengan orang tua, ujung-ujungnya pasti berakhir dengan adu argumen",
+        "Gengsi untuk meminta maaf duluan karena takut dianggap lemah atau kalah"
+      ],
+      "phaseTemplates": [
+        {
+          "phaseNumber": 1,
+          "phaseName": "Fase 1: Mendengarkan Kejengkelan Tanpa Menghakimi",
+          "clientSpeech": "Aku ke sini sebenarnya malas, cuma karena disuruh wali kelas/orang tuaku. Mereka bilang aku pemarah dan susah diajak kerja kelompok. Padahal teman-temanku aja yang kerjanya lelet dan maunya numpang nama!",
+          "clientNonVerbal": "Menyilangkan tangan di dada, nada bicaranya agak tinggi, tatapannya menantang.",
+          "clientInnerDistress": "Pikiran batin: 'Pasti kakak ini bakal belain mereka dan nyalahin aku juga.'",
+          "options": [
+            {
+              "id": "def_p1_c4",
+              "text": "Pasti capek banget ya kalau kamu sudah kerja keras ngerjain tugas kelompok, tapi malah kamu yang disalahkan pas kamu menegur mereka?",
+              "hots": "C4",
+              "hotsTitle": "C4: Mengakui Rasa Lelah & Ketidakadilan yang Dirasakan",
+              "technique": "active_listening",
+              "tensionChange": -15,
+              "rapportChange": 20,
+              "feedback": "Luar biasa! Memvalidasi rasa kecewanya membuat perisai pertahanannya mulai luluh.",
+              "clientReaction": "Nah kan! Kakak aja paham. Aku tuh kesel karena aku yang begadang bikin slide, tapi pas aku minta mereka kumpul tepat waktu malah aku dibilang bossy."
+            },
+            {
+              "id": "def_p1_c5",
+              "text": "Kalau kita lihat hasilnya sekarang, apakah caramu menegur mereka kemarin berhasil bikin mereka sadar, atau malah bikin suasana makin runyam?",
+              "hots": "C5",
+              "hotsTitle": "C5: Mengecek Efektivitas Cara Menegur",
+              "technique": "socratic_questioning",
+              "tensionChange": -8,
+              "rapportChange": 14,
+              "feedback": "Pertanyaan evaluatif yang lembut, membantunya berpikir tanpa membuat dia merasa dipojokkan.",
+              "clientReaction": "Malah makin berantakan sih... mereka malah bikin grup chat baru tanpa ada akunya."
+            },
+            {
+              "id": "def_p1_c6",
+              "text": "Tenang aja, di ruangan ini kamu nggak sedang diadili kok. Kamu yang pegang kendali mau cerita apa aja yang bikin kamu gondok akhir-akhir ini.",
+              "hots": "C6",
+              "hotsTitle": "C6: Menjamin Ruang Aman Tanpa Sidang Pengadilan",
+              "technique": "validation",
+              "tensionChange": -20,
+              "rapportChange": 25,
+              "feedback": "Sangat efektif! Memberikan rasa aman dan kendali meredakan kecurigaannya dengan cepat.",
+              "clientReaction": "Oke deh kalau gitu... sebenarnya aku cuma pengen dihargai aja usahaku, Kak."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 2,
+          "phaseName": "Fase 2: Menemukan Luka di Balik Duri Pertahanan",
+          "clientSpeech": "Aku dari dulu terbiasa harus galak. Soalnya kalau aku lembek dan diam aja, orang-orang bakal seenaknya nginjak-injak atau manfaatin aku.",
+          "clientNonVerbal": "Suaranya sedikit memelan, posisi tangannya mulai terbuka di atas paha.",
+          "clientInnerDistress": "Pikiran batin: 'Dulu aku pernah dimanfaatin temanku sampai nangis, aku nggak mau itu terulang.'",
+          "options": [
+            {
+              "id": "def_p2_c4",
+              "text": "Pasti dulu pernah ada kejadian yang bikin kamu terluka ya, sampai kamu merasa harus selalu memasang duri biar nggak disakiti lagi?",
+              "hots": "C4",
+              "hotsTitle": "C4: Memahami Alasan di Balik 'Perisai Duri'",
+              "technique": "active_listening",
+              "tensionChange": -14,
+              "rapportChange": 22,
+              "feedback": "Sangat menyentuh! Menemukan akar rasa sakitnya membuat dia merasa benar-benar dimengerti.",
+              "clientReaction": "Pas SMP dulu... tugas prakaryaku diakui sama temanku sendiri di depan guru, dan aku cuma bisa diam sambil nahan nangis."
+            },
+            {
+              "id": "def_p2_c5",
+              "text": "Menurutmu, apakah memasang duri ke semua orang bikin kamu merasa aman, atau malah bikin kamu kesepian karena teman-teman baik jadi takut mendekat?",
+              "hots": "C5",
+              "hotsTitle": "C5: Menimbang Rasa Aman vs Rasa Kesepian",
+              "technique": "socratic_questioning",
+              "tensionChange": -10,
+              "rapportChange": 18,
+              "feedback": "Membantunya melihat bahwa perisai yang terlalu tebal juga menghalangi datangnya teman yang tulus.",
+              "clientReaction": "Bikin sepi sih... jujur aku juga kepingin bisa ketawa lepas bareng mereka waktu jam istirahat."
+            },
+            {
+              "id": "def_p2_c6",
+              "text": "Gimana kalau kita bedakan antara 'bersikap tegas dan punya batasan' dengan 'menyerang orang duluan sebelum diserang'?",
+              "hots": "C6",
+              "hotsTitle": "C6: Belajar Tegas yang Sehat (Asertif)",
+              "technique": "cbt_reframing",
+              "tensionChange": -16,
+              "rapportChange": 24,
+              "feedback": "Mengajarkan konsep ketegasan yang sehat tanpa perlu bersikap galak atau kasar.",
+              "clientReaction": "Bisa ya bersikap tegas tapi tetap ramah? Aku mau belajar caranya, Kak."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 3,
+          "phaseName": "Fase 3: Langkah Sederhana Membuka Diri",
+          "clientSpeech": "Aku mau coba perbaiki hubunganku sama teman-teman kelompok. Tapi gimana ya caranya biar nggak canggung dan nggak kelihatan gengsi?",
+          "clientNonVerbal": "Tersenyum ramah, postur tubuhnya rileks dan bersahabat.",
+          "clientInnerDistress": "Kebutuhan: Butuh kalimat pembuka yang natural dan tidak menjatuhkan harga diri.",
+          "options": [
+            {
+              "id": "def_p3_c4",
+              "text": "Siapa satu orang di kelompokmu yang sebenarnya paling enak diajak ngobrol santai kalau lagi berdua?",
+              "hots": "C4",
+              "hotsTitle": "C4: Memilih Teman yang Paling Nyaman Dulu",
+              "technique": "active_listening",
+              "tensionChange": -15,
+              "rapportChange": 20,
+              "feedback": "Memulai dari orang yang paling aman menurunkan rasa takut ditolak.",
+              "clientReaction": "Ada Budi... dia sebenarnya orangnya santai dan nggak gampang tersinggung."
+            },
+            {
+              "id": "def_p3_c5",
+              "text": "Kalau kamu kirim chat santai seperti 'Guys, kemarin sori ya kalau omonganku agak ngegas, yuk lanjut bagi tugasnya', kira-kira mereka bakal senang nggak?",
+              "hots": "C5",
+              "hotsTitle": "C5: Membayangkan Respon Positif Teman",
+              "technique": "somatic_grounding",
+              "tensionChange": -16,
+              "rapportChange": 22,
+              "feedback": "Membantu klien melihat bahwa meminta maaf dengan santai justru menaikkan respek teman-temannya.",
+              "clientReaction": "Pasti mereka bakal kaget dan senang banget sih... suasana kelompok bakal langsung adem."
+            },
+            {
+              "id": "def_p3_c6",
+              "text": "Yuk coba trik ini: pas mau balas omongan yang bikin kesel nanti, tahan napas 3 detik dulu sambil minum air sebelum menjawab.",
+              "hots": "C6",
+              "hotsTitle": "C6: Trik Jeda 3 Detik Sebelum Membalas",
+              "technique": "somatic_grounding",
+              "tensionChange": -22,
+              "rapportChange": 26,
+              "feedback": "Trik fisik yang sangat manjur untuk mencegah emosi meledak secara spontan!",
+              "clientReaction": "Oke, tahan napas 3 detik dan minum air. Trik simpel tapi bakal sangat ngebantu aku."
+            }
+          ]
+        }
+      ]
+    },
+    "avoidant": {
+      "id": "avoidant",
+      "name": "Si Pendiam & Pemendam Masalah",
+      "description": "Kalau ada masalah selalu bilang 'aku nggak apa-apa'. Memilih lari ke kamar, tidur, atau main game seharian daripada membicarakan perasaannya.",
+      "baseTensionRange": [50, 70],
+      "baseRapportRange": [10, 25],
+      "preferredTechniques": ["active_listening", "socratic_questioning"],
+      "aversionTechniques": ["gentle_confrontation"],
+      "theoryConnection": {
+        "framework": "Attachment Theory & Emotional Avoidance Regulation",
+        "primarySource": "Bowlby, J. (1982). Attachment and loss: Vol. 1. Attachment (2nd ed.). Basic Books.",
+        "secondarySource": "Gross, J. J. (2002). Emotion regulation: Affective, cognitive, and social consequences. Psychophysiology, 39(3), 281-291.",
+        "scientificExplanation": "Menghindar dan menekan emosi (expressive suppression) adalah strategi koping untuk melindungi diri dari luka penolakan relasional di masa lampau. Pendekatan hangat tanpa desakan waktu (non-demanding safe space) secara bertahap memulihkan Secure Attachment dan mengurangi beban anhedonia."
+      },
+      "complaints": [
+        "Sering mengunci diri di kamar dan main game berjam-jam saat ada konflik di rumah atau sekolah",
+        "Susah mengekspresikan rasa sedih atau kecewa, lebih memilih diam sampai orang lain bingung",
+        "Merasa hampa dan malas melakukan apa pun, tapi bingung mau cerita ke siapa"
+      ],
+      "phaseTemplates": [
+        {
+          "phaseNumber": 1,
+          "phaseName": "Fase 1: Menghargai Ruang Tanpa Paksaan",
+          "clientSpeech": "Aku nggak tahu mau cerita apa, Kak. Hidupku ya biasa aja... datar. Kalau ada yang nanya kabarku, aku selalu jawab 'baik-baik aja kok'. Padahal sebenarnya aku ngerasa hampa dan capek.",
+          "clientNonVerbal": "Menatap lantai, suaranya pelan dan monoton, tangannya diam di saku jaket.",
+          "clientInnerDistress": "Pikiran batin: 'Percuma cerita, paling orang lain nggak bakal ngerti atau cuma nyuruh aku bersyukur.'",
+          "options": [
+            {
+              "id": "avd_p1_c4",
+              "text": "Rasa hampa itu bukan berarti kamu nggak punya perasaan, tapi tubuhmu mungkin lagi kecapekan menampung beban sendirian. Benar begitu?",
+              "hots": "C4",
+              "hotsTitle": "C4: Menjelaskan Bahwa 'Hampa' Itu Tanda Lelah",
+              "technique": "active_listening",
+              "tensionChange": -14,
+              "rapportChange": 20,
+              "feedback": "Sangat melegakan! Dia tidak merasa aneh atau bersalah lagi karena merasa hampa.",
+              "clientReaction": "Iya bener... kayak sekring lampu di otakku otomatis mati sendiri biar aku nggak meledak."
+            },
+            {
+              "id": "avd_p1_c5",
+              "text": "Pas lagi main game atau scrolling medsos seharian, apakah perasaan hampa itu beneran hilang, atau cuma ketutup sementara?",
+              "hots": "C5",
+              "hotsTitle": "C5: Mengecek Efek Pelarian Sementara",
+              "technique": "socratic_questioning",
+              "tensionChange": -10,
+              "rapportChange": 16,
+              "feedback": "Membantunya mengevaluasi kebiasaan pelarian tanpa rasa dihakimi.",
+              "clientReaction": "Cuma ketutup pas main aja, pas HP ditaruh rasa hambarnya balik lagi."
+            },
+            {
+              "id": "avd_p1_c6",
+              "text": "Kamu nggak perlu buru-buru cerita panjang kok. Kita duduk santai aja dulu di sini, kamu boleh hening selama yang kamu butuhkan.",
+              "hots": "C6",
+              "hotsTitle": "C6: Memberi Ruang Diam yang Nyaman",
+              "technique": "validation",
+              "tensionChange": -20,
+              "rapportChange": 24,
+              "feedback": "Hebat sekali! Menghilangkan tuntutan bicara membuat klien merasa sangat aman.",
+              "clientReaction": "Makasih banyak, Kak... Baru kali ini aku nggak dipaksa harus langsung ceria atau heboh."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 2,
+          "phaseName": "Fase 2: Menyentuh Alasan Memilih Diam",
+          "clientSpeech": "Dulu aku pernah cerita masalahku ke teman dekat, tapi malah dijadiin bahan candaan dan disebarin. Sejak saat itu aku mikir: lebih aman simpan semuanya sendiri.",
+          "clientNonVerbal": "Menatap ke luar jendela dengan pandangan sendu.",
+          "clientInnerDistress": "Pikiran batin: 'Membuka diri itu berbahaya dan bikin sakit hati.'",
+          "options": [
+            {
+              "id": "avd_p2_c4",
+              "text": "Keputusanmu buat diam adalah caramu yang hebat untuk menjaga hatimu waktu dikhianati dulu. Tapi apakah diam terus sekarang bikin kamu kesepian?",
+              "hots": "C4",
+              "hotsTitle": "C4: Mengapresiasi Cara Bertahan Masa Lalu",
+              "technique": "cbt_reframing",
+              "tensionChange": -15,
+              "rapportChange": 22,
+              "feedback": "Menghormati masa lalunya membuat dia sadar bahwa sekarang situasinya sudah berbeda.",
+              "clientReaction": "Iya... benteng ini bikin aku aman dari ejekan, tapi juga bikin aku terkurung sendirian."
+            },
+            {
+              "id": "avd_p2_c5",
+              "text": "Seberapa kangennya kamu punya satu orang teman yang benar-benar bisa dipercaya dan mau dengerin ceritamu apa adanya?",
+              "hots": "C5",
+              "hotsTitle": "C5: Menyadari Kerinduan Punya Teman Cerita",
+              "technique": "socratic_questioning",
+              "tensionChange": -10,
+              "rapportChange": 18,
+              "feedback": "Menghidupkan kembali harapan untuk memiliki hubungan pertemanan yang sehat.",
+              "clientReaction": "Kangen banget, Kak... Pengen rasanya bisa cerita tanpa takut dihakimi."
+            },
+            {
+              "id": "avd_p2_c6",
+              "text": "Gimana kalau kita pasang 'Pintu Kecil Berlubang Intip' di bentengmu: kamu yang tentukan mau buka selebar apa dan ke siapa saja.",
+              "hots": "C6",
+              "hotsTitle": "C6: Metafora Pintu Kecil Berlubang Intip",
+              "technique": "cbt_reframing",
+              "tensionChange": -18,
+              "rapportChange": 26,
+              "feedback": "Metafora visual yang sangat ramah dan menenangkan bagi orang yang suka menghindar.",
+              "clientReaction": "Aku suka metafora itu. Aku nggak harus robohin dindingku, cukup buka jendela kecil pelan-pelan."
+            }
+          ]
+        },
+        {
+          "phaseNumber": 3,
+          "phaseName": "Fase 3: Langkah Kecil Menyapa Dunia",
+          "clientSpeech": "Aku mau coba ngobrol lebih terbuka sama keluargaku atau satu teman baikku. Setidaknya biar mereka tahu aku lagi capek, bukan lagi sombong.",
+          "clientNonVerbal": "Wajahnya mulai tersenyum tipis dan tampak lebih segar.",
+          "clientInnerDistress": "Kebutuhan: Contoh kalimat sederhana untuk menyampaikan isi hati tanpa terkesan marah.",
+          "options": [
+            {
+              "id": "avd_p3_c4",
+              "text": "Kalimat apa yang paling pas untuk bilang ke orang rumah kalau kamu lagi butuh istirahat tanpa bikin mereka salah paham?",
+              "hots": "C4",
+              "hotsTitle": "C4: Menyusun Kalimat Jujur yang Santun",
+              "technique": "cbt_reframing",
+              "tensionChange": -14,
+              "rapportChange": 20,
+              "feedback": "Melatih kalimat asertif yang sopan dan jelas mencegah pertengkaran di rumah.",
+              "clientReaction": "'Ibu/Ayah, aku sayang kalian, tapi hari ini energiku habis. Aku izin istirahat di kamar 1 jam ya nanti aku keluar lagi.'"
+            },
+            {
+              "id": "avd_p3_c5",
+              "text": "Gimana rasanya setelah kamu cerita jujur di sini tadi? Apakah membuka diri itu semenakutkan bayanganmu sebelumnya?",
+              "hots": "C5",
+              "hotsTitle": "C5: Merasakan Pengalaman Bercerita yang Aman",
+              "technique": "somatic_grounding",
+              "tensionChange": -16,
+              "rapportChange": 22,
+              "feedback": "Pengalaman nyata didengarkan dengan hangat menyembuhkan trauma masa lalunya.",
+              "clientReaction": "Ternyata nggak menakutkan sama sekali... Malah rasanya ada batu besar yang diangkat dari dadaku."
+            },
+            {
+              "id": "avd_p3_c6",
+              "text": "Yuk coba tantangan kecil minggu ini: ajak satu teman terdekatmu ngobrol santai sambil minum boba/kopi selama 15 menit tanpa pegang HP.",
+              "hots": "C6",
+              "hotsTitle": "C6: Tantangan 15 Menit Ngobrol Tanpa Gadget",
+              "technique": "active_listening",
+              "tensionChange": -20,
+              "rapportChange": 26,
+              "feedback": "Tindakan nyata yang ringan dan menyenangkan untuk mulai membuka pintu koneksi sosial!",
+              "clientReaction": "Boleh juga! Aku bakal ajak temanku ngobrol santai akhir pekan ini."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

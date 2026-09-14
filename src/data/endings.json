@@ -1,0 +1,121 @@
+{
+  "grades": {
+    "S": {
+      "minScore": 85,
+      "grade": "S",
+      "title": "Maestro Aliansi Terapeutik (Master Clinician)",
+      "badgeColor": "#FFB22C",
+      "summary": "Luar biasa! Pendekatan Anda sangat hangat, empatik, dan tepat sasaran. Anda berhasil menurunkan rasa terancam klien hingga mencapai titik tenang (homeostasis), membongkar asumsi keliru tanpa menceramahi, dan merumuskan langkah nyata yang langsung bisa ia terapkan di sekolah/kehidupan sehari-harinya."
+    },
+    "A": {
+      "minScore": 70,
+      "grade": "A",
+      "title": "Konselor Empatik & Terampil (Skilled Practitioner)",
+      "badgeColor": "#FFC45E",
+      "summary": "Sangat baik! Anda berhasil menciptakan rasa aman yang tulus. Klien merasa didengarkan seutuhnya dan mulai menyadari bahwa beban pikiran yang selama ini dipendamnya bisa diurai secara logis dan tenang."
+    },
+    "B": {
+      "minScore": 55,
+      "grade": "B",
+      "title": "Praktisi Berkemampuan Baik (Competent Helper)",
+      "badgeColor": "#854836",
+      "summary": "Cukup baik. Klien menunjukkan penurunan ketegangan yang positif, meskipun ada beberapa respon yang sedikit memicu keraguan atau kurang menyentuh akar masalah utamanya."
+    },
+    "C": {
+      "minScore": 40,
+      "grade": "C",
+      "title": "Konselor yang Sedang Berkembang (Developing Counselor)",
+      "badgeColor": "#A65E49",
+      "summary": "Masih ada sedikit ketegangan yang tersisa. Klien butuh validasi perasaan lebih dalam sebelum diajak mengevaluasi kenyataan atau merancang cara baru."
+    },
+    "D": {
+      "minScore": 0,
+      "grade": "D",
+      "title": "Perlu Pendampingan Lanjutan (Supervised Practice)",
+      "badgeColor": "#9A342D",
+      "summary": "Klien masih merasa terancam atau belum siap membuka diri. Ingat prinsip dasar: jangan menasihati sebelum rasa aman dan kepercayaan (rapport) terbentuk kokoh."
+    }
+  },
+  "theories": [
+    {
+      "id": "person_centered",
+      "name": "Person-Centered Therapy & Aliansi Terapeutik",
+      "theorist": "Carl R. Rogers, Ph.D. (1951, 1957)",
+      "primarySource": "Rogers, C. R. (1957). The necessary and sufficient conditions of therapeutic personality change. Journal of Consulting Psychology, 21(2), 95-103.",
+      "doiUrl": "https://doi.org/10.1037/h0045357",
+      "scholarUrl": "https://www.semanticscholar.org/paper/The-necessary-and-sufficient-conditions-of-change-Rogers/c06beab27702f23f46f4eb27a23c3b0eb61ba762",
+      "coreConcept": "Tiga pilar utama dalam pemulihan psikologis: Empathy (memahami sudut pandang klien seolah-olah mengalaminya sendiri), Unconditional Positive Regard (penerimaan tanpa syarat tanpa menghakimi), dan Congruence (keaslian sikap penolong).",
+      "clinicalApplication": "Di dalam simulasi tadi, saat Anda tidak buru-buru menyalahkan atau menceramahi klien yang defensif/tertutup, sistem sarafnya berhenti menganggap Anda sebagai 'musuh' sehingga perisai pertahanannya luluh secara alami."
+    },
+    {
+      "id": "cbt_beck",
+      "name": "Cognitive Behavioral Therapy (CBT) & Restrukturisasi Kognitif",
+      "theorist": "Aaron T. Beck, M.D. & David A. Clark, Ph.D. (1997)",
+      "primarySource": "Beck, A. T., & Clark, D. A. (1997). An information processing model of anxiety. Behavior Therapy, 28(1), 49-58.",
+      "doiUrl": "https://doi.org/10.1016/S0005-7894(97)80037-8",
+      "scholarUrl": "https://pubmed.ncbi.nlm.nih.gov/9179584/",
+      "coreConcept": "Bukan situasi yang membuat kita stres, melainkan cara kita menafsirkan situasi tersebut (Pikiran Otomatis / Cognitive Distortions seperti All-or-Nothing, Catastrophizing, dan Mind Reading).",
+      "clinicalApplication": "Di dalam simulasi tadi, saat Anda menanyakan 'Apakah nilai 85 itu benar-benar kegagalan di mata dunia?', Anda sedang mengajak klien menguji bukti empiris (Reality Testing) untuk membedakan antara fakta nyata dengan tebakan cemas di kepalanya."
+    },
+    {
+      "id": "polyvagal_somatic",
+      "name": "Polyvagal Theory & Co-Regulation Somatis",
+      "theorist": "Stephen W. Porges, Ph.D. (2011)",
+      "primarySource": "Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological Foundations of Emotions, Attachment, Communication, and Self-regulation. W. W. Norton & Co.",
+      "doiUrl": "https://pubmed.ncbi.nlm.nih.gov/21833190/",
+      "scholarUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3108032/",
+      "coreConcept": "Saat merasa panik atau cemas (seperti takut ditunjuk guru di kelas), tubuh masuk ke mode 'Fight or Flight' yang mematikan logika berpikir. Tubuh harus ditenangkan lebih dulu melalui napas lambat (aktivasi saraf vagus parasimpatis) sebelum otak bisa diajak berpikir logis.",
+      "clinicalApplication": "Di dalam simulasi tadi, latihan napas bersama (Co-regulation) dan meletakkan kaki di lantai langsung menurunkan detak jantung dan sesak napas klien secara biologis."
+    },
+    {
+      "id": "attachment_gross",
+      "name": "Process Model of Emotion Regulation & Attachment",
+      "theorist": "James J. Gross, Ph.D. (2002) & John Bowlby (1982)",
+      "primarySource": "Gross, J. J. (2002). Emotion regulation: Affective, cognitive, and social consequences. Psychophysiology, 39(3), 281-291.",
+      "doiUrl": "https://doi.org/10.1111/1469-8986.3930281",
+      "scholarUrl": "https://pubmed.ncbi.nlm.nih.gov/12212647/",
+      "coreConcept": "Kebiasaan menghindar, memendam masalah sendiri, atau bersikap galak saat dikritik sering kali berakar dari trauma masa lalu di mana keterbukaan berujung pada penolakan atau ejekan (Expressive Suppression vs Cognitive Reappraisal).",
+      "clinicalApplication": "Di dalam simulasi tadi, metafora 'Pintu Kecil Berlubang Intip' membantu klien menghindar merasa punya kendali penuh atas batasan pribadinya tanpa harus mengisolasi diri selamanya."
+    },
+    {
+      "id": "act_hayes",
+      "name": "Acceptance and Commitment Therapy (ACT) & Fleksibilitas Psikologis",
+      "theorist": "Steven C. Hayes, Ph.D. et al. (2006)",
+      "primarySource": "Hayes, S. C., Luoma, J. B., Bond, F. W., Masuda, A., & Lillis, J. (2006). Acceptance and commitment therapy: Model, processes and outcomes. Behaviour Research and Therapy, 44(1), 1-25.",
+      "doiUrl": "https://doi.org/10.1016/j.brat.2005.06.006",
+      "scholarUrl": "https://pubmed.ncbi.nlm.nih.gov/16300724/",
+      "coreConcept": "Bukan berjuang melenyapkan pikiran cemas atau menolak rasa takut, melainkan belajar menerima kehadiran emosi tersebut (Defusion & Acceptance) sambil tetap melangkah melakukan tindakan yang selaras dengan nilai hidup pribadi (Committed Action).",
+      "clinicalApplication": "Membantu klien perfeksionis dan overthinker melepaskan fusi pikiran ('Aku bukan pikiran cemas ini, aku adalah pengamat dari pikiran ini') sehingga mereka bisa tetap berkarya tanpa dihantui rasa takut salah."
+    },
+    {
+      "id": "schema_therapy_young",
+      "name": "Schema Therapy & Skema Maladaptif Awal (Early Maladaptive Schemas)",
+      "theorist": "Jeffrey E. Young, Ph.D. (2003)",
+      "primarySource": "Young, J. E., Klosko, J. S., & Weishaar, M. E. (2003). Schema therapy: A practitioner's guide. Guilford Press.",
+      "doiUrl": "https://doi.org/10.1002/jclp.20090",
+      "scholarUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330652/",
+      "coreConcept": "Skema Unrelenting Standards (Tuntutan Sempurna Tanpa Henti) dan Mistrust/Abuse (Ketidakpercayaan pada Orang Lain) terbentuk di masa kecil saat penerimaan bersyarat. Klien mengembangkan mode koping Protektor Menghindar atau Menyerang Balik.",
+      "clinicalApplication": "Mengidentifikasi kapan klien pertama kali memasang 'duri' atau 'perisai baja' membantunya berdialog dengan batin terdalamnya (Vulnerable Child) dengan penuh kelembutan (Limited Reparenting)."
+    },
+    {
+      "id": "self_compassion_neff",
+      "name": "Mindful Self-Compassion vs. Self-Criticism Kronis",
+      "theorist": "Kristin D. Neff, Ph.D. (2003, 2011)",
+      "primarySource": "Neff, K. D. (2003). Self-Compassion: An Alternative Conceptualization of a Healthy Attitude Toward Oneself. Self and Identity, 2(2), 85-101.",
+      "doiUrl": "https://doi.org/10.1080/15298860309032",
+      "scholarUrl": "https://self-compassion.org/the-research/",
+      "coreConcept": "Mengganti kritik diri internal yang kejam dengan tiga komponen welas asih diri: Self-Kindness (kebaikan pada diri sendiri), Common Humanity (menyadari bahwa berbuat salah adalah bagian dari pengalaman universal manusia), dan Mindfulness.",
+      "clinicalApplication": "Memberikan izin resmi bagi klien untuk menetapkan batas 'Cukup Bagus di 85%' dan memperlakukan diri sendiri seperti sahabat baik yang sedang kesulitan."
+    },
+    {
+      "id": "hots_taxonomy",
+      "name": "Taksonomi Bloom HOTS dalam Pengambilan Keputusan Klinis",
+      "theorist": "Anderson, L. W., & Krathwohl, D. R. (Eds.). (2001)",
+      "primarySource": "Anderson, L. W., & Krathwohl, D. R. (2001). A taxonomy for learning, teaching, and assessing: A revision of Bloom's taxonomy of educational objectives. Longman.",
+      "doiUrl": "https://doi.org/10.1207/s15430421tip4104_2",
+      "scholarUrl": "https://www.semanticscholar.org/paper/A-Taxonomy-for-Learning%2C-Teaching%2C-and-Assessing%3A-A-Anderson-Krathwohl/0388d75225d31548e67f0fae1a0b3b41d083161c",
+      "coreConcept": "Tiga tingkatan berpikir tingkat tinggi: C4 Analyzing (mengurai pola & akar pemicu), C5 Evaluating (menguji efektivitas koping & membandingkan fakta), dan C6 Creating (merumuskan rencana aksi, kebiasaan, dan ritual adaptif baru).",
+      "clinicalApplication": "Kombinasi berimbang antara C4, C5, dan C6 memastikan klien tidak hanya merasa lega sesaat, melainkan memperoleh pemahaman diri mendalam dan bekal kebiasaan baru saat kembali ke sekolah/kampus."
+    }
+  ]
+}
