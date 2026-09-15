@@ -93,10 +93,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#120E0C] select-none font-sans text-[#F7F7F7]">
-      {/* Background Lofi Audio Player */}
+      {/* Background Audio Player */}
       <audio
         ref={audioRef}
-        src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
+        src="/assets/backsound/guide2.wav"
         loop
         preload="auto"
       />
