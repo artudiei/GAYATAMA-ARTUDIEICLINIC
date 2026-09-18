@@ -26,7 +26,8 @@ export const DialogueOverlay: React.FC = () => {
     lastDecisionFeedback,
     setGameMode,
     handleDialogueChoice,
-    advanceToNextPhase
+    advanceToNextPhase,
+    exitDialogueToExploration
   } = useGameStore();
 
   const [showFormulationModal, setShowFormulationModal] = useState(false);
@@ -105,30 +106,31 @@ export const DialogueOverlay: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 40, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 340, damping: 32 }}
-          className="pointer-events-auto w-full px-2 sm:px-4 pb-2 sm:pb-3 md:px-8 md:pb-5 flex flex-col gap-2 md:gap-3 max-w-7xl mx-auto max-h-[65vh] md:max-h-[78vh]"
+          className="pointer-events-auto w-full px-2 sm:px-4 pb-safe pb-2 sm:pb-3 md:px-8 md:pb-5 flex flex-col gap-1.5 sm:gap-2 md:gap-3 max-w-7xl mx-auto overflow-y-auto"
+          style={{ maxHeight: 'min(85dvh, calc(100dvh - 60px))' }}
         >
 
-          {/* ─── CLIENT BUBBLE (compact di mobile, squarish & naik di desktop) ─── */}
+          {/* ─── CLIENT BUBBLE (compact & fluid di mobile, squarish di desktop) ─── */}
           <motion.div
             key={`client-bubble-${currentClient.currentPhaseIndex}`}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.05, type: 'spring', stiffness: 380, damping: 30 }}
-            className="self-start max-w-[85%] sm:max-w-[60%] md:w-[380px] lg:w-[420px] md:max-w-[420px] md:-translate-y-3 lg:-translate-y-5 md:mb-1 relative transition-transform duration-200"
+            className="self-start w-full max-w-[96%] sm:max-w-[65%] md:w-[380px] lg:w-[420px] md:max-w-[420px] md:-translate-y-3 lg:-translate-y-5 md:mb-1 relative transition-transform duration-200"
           >
-            <div className="bg-[#18120F]/95 border-2 border-[#854836] px-3 py-2 md:p-4 rounded-xl rounded-bl-sm shadow-xl backdrop-blur-xl text-[#F7F7F7] md:min-h-[170px] lg:min-h-[190px] flex flex-col justify-between">
+            <div className="bg-[#18120F]/95 border-2 border-[#854836] px-2.5 py-2 sm:px-3 sm:py-2.5 md:p-4 rounded-xl rounded-bl-sm shadow-xl backdrop-blur-xl text-[#F7F7F7] md:min-h-[170px] lg:min-h-[190px] flex flex-col justify-between">
               {/* Client header with Avatar & Persona info */}
-              <div className="flex items-center justify-between gap-2 mb-1.5 md:mb-2.5">
-                <div className="flex items-center gap-2 min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-1 sm:mb-1.5 md:mb-2.5">
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                   <ClientPixelAvatar
                     client={currentClient}
                     size="sm"
                     className="shrink-0"
                   />
                   <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                       <span className="text-[11px] md:text-xs font-extrabold text-[#F7F7F7] truncate">{currentClient.name}</span>
-                      <span className="text-[9px] px-1 py-0.2 rounded font-bold bg-[#FFB22C]/20 text-[#FFD382] border border-[#FFB22C]/40">
+                      <span className="text-[8.5px] sm:text-[9px] px-1 py-0.2 rounded font-bold bg-[#FFB22C]/20 text-[#FFD382] border border-[#FFB22C]/40 shrink-0">
                         {currentClient.gender === 'female' ? '♀ Puan' : '♂ Tuan'}
                       </span>
                     </div>
@@ -142,7 +144,7 @@ export const DialogueOverlay: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setShowDetails(d => !d)}
-                  className="text-[9px] md:text-[10px] text-[#FFD382] flex items-center gap-0.5 bg-[#241B17] px-1.5 py-0.5 md:px-2 md:py-1 rounded border border-[#854836]/60 transition-colors shrink-0 hover:text-[#FFB22C]"
+                  className="text-[8.5px] sm:text-[10px] text-[#FFD382] flex items-center gap-0.5 bg-[#241B17] px-1.5 py-0.5 md:px-2 md:py-1 rounded border border-[#854836]/60 transition-colors shrink-0 hover:text-[#FFB22C]"
                 >
                   {showDetails ? 'Tutup' : 'Petunjuk'}
                   {showDetails ? <ChevronUp className="w-2.5 h-2.5 md:w-3 md:h-3" /> : <ChevronDown className="w-2.5 h-2.5 md:w-3 md:h-3" />}
@@ -151,7 +153,7 @@ export const DialogueOverlay: React.FC = () => {
 
               {/* Speech text */}
               <div className="pl-2 md:pl-3 border-l-2 border-[#FFB22C] my-auto">
-                <p className="text-[11px] md:text-[13px] text-[#F7F7F7] leading-snug md:leading-relaxed font-medium">
+                <p className="text-[10.5px] sm:text-[11.5px] md:text-[13px] text-[#F7F7F7] leading-snug md:leading-relaxed font-medium overflow-y-auto" style={{ maxHeight: 'min(14vh, 120px)' }}>
                   "{currentPhase?.clientSpeech}"
                 </p>
               </div>
@@ -164,7 +166,7 @@ export const DialogueOverlay: React.FC = () => {
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.15 }}
-                    className="overflow-hidden mt-1.5 md:mt-2.5 pt-1.5 md:pt-2 border-t border-[#3D2E27] flex flex-col gap-1 md:gap-1.5 text-[10px] md:text-[11px]"
+                    className="overflow-hidden mt-1.5 md:mt-2.5 pt-1.5 md:pt-2 border-t border-[#3D2E27] flex flex-col gap-1 md:gap-1.5 text-[9.5px] sm:text-[10px] md:text-[11px]"
                   >
                     <div className="flex items-start gap-1 p-1.5 md:p-2 rounded bg-[#241B17] border border-[#854836]/50 leading-tight">
                       <span className="shrink-0">👁️</span>
@@ -192,14 +194,14 @@ export const DialogueOverlay: React.FC = () => {
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                className="self-end flex flex-col items-end gap-1.5 max-w-[85%] sm:max-w-[60%] md:w-[380px] lg:w-[420px] md:max-w-[420px] md:-translate-y-3 lg:-translate-y-5 md:mb-1 transition-transform duration-200"
+                className="self-end flex flex-col items-end gap-1.5 w-full max-w-[96%] sm:max-w-[65%] md:w-[380px] lg:w-[420px] md:max-w-[420px] md:-translate-y-3 lg:-translate-y-5 md:mb-1 transition-transform duration-200"
               >
                 <div className="flex items-center gap-1 text-[9px] md:text-[10px] text-[#FFD382]/70 font-semibold">
                   <UserCheck className="w-2.5 h-2.5 md:w-3 md:h-3" />
                   <span>Anda (Psikolog)</span>
                 </div>
-                <div className="w-full relative bg-[#FFB22C]/15 border-2 border-[#FFB22C]/60 px-3 py-2 md:p-4 rounded-xl rounded-tr-sm shadow-xl md:min-h-[120px] lg:min-h-[140px] flex flex-col justify-center">
-                  <p className="text-[11px] md:text-[13px] text-[#FFD382] leading-snug md:leading-relaxed font-medium italic">
+                <div className="w-full relative bg-[#FFB22C]/15 border-2 border-[#FFB22C]/60 px-2.5 py-2 sm:px-3 sm:py-2.5 md:p-4 rounded-xl rounded-tr-sm shadow-xl md:min-h-[120px] lg:min-h-[140px] flex flex-col justify-center">
+                  <p className="text-[10.5px] sm:text-[11.5px] md:text-[13px] text-[#FFD382] leading-snug md:leading-relaxed font-medium italic overflow-y-auto" style={{ maxHeight: 'min(12vh, 100px)' }}>
                     "{pendingChoice.text}"
                   </p>
                   <div className="absolute -top-2 right-4 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[7px] border-b-[#FFB22C]/60" />
@@ -225,14 +227,14 @@ export const DialogueOverlay: React.FC = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="bg-[#18120F]/98 border-2 border-[#FFB22C] p-2.5 sm:p-3 rounded-xl shadow-xl backdrop-blur-xl flex flex-col gap-2 overflow-y-auto"
-                style={{ maxHeight: '35vh' }}
+                className="bg-[#18120F]/98 border-2 border-[#FFB22C] p-2.5 sm:p-3 rounded-xl shadow-xl backdrop-blur-xl flex flex-col gap-1.5 sm:gap-2 overflow-y-auto"
+                style={{ maxHeight: '42vh' }}
               >
-                <div className="flex items-center justify-between border-b border-[#3D2E27] pb-1.5 text-[11px]">
+                <div className="flex items-center justify-between border-b border-[#3D2E27] pb-1 sm:pb-1.5 text-[10px] sm:text-[11px]">
                   <span className="font-bold text-[#FFB22C] flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-[#FFB22C] animate-pulse" /> Reaksi Klien:
                   </span>
-                  <div className="flex items-center gap-2 font-mono font-bold text-[10px]">
+                  <div className="flex items-center gap-1.5 sm:gap-2 font-mono font-bold text-[9.5px] sm:text-[10px]">
                     <span className={lastDecisionFeedback.tensionDelta <= 0 ? 'text-[#10B981]' : 'text-[#EF4444]'}>
                       {lastDecisionFeedback.tensionDelta > 0 ? '+' : ''}{lastDecisionFeedback.tensionDelta}% Beban
                     </span>
@@ -251,7 +253,7 @@ export const DialogueOverlay: React.FC = () => {
                   {lastDecisionFeedback.feedback}
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-1.5">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-1.5 pt-0.5">
                   {lastDecisionFeedback.journalRef && (
                     <div className="flex items-center gap-1 p-1.5 bg-[#120E0C] border border-[#854836]/60 rounded-md flex-1 min-w-0">
                       <BookOpen className="w-3 h-3 text-[#FFB22C] shrink-0" />
@@ -264,6 +266,7 @@ export const DialogueOverlay: React.FC = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-1.5 py-0.5 rounded bg-[#854836] hover:bg-[#9F5742] text-[#F7F7F7] border border-[#FFB22C]/60 text-[9px] font-bold shrink-0 transition-all"
+                        title="Buka referensi jurnal"
                       >
                         ↗
                       </a>
@@ -271,7 +274,7 @@ export const DialogueOverlay: React.FC = () => {
                   )}
                   <button
                     onClick={advanceToNextPhase}
-                    className="px-4 py-2 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-extrabold text-[11px] flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95 shrink-0"
+                    className="px-4 py-2 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-extrabold text-[11px] sm:text-xs flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95 shrink-0"
                   >
                     <span>Tahap Berikutnya</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -299,11 +302,11 @@ export const DialogueOverlay: React.FC = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="bg-[#18120F]/95 border-2 border-[#854836] p-2 rounded-xl shadow-lg backdrop-blur-xl flex flex-col gap-1.5"
+                className="bg-[#18120F]/95 border-2 border-[#854836] p-2 sm:p-2.5 rounded-xl shadow-lg backdrop-blur-xl flex flex-col gap-1.5"
               >
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-[#3D2E27] pb-1">
-                  <span className="text-[10px] font-bold text-[#FFB22C] flex items-center gap-1">
+                  <span className="text-[10px] sm:text-[11px] font-bold text-[#FFB22C] flex items-center gap-1">
                     <MessageSquare className="w-3 h-3" />
                     Respon Komunikasi:
                   </span>
@@ -312,8 +315,8 @@ export const DialogueOverlay: React.FC = () => {
                   </span>
                 </div>
 
-                {/* 3 Cards — horizontal row di mobile (1 baris scroll), 3 kolom di md+ */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                {/* 3 Cards — scrollable if screen is small */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 overflow-y-auto pr-0.5" style={{ maxHeight: 'min(32vh, 280px)' }}>
                   {currentPhase?.options.map((option: DialogueOption, index: number) => {
                     const style = getApproachStyle(index);
                     return (
@@ -321,9 +324,9 @@ export const DialogueOverlay: React.FC = () => {
                         key={option.id}
                         onClick={() => handleChoiceWithPreview(option)}
                         disabled={!!pendingChoice}
-                        className={`p-2 text-left rounded-lg border transition-all duration-150 flex flex-col gap-1 relative group bg-[#1C1613] border-[#854836]/60 ${style.borderHover} hover:bg-[#261E1A] hover:-translate-y-0.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed`}
+                        className={`p-2 sm:p-2.5 text-left rounded-lg border transition-all duration-150 flex flex-col gap-1 relative group bg-[#1C1613] border-[#854836]/60 ${style.borderHover} hover:bg-[#261E1A] hover:-translate-y-0.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed`}
                       >
-                        <div className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${style.badgeBorder} ${style.bgTag} ${style.accent} self-start inline-flex items-center gap-1`}>
+                        <div className={`text-[8.5px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded border ${style.badgeBorder} ${style.bgTag} ${style.accent} self-start inline-flex items-center gap-1`}>
                           {option.hotsTitle || `${style.icon} ${style.label}`}
                         </div>
                         <p className="text-[10px] sm:text-[11px] text-[#F7F7F7]/95 leading-snug flex-1">
@@ -388,7 +391,7 @@ export const DialogueOverlay: React.FC = () => {
                   Lanjutkan Sesi Konseling
                 </button>
                 <button
-                  onClick={() => { setShowExitConfirm(false); setGameMode('EXPLORATION'); }}
+                  onClick={() => { setShowExitConfirm(false); exitDialogueToExploration(); }}
                   className="w-full py-2 rounded-xl bg-transparent border border-[#854836] hover:bg-[#9A342D]/30 text-[#F7F7F7]/60 hover:text-[#F7F7F7] font-semibold text-[11px] transition-all active:scale-95"
                 >
                   Keluar & Eksplorasi Ruangan

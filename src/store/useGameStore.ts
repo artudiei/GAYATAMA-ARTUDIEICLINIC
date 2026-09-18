@@ -120,6 +120,7 @@ interface GameState {
   advanceToNextPhase: () => void;
   concludeSession: () => void;
   resetGameSession: () => void;
+  exitDialogueToExploration: () => void;
 }
 
 // Utility to shuffle array elements randomly
@@ -938,6 +939,20 @@ export const useGameStore = create<GameState>((set, get) => ({
       evaluationResult: null,
       entranceProgress: 0,
       walkToClientTarget: null
+    });
+  },
+
+  // Exit dialogue and return to free exploration — resets player position
+  // away from the client sofa so the character is not stuck at the chair.
+  exitDialogueToExploration: () => {
+    set({
+      gameMode: 'EXPLORATION',
+      // Move player to center-bottom of the rug area — open floor, not sofa
+      playerPos: { x: 5, y: 7 },
+      playerDir: 'down',
+      isMoving: false,
+      walkToClientTarget: null,
+      lastDecisionFeedback: null
     });
   }
 }));

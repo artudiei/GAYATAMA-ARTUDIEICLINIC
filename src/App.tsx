@@ -145,54 +145,55 @@ export const App: React.FC = () => {
 
       {/* --- TOP HUD BAR --- */}
       <header
-        className="fixed top-0 left-0 right-0 z-40 h-14 sm:h-16 bg-[#F7F7F7] border-b-4 border-[#854836] shadow-md overflow-hidden"
-        style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: '6px', padding: '0 10px' }}
+        className="fixed top-0 left-0 right-0 z-40 h-14 sm:h-16 bg-[#F7F7F7] border-b-4 border-[#854836] shadow-md px-2 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-3 select-none"
       >
         {/* LEFT: Clinic Title & Rank */}
-        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 shrink">
           <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#FFB22C] border-2 border-[#854836] rounded-lg flex items-center justify-center shadow-sm shrink-0">
             <Sparkles className="w-4 h-4 text-[#000000] animate-pulse" />
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex flex-col justify-center">
             <h1 className="text-[11px] sm:text-sm font-extrabold tracking-wider text-[#120E0C] whitespace-nowrap leading-tight">
               ARTUDIEI CLINIC
             </h1>
             {/* Rank badge with 3-second highlight styling */}
             <div
-              className={`flex items-center gap-1 text-[9px] sm:text-[10px] font-mono whitespace-nowrap leading-tight transition-all duration-300 rounded px-1.5 py-0.5 ${
+              className={`flex items-center gap-1 text-[8px] xs:text-[8.5px] sm:text-[10px] font-mono whitespace-nowrap leading-tight transition-all duration-300 rounded px-1 xs:px-1.5 py-0.5 ${
                 isRankHighlighted
                   ? 'bg-[#FFB22C] text-[#120E0C] font-extrabold shadow-md ring-2 ring-[#FFD382] animate-pulse scale-105 border border-[#854836]'
                   : 'text-[#854836]'
               }`}
             >
               <Award className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ${isRankHighlighted ? 'text-[#120E0C] animate-bounce' : ''}`} />
-              <span className="font-bold truncate max-w-[80px] sm:max-w-none">{counselorRank}</span>
+              <span className="font-bold truncate max-w-[75px] xs:max-w-[110px] sm:max-w-[160px] md:max-w-none" title={counselorRank}>
+                {counselorRank}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* CENTER: Client pill — hidden on xs, visible from sm+ */}
-        <div className="flex items-center justify-center min-w-0 overflow-hidden px-1">
+        {/* CENTER: Client pill — hidden on mobile, visible from sm+ */}
+        <div className="hidden sm:flex items-center justify-center min-w-0 overflow-hidden px-1">
           {currentClient && (
-            <div className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-white border-2 border-[#854836] rounded-xl shadow-sm min-w-0 max-w-full overflow-hidden">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white border-2 border-[#854836] rounded-xl shadow-sm min-w-0 max-w-full overflow-hidden">
               {/* Name */}
-              <span className="text-[10px] sm:text-xs font-bold text-[#120E0C] whitespace-nowrap shrink-0">
+              <span className="text-[11px] sm:text-xs font-bold text-[#120E0C] whitespace-nowrap shrink-0">
                 {currentClient.name}
               </span>
-              {/* Archetype badge — truncates at container level */}
+              {/* Archetype badge */}
               <span
                 className="px-1.5 py-0.5 text-[9px] font-bold bg-[#FFB22C] text-[#120E0C] border border-[#854836] rounded-md truncate shrink cursor-default"
                 title={currentClient.archetypeName}
               >
                 {currentClient.archetypeName}
               </span>
-              {/* Divider + Stats — only md+ */}
+              {/* Stats on md+ */}
               <div className="hidden md:flex items-center gap-1.5 shrink-0">
                 <div className="h-3.5 w-px bg-[#854836]/30" />
-                <span className="text-[#EF4444] flex items-center gap-0.5 text-[9px] font-bold font-mono" title="Beban">
+                <span className="text-[#EF4444] flex items-center gap-0.5 text-[9px] font-bold font-mono" title="Beban / Ketegangan">
                   <Activity className="w-2.5 h-2.5" /> {currentClient.currentTension}%
                 </span>
-                <span className="text-[#D97706] flex items-center gap-0.5 text-[9px] font-bold font-mono" title="Percaya">
+                <span className="text-[#D97706] flex items-center gap-0.5 text-[9px] font-bold font-mono" title="Kepercayaan / Aliansi">
                   <Heart className="w-2.5 h-2.5" /> {currentClient.currentRapport}%
                 </span>
               </div>
@@ -200,8 +201,8 @@ export const App: React.FC = () => {
           )}
         </div>
 
-        {/* RIGHT: Action Buttons */}
-        <div className="flex items-center gap-1 shrink-0">
+        {/* RIGHT: Action Buttons Cluster */}
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {/* Counselor Smartphone Button */}
           <button
             onClick={() => setPhoneOpen(true)}
@@ -230,6 +231,7 @@ export const App: React.FC = () => {
             </span>
           </button>
 
+          {/* Lo-Fi Music Radio Button */}
           <button
             onClick={toggleRadio}
             className={`p-1.5 sm:px-2 sm:py-1.5 border-2 border-[#854836] rounded-lg transition-all flex items-center gap-1 text-[11px] font-bold shadow-sm active:scale-95 ${
@@ -243,6 +245,7 @@ export const App: React.FC = () => {
             <span className="hidden 2xl:inline">{isRadioPlaying ? 'Musik: ON' : 'Musik: OFF'}</span>
           </button>
 
+          {/* Theory Reference Button */}
           <button
             onClick={() => setGameMode('REFERENCE')}
             className="p-1.5 sm:px-2 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
@@ -252,6 +255,7 @@ export const App: React.FC = () => {
             <span className="hidden lg:inline">Teori</span>
           </button>
 
+          {/* New Case Button */}
           <button
             onClick={generateNewClientCase}
             className="p-1.5 sm:px-2 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
@@ -261,6 +265,7 @@ export const App: React.FC = () => {
             <span className="hidden lg:inline">Kasus Baru</span>
           </button>
 
+          {/* Help Button */}
           <button
             onClick={() => setShowHelpModal(true)}
             className="p-1.5 sm:p-2 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all text-[#854836] shadow-sm active:scale-95"
@@ -273,7 +278,7 @@ export const App: React.FC = () => {
 
       {/* --- PSYCHOLOGIST POV BRIEFING BANNER (only during EXPLORATION or ENTERING) --- */}
       {(gameMode === 'EXPLORATION' || gameMode === 'ENTERING') && showPovBanner && (
-        <div className="fixed top-16 left-3 sm:left-6 z-20 max-w-sm sm:max-w-md bg-[#18120F]/95 border-2 border-[#FFB22C]/80 rounded-xl p-3 shadow-xl backdrop-blur-md text-[#F7F7F7]">
+        <div className="fixed top-16 left-3 right-3 sm:right-auto sm:left-6 z-20 w-auto sm:max-w-md bg-[#18120F]/95 border-2 border-[#FFB22C]/80 rounded-xl p-3 shadow-xl backdrop-blur-md text-[#F7F7F7]">
           <div className="flex items-start justify-between gap-2 border-b border-[#854836]/60 pb-1.5 mb-2">
             <div className="flex items-center gap-1.5 text-xs font-bold text-[#FFC45E]">
               <UserCheck className="w-3.5 h-3.5 text-[#FFB22C]" />
@@ -315,7 +320,7 @@ export const App: React.FC = () => {
       {/* --- RETURN TO SESSION FLOATING NOTIFICATION --- */}
       {gameMode === 'EXPLORATION' && currentClient && !evaluationResult && hasEnteredDialogue && showReturnNotif && !returnNotifDismissed && (
         <div
-          className="fixed bottom-20 sm:bottom-6 right-3 sm:right-5 z-30 animate-in slide-in-from-right-4 duration-500"
+          className="fixed bottom-24 sm:bottom-6 right-3 sm:right-5 z-30 animate-in slide-in-from-right-4 duration-500 max-w-[210px] xs:max-w-[240px] sm:max-w-xs"
           style={{ animation: 'slideInRight 0.45s cubic-bezier(.34,1.56,.64,1) both' }}
         >
           <style>{`
@@ -329,18 +334,18 @@ export const App: React.FC = () => {
             }
           `}</style>
           <div
-            className="flex items-center gap-3 px-3.5 py-3 bg-[#18120F]/98 border-2 border-[#FFB22C] rounded-2xl shadow-2xl backdrop-blur-xl max-w-[220px] sm:max-w-xs"
+            className="flex items-center gap-2.5 px-3 py-2.5 bg-[#18120F]/98 border-2 border-[#FFB22C] rounded-2xl shadow-2xl backdrop-blur-xl"
             style={{ animation: 'pulseGlow 2.2s ease-in-out infinite' }}
           >
             {/* Avatar / icon */}
-            <div className="shrink-0 w-9 h-9 rounded-full bg-[#FFB22C]/20 border-2 border-[#FFB22C]/60 flex items-center justify-center">
-              <MessageSquare className="w-4 h-4 text-[#FFB22C]" />
+            <div className="shrink-0 w-8 h-8 rounded-full bg-[#FFB22C]/20 border-2 border-[#FFB22C]/60 flex items-center justify-center">
+              <MessageSquare className="w-3.5 h-3.5 text-[#FFB22C]" />
             </div>
 
             {/* Text */}
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-[#FFD382]/70 font-semibold leading-tight">Sesi belum selesai</p>
-              <p className="text-[12px] font-extrabold text-[#F7F7F7] leading-snug truncate">
+              <p className="text-[9px] text-[#FFD382]/70 font-semibold leading-tight">Sesi belum selesai</p>
+              <p className="text-[11px] font-extrabold text-[#F7F7F7] leading-snug truncate">
                 {currentClient.name} menunggu...
               </p>
             </div>
@@ -348,7 +353,7 @@ export const App: React.FC = () => {
             {/* Dismiss */}
             <button
               onClick={() => setReturnNotifDismissed(true)}
-              className="shrink-0 text-[#F7F7F7]/30 hover:text-[#F7F7F7]/80 transition-colors text-[10px] px-1 py-0.5 rounded"
+              className="shrink-0 text-[#F7F7F7]/40 hover:text-[#F7F7F7] transition-colors text-[11px] p-1 rounded"
               title="Tutup notifikasi"
             >
               ✕
@@ -358,7 +363,7 @@ export const App: React.FC = () => {
           {/* Tombol kembali ke sesi */}
           <button
             onClick={() => startWalkToClient()}
-            className="mt-1.5 w-full flex items-center justify-center gap-1.5 px-3.5 py-2 bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-extrabold text-[11px] rounded-xl shadow-lg transition-all active:scale-95"
+            className="mt-1.5 w-full flex items-center justify-center gap-1.5 px-3 py-2 bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-extrabold text-[11px] rounded-xl shadow-lg transition-all active:scale-95"
           >
             <span>Kembali ke Sesi</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -368,27 +373,27 @@ export const App: React.FC = () => {
 
       {/* --- COMPLETED SESSION QUICK BAR DURING ROOM EXPLORATION --- */}
       {gameMode === 'EXPLORATION' && evaluationResult && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-wrap items-center justify-center gap-3 px-4 py-2.5 bg-[#18120F]/95 border-2 border-[#FFB22C] rounded-xl shadow-2xl backdrop-blur-md text-xs">
-          <div className="flex items-center gap-2">
-            <Award className="w-4 h-4 text-[#FFB22C] animate-bounce" />
-            <span className="text-[#F7F7F7]">
-              Sesi konseling <strong>{currentClient?.name}</strong> telah selesai (Predikat {evaluationResult.grade} - {evaluationResult.score}/100)
+        <div className="fixed bottom-3 sm:bottom-4 left-3 right-3 sm:left-1/2 sm:-translate-x-1/2 sm:w-auto max-w-xl z-30 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 px-3.5 py-2.5 bg-[#18120F]/95 border-2 border-[#FFB22C] rounded-xl shadow-2xl backdrop-blur-md text-xs mx-auto">
+          <div className="flex items-center gap-2 text-center sm:text-left min-w-0">
+            <Award className="w-4 h-4 text-[#FFB22C] shrink-0 animate-bounce" />
+            <span className="text-[#F7F7F7] text-[11px] sm:text-xs truncate">
+              Sesi <strong>{currentClient?.name}</strong> selesai (Predikat {evaluationResult.grade} - {evaluationResult.score}/100)
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-center">
             <button
               onClick={() => setGameMode('ENDING')}
-              className="px-3.5 py-1.5 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-bold transition-all active:scale-95 shadow-md flex items-center gap-1.5"
+              className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-bold text-[11px] sm:text-xs transition-all active:scale-95 shadow-md flex items-center justify-center gap-1.5"
             >
               <Award className="w-3.5 h-3.5" />
-              <span>Buka Laporan Hasil Sesi</span>
+              <span>Buka Laporan</span>
             </button>
             <button
               onClick={generateNewClientCase}
-              className="px-3 py-1.5 rounded-lg bg-[#3D261B] hover:bg-[#523324] text-[#FFD382] border border-[#854836] font-bold transition-all active:scale-95 flex items-center gap-1.5"
+              className="flex-1 sm:flex-initial px-2.5 py-1.5 rounded-lg bg-[#3D261B] hover:bg-[#523324] text-[#FFD382] border border-[#854836] font-bold text-[11px] sm:text-xs transition-all active:scale-95 flex items-center justify-center gap-1"
             >
               <RotateCcw className="w-3.5 h-3.5 text-[#FFB22C]" />
-              <span>Terima Klien Baru</span>
+              <span>Kasus Baru</span>
             </button>
           </div>
         </div>

@@ -54,8 +54,8 @@ export class MapGrid {
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // Row 9: Bottom wall
   ];
 
-  // Solid collision tiles
-  private static readonly SOLID_TILES = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
+  // Solid collision tiles (5: Therapist Armchair is walkable/sittable so player can move off chair freely)
+  private static readonly SOLID_TILES = new Set([1, 2, 3, 4, 6, 7, 8]);
 
   /**
    * Client NPC position in world tile coordinates

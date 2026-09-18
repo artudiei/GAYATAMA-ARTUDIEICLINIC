@@ -5,6 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      'xs': '480px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       colors: {
         theme: {
@@ -37,7 +45,13 @@ export default {
         'pixel': '4px 4px 0 0 rgba(0,0,0,0.7)',
         'pixel-lg': '6px 6px 0 0 rgba(0,0,0,0.8)',
         'pixel-inset': 'inset 2px 2px 0 0 rgba(255,255,255,0.15), inset -2px -2px 0 0 rgba(0,0,0,0.5)'
-      }
+      },
+      height: {
+        'screen-dvh': '100dvh',
+      },
+      maxHeight: {
+        'screen-dvh': '100dvh',
+      },
     },
   },
   plugins: [],
