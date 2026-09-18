@@ -158,7 +158,71 @@ export interface InteractiveObject {
   y: number;
   width: number;
   height: number;
-  type: 'client' | 'bookshelf' | 'desk' | 'tea_station' | 'plant' | 'diploma' | 'radio';
+  type: 'client' | 'bookshelf' | 'desk' | 'tea_station' | 'plant' | 'diploma' | 'radio' | 'shop';
   name: string;
   promptText: string;
 }
+
+// --- PHONE & FOLLOW-UP CHAT TYPES ---
+export interface ChatReplyOption {
+  text: string;
+  counselorReply: string;
+  clientFeedback: string;
+  xpReward: number;
+}
+
+export interface ClientChatMessage {
+  id: string;
+  clientId: string;
+  clientName: string;
+  clientProfession: string;
+  archetypeId: ArchetypeId;
+  archetypeName: string;
+  gender: Gender;
+  hairstyle: Hairstyle;
+  accessoryType: AccessoryType;
+  hairColor: string;
+  shirtColor: string;
+  pantsColor: string;
+  timestamp: string; // e.g. "Hari ini, 14:30"
+  sessionGrade: 'S' | 'A' | 'B' | 'C' | 'D';
+  messageText: string;
+  replyOptions: ChatReplyOption[];
+  chosenReplyIndex?: number;
+  chosenReplyText?: string;
+  clientPostReplyText?: string;
+  isRead: boolean;
+  xpClaimed: boolean;
+}
+
+export interface PhoneNotification {
+  id: string;
+  senderName: string;
+  snippet: string;
+  timestamp: number;
+}
+
+// --- CLINIC DECORATION TYPES ---
+export type DecorationCategory = 'desk' | 'wall' | 'plant' | 'rug' | 'furniture' | 'station';
+
+export interface DecorationItem {
+  id: string;
+  name: string;
+  category: DecorationCategory;
+  costXP: number;
+  iconName: string;
+  previewColor: string;
+  description: string;
+  clinicalBenefit: string;
+  passiveBonusText: string;
+}
+
+export interface EquippedDecorations {
+  desk?: string;       // e.g. 'himalayan_lamp'
+  wall?: string;       // e.g. 'aquarium_wall' | 'zen_mountain_art'
+  plant?: string;      // e.g. 'lavender_pot'
+  rug?: string;        // e.g. 'persian_rug'
+  furniture?: string;  // e.g. 'emerald_sofa'
+  station?: string;    // e.g. 'diffuser_station'
+}
+

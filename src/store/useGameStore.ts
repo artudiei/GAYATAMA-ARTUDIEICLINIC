@@ -11,11 +11,17 @@ import {
   InteractiveObject,
   Gender,
   Hairstyle,
-  AccessoryType
+  AccessoryType,
+  ClientChatMessage,
+  PhoneNotification,
+  EquippedDecorations,
+  DecorationItem
 } from '../types/game';
 import archetypesData from '../data/archetypes.json';
 import endingsData from '../data/endings.json';
 import { SCENARIO_SEEDS, generateContextualPhaseOptions, ScenarioSeed } from '../data/proceduralCases';
+import { CLINIC_DECORATIONS } from '../data/decorations';
+import { generateFollowUpMessage } from '../data/followUpMessages';
 
 interface GameState {
   // Player state
@@ -60,6 +66,22 @@ interface GameState {
   // Radio audio state
   isRadioPlaying: boolean;
 
+  // Phone & Follow-up State
+  phoneMessages: ClientChatMessage[];
+  unreadPhoneCount: number;
+  activeChatId: string | null;
+  isPhoneOpen: boolean;
+  phoneToastNotification: PhoneNotification | null;
+
+  // Clinic Decoration & Shop State
+  unlockedDecorations: string[];
+  equippedDecorations: EquippedDecorations;
+  isShopOpen: boolean;
+
+  // Level Up & Rank Notification State
+  levelUpNotification: { oldRank: string; newRank: string; xp: number } | null;
+  isRankHighlighted: boolean;
+
   // Actions
   setPlayerPos: (pos: Position) => void;
   setPlayerDir: (dir: Direction) => void;
@@ -74,6 +96,23 @@ interface GameState {
   tickWalkToClient: () => void;
   setRadioPlaying: (playing: boolean) => void;
   toggleRadio: () => void;
+
+  // Level Up Actions
+  dismissLevelUpNotification: () => void;
+  clearRankHighlight: () => void;
+
+  // Phone Actions
+  setPhoneOpen: (open: boolean) => void;
+  setActiveChatId: (id: string | null) => void;
+  markChatAsRead: (id: string) => void;
+  sendChatReply: (messageId: string, replyIndex: number) => void;
+  dismissPhoneToast: () => void;
+  triggerFollowUpMessage: (client: ClientProfile, evalResult: EvaluationResult) => void;
+
+  // Decoration Actions
+  setShopOpen: (open: boolean) => void;
+  buyDecoration: (itemId: string) => boolean;
+  toggleEquipDecoration: (itemId: string) => void;
 
   // Procedural Generator & Counseling Actions
   generateNewClientCase: () => void;
@@ -464,8 +503,8 @@ const calculateRank = (xp: number): string => {
 const ENTRANCE_SPAWN_POS: Position = { x: 5, y: 9.5 };
 // Final start position after walking through door
 const ENTRANCE_FINAL_POS: Position = { x: 5, y: 7 };
-// Client sofa-side seat (where psychologist sits)
-const CLIENT_MEETING_POS: Position = { x: 5, y: 5 };
+// Client sofa-side seat (where psychologist sits on psychologist sofa opposite client)
+const CLIENT_MEETING_POS: Position = { x: 6.5, y: 6 };
 
 export const useGameStore = create<GameState>((set, get) => ({
   // Start below the door, will animate in
@@ -485,11 +524,23 @@ export const useGameStore = create<GameState>((set, get) => ({
   currentClient: generateDynamicClient(),
   lastDecisionFeedback: null,
 
-  reputationXP: 0,
-  counselorRank: 'Konselor Magang (Junior Apprentice)',
+  reputationXP: 100, // Starter XP agar konselor bisa langsung bereksperimen di toko dekorasi
+  counselorRank: calculateRank(100), // 'Praktisi Berkembang (Associate Counselor)'
   evaluationResult: null,
   totalClientsHelped: 0,
   isRadioPlaying: false,
+
+  // Phone & Follow-up State
+  phoneMessages: [],
+  unreadPhoneCount: 0,
+  activeChatId: null,
+  isPhoneOpen: false,
+  phoneToastNotification: null,
+
+  // Clinic Decoration & Shop State
+  unlockedDecorations: [],
+  equippedDecorations: {},
+  isShopOpen: false,
 
   setPlayerPos: (pos) => set({ playerPos: pos }),
   setPlayerDir: (dir) => set({ playerDir: dir }),
@@ -500,6 +551,141 @@ export const useGameStore = create<GameState>((set, get) => ({
   setActiveRelaxationModal: (activeRelaxationModal) => set({ activeRelaxationModal }),
   setRadioPlaying: (isRadioPlaying) => set({ isRadioPlaying }),
   toggleRadio: () => set((state) => ({ isRadioPlaying: !state.isRadioPlaying })),
+
+  // Level Up & Rank Notification State
+  levelUpNotification: null,
+  isRankHighlighted: false,
+
+  dismissLevelUpNotification: () => set({ levelUpNotification: null }),
+  clearRankHighlight: () => set({ isRankHighlighted: false }),
+
+  // Phone Actions
+  setPhoneOpen: (isPhoneOpen) => {
+    set({ isPhoneOpen });
+    if (isPhoneOpen) {
+      set({ phoneToastNotification: null });
+    }
+  },
+
+  setActiveChatId: (activeChatId) => {
+    set({ activeChatId });
+    if (activeChatId) {
+      get().markChatAsRead(activeChatId);
+    }
+  },
+
+  markChatAsRead: (id) => {
+    set((state) => {
+      const updatedMessages = state.phoneMessages.map((m) =>
+        m.id === id ? { ...m, isRead: true } : m
+      );
+      const unreadCount = updatedMessages.filter((m) => !m.isRead).length;
+      return {
+        phoneMessages: updatedMessages,
+        unreadPhoneCount: unreadCount
+      };
+    });
+  },
+
+  sendChatReply: (messageId, replyIndex) => {
+    const { phoneMessages, reputationXP, counselorRank } = get();
+    const msg = phoneMessages.find((m) => m.id === messageId);
+    if (!msg || msg.chosenReplyIndex !== undefined) return;
+
+    const chosenOption = msg.replyOptions[replyIndex];
+    if (!chosenOption) return;
+
+    const bonusXP = chosenOption.xpReward || 15;
+    const newXP = reputationXP + bonusXP;
+    const newRank = calculateRank(newXP);
+    const isRankUp = newRank !== counselorRank;
+
+    set((state) => ({
+      phoneMessages: state.phoneMessages.map((m) =>
+        m.id === messageId
+          ? {
+              ...m,
+              chosenReplyIndex: replyIndex,
+              chosenReplyText: chosenOption.counselorReply,
+              clientPostReplyText: chosenOption.clientFeedback,
+              xpClaimed: true
+            }
+          : m
+      ),
+      reputationXP: newXP,
+      counselorRank: newRank,
+      ...(isRankUp
+        ? {
+            levelUpNotification: { oldRank: counselorRank, newRank, xp: newXP },
+            isRankHighlighted: true
+          }
+        : {})
+    }));
+  },
+
+  dismissPhoneToast: () => set({ phoneToastNotification: null }),
+
+  triggerFollowUpMessage: (client, evalResult) => {
+    const newMsg = generateFollowUpMessage(client, evalResult);
+    set((state) => ({
+      phoneMessages: [newMsg, ...state.phoneMessages],
+      unreadPhoneCount: state.unreadPhoneCount + 1,
+      phoneToastNotification: {
+        id: newMsg.id,
+        senderName: newMsg.clientName,
+        snippet: newMsg.messageText.slice(0, 65) + '...',
+        timestamp: Date.now()
+      }
+    }));
+  },
+
+  setShopOpen: (isShopOpen) => set({ isShopOpen }),
+
+  buyDecoration: (itemId) => {
+    const { reputationXP, unlockedDecorations, equippedDecorations } = get();
+    const item = CLINIC_DECORATIONS.find((d) => d.id === itemId);
+    if (!item) return false;
+    if (unlockedDecorations.includes(itemId)) return true;
+    if (reputationXP < item.costXP) return false;
+
+    const newXP = reputationXP - item.costXP;
+    const newRank = calculateRank(newXP);
+    const newUnlocked = [...unlockedDecorations, itemId];
+    
+    // Auto-equip item yang baru dibeli
+    const newEquipped = {
+      ...equippedDecorations,
+      [item.category]: itemId
+    };
+
+    set({
+      reputationXP: newXP,
+      counselorRank: newRank,
+      unlockedDecorations: newUnlocked,
+      equippedDecorations: newEquipped
+    });
+
+    return true;
+  },
+
+  toggleEquipDecoration: (itemId) => {
+    const { unlockedDecorations, equippedDecorations } = get();
+    if (!unlockedDecorations.includes(itemId)) return;
+
+    const item = CLINIC_DECORATIONS.find((d) => d.id === itemId);
+    if (!item) return;
+
+    const currentEquippedInSlot = equippedDecorations[item.category];
+    const newEquipped = { ...equippedDecorations };
+
+    if (currentEquippedInSlot === itemId) {
+      delete newEquipped[item.category];
+    } else {
+      newEquipped[item.category] = itemId;
+    }
+
+    set({ equippedDecorations: newEquipped });
+  },
 
   setEntranceProgress: (p) => set({ entranceProgress: p }),
 
@@ -645,6 +831,8 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     const nextIndex = currentClient.currentPhaseIndex + 1;
     if (nextIndex >= currentClient.phases.length) {
+      // Reset feedback FIRST so DialogueOverlay doesn't get stuck on the last feedback panel
+      set({ lastDecisionFeedback: null });
       concludeSession();
     } else {
       set({
@@ -658,7 +846,8 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   concludeSession: () => {
-    const { currentClient, totalClientsHelped, reputationXP } = get();
+    // Always read fresh state via get() — never use closure-scoped variables for mutable state
+    const { currentClient, totalClientsHelped, reputationXP, counselorRank } = get();
     if (!currentClient) return;
 
     const tensionReduction = currentClient.initialTension - currentClient.currentTension;
@@ -717,13 +906,25 @@ export const useGameStore = create<GameState>((set, get) => ({
       recommendations
     };
 
+    const isRankUp = newRank !== counselorRank; // counselorRank now comes from get() above — always fresh
+
     set({
       gameMode: 'ENDING',
       evaluationResult,
+      lastDecisionFeedback: null, // Ensure feedback panel is cleared when ending
       totalClientsHelped: totalClientsHelped + 1,
       reputationXP: newXP,
-      counselorRank: newRank
+      counselorRank: newRank,
+      ...(isRankUp
+        ? {
+            levelUpNotification: { oldRank: counselorRank, newRank, xp: newXP },
+            isRankHighlighted: true
+          }
+        : {})
     });
+
+    // Otomatis buat pesan follow-up dari klien yang ditolong
+    get().triggerFollowUpMessage(currentClient, evaluationResult);
   },
 
   resetGameSession: () => {

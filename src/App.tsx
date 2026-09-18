@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { GameCanvas } from './components/canvas/GameCanvas';
 import { VirtualJoystick } from './components/controls/VirtualJoystick';
 import { InteractionPrompt } from './components/controls/InteractionPrompt';
@@ -6,7 +7,12 @@ import { DialogueOverlay } from './components/game/DialogueOverlay';
 import { ReferenceBoard } from './components/game/ReferenceBoard';
 import { EndingScreen } from './components/game/EndingScreen';
 import { RelaxationModal } from './components/game/RelaxationModal';
+import { CounselorPhoneModal } from './components/game/CounselorPhoneModal';
+import { DecorationShopModal } from './components/game/DecorationShopModal';
+import { PhoneFloatingToast } from './components/game/PhoneFloatingToast';
+import { LevelUpModal } from './components/game/LevelUpModal';
 import { useGameStore } from './store/useGameStore';
+import { useShallow } from 'zustand/react/shallow';
 import { PixelBadge, PixelButton } from './components/ui/PixelComponents';
 import {
   BookOpen,
@@ -23,7 +29,9 @@ import {
   ChevronDown,
   ChevronUp,
   ArrowRight,
-  Radio
+  Radio,
+  Smartphone,
+  Store
 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -35,11 +43,35 @@ export const App: React.FC = () => {
     reputationXP,
     counselorRank,
     isRadioPlaying,
+    unreadPhoneCount,
+    isRankHighlighted,
     toggleRadio,
     setGameMode,
     generateNewClientCase,
-    startWalkToClient
-  } = useGameStore();
+    startWalkToClient,
+    setPhoneOpen,
+    setShopOpen,
+    clearRankHighlight
+  } = useGameStore(
+    useShallow(state => ({
+      gameMode: state.gameMode,
+      currentClient: state.currentClient,
+      evaluationResult: state.evaluationResult,
+      totalClientsHelped: state.totalClientsHelped,
+      reputationXP: state.reputationXP,
+      counselorRank: state.counselorRank,
+      isRadioPlaying: state.isRadioPlaying,
+      unreadPhoneCount: state.unreadPhoneCount,
+      isRankHighlighted: state.isRankHighlighted,
+      toggleRadio: state.toggleRadio,
+      setGameMode: state.setGameMode,
+      generateNewClientCase: state.generateNewClientCase,
+      startWalkToClient: state.startWalkToClient,
+      setPhoneOpen: state.setPhoneOpen,
+      setShopOpen: state.setShopOpen,
+      clearRankHighlight: state.clearRankHighlight
+    }))
+  );
 
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showPovBanner, setShowPovBanner] = useState(true);
@@ -48,6 +80,16 @@ export const App: React.FC = () => {
   // Hanya true setelah user pernah masuk ke sesi dialog (DIALOGUE mode) minimal sekali
   const [hasEnteredDialogue, setHasEnteredDialogue] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // 3-Detik Rank Highlight Timer saat naik level / rank
+  useEffect(() => {
+    if (isRankHighlighted) {
+      const timer = setTimeout(() => {
+        clearRankHighlight();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isRankHighlighted, clearRankHighlight]);
 
   // Sync background audio playback with isRadioPlaying state
   useEffect(() => {
@@ -115,8 +157,15 @@ export const App: React.FC = () => {
             <h1 className="text-[11px] sm:text-sm font-extrabold tracking-wider text-[#120E0C] whitespace-nowrap leading-tight">
               ARTUDIEI CLINIC
             </h1>
-            <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-[#854836] font-mono whitespace-nowrap leading-tight">
-              <Award className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
+            {/* Rank badge with 3-second highlight styling */}
+            <div
+              className={`flex items-center gap-1 text-[9px] sm:text-[10px] font-mono whitespace-nowrap leading-tight transition-all duration-300 rounded px-1.5 py-0.5 ${
+                isRankHighlighted
+                  ? 'bg-[#FFB22C] text-[#120E0C] font-extrabold shadow-md ring-2 ring-[#FFD382] animate-pulse scale-105 border border-[#854836]'
+                  : 'text-[#854836]'
+              }`}
+            >
+              <Award className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ${isRankHighlighted ? 'text-[#120E0C] animate-bounce' : ''}`} />
               <span className="font-bold truncate max-w-[80px] sm:max-w-none">{counselorRank}</span>
             </div>
           </div>
@@ -151,11 +200,39 @@ export const App: React.FC = () => {
           )}
         </div>
 
-        {/* RIGHT: Action Buttons — icon only on mobile */}
+        {/* RIGHT: Action Buttons */}
         <div className="flex items-center gap-1 shrink-0">
+          {/* Counselor Smartphone Button */}
+          <button
+            onClick={() => setPhoneOpen(true)}
+            className="relative p-1.5 sm:px-2.5 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
+            title="HP Konselor & Pesan Klien"
+          >
+            <Smartphone className="w-3.5 h-3.5 shrink-0 text-[#854836]" />
+            <span className="hidden md:inline">HP Klien</span>
+            {unreadPhoneCount > 0 && (
+              <span className="absolute -top-1.5 -right-1 px-1.5 py-0.2 bg-[#EF4444] text-white text-[9px] font-black rounded-full border border-white animate-bounce shadow-md">
+                {unreadPhoneCount}
+              </span>
+            )}
+          </button>
+
+          {/* Clinic Decoration Shop Button */}
+          <button
+            onClick={() => setShopOpen(true)}
+            className="p-1.5 sm:px-2.5 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
+            title="Toko Renovasi & Dekorasi Klinik (XP)"
+          >
+            <Store className="w-3.5 h-3.5 shrink-0 text-[#854836]" />
+            <span className="hidden md:inline">Toko</span>
+            <span className="hidden xl:inline text-[9px] bg-[#FFB22C] text-[#120E0C] px-1 py-0.2 rounded font-mono font-extrabold">
+              {reputationXP} XP
+            </span>
+          </button>
+
           <button
             onClick={toggleRadio}
-            className={`p-1.5 sm:px-2.5 sm:py-1.5 border-2 border-[#854836] rounded-lg transition-all flex items-center gap-1 text-[11px] font-bold shadow-sm active:scale-95 ${
+            className={`p-1.5 sm:px-2 sm:py-1.5 border-2 border-[#854836] rounded-lg transition-all flex items-center gap-1 text-[11px] font-bold shadow-sm active:scale-95 ${
               isRadioPlaying
                 ? 'bg-[#FFB22C] text-[#120E0C] ring-2 ring-[#FFB22C]/60'
                 : 'bg-white text-[#854836] hover:bg-[#FFB22C]'
@@ -163,12 +240,12 @@ export const App: React.FC = () => {
             title={isRadioPlaying ? 'Matikan Musik' : 'Putar Musik'}
           >
             <Radio className={`w-3.5 h-3.5 shrink-0 ${isRadioPlaying ? 'animate-pulse text-[#120E0C]' : ''}`} />
-            <span className="hidden xl:inline">{isRadioPlaying ? 'Musik: ON' : 'Musik: OFF'}</span>
+            <span className="hidden 2xl:inline">{isRadioPlaying ? 'Musik: ON' : 'Musik: OFF'}</span>
           </button>
 
           <button
             onClick={() => setGameMode('REFERENCE')}
-            className="p-1.5 sm:px-2.5 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
+            className="p-1.5 sm:px-2 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
             title="Buku Referensi Teori Psikologi"
           >
             <BookOpen className="w-3.5 h-3.5 shrink-0" />
@@ -177,7 +254,7 @@ export const App: React.FC = () => {
 
           <button
             onClick={generateNewClientCase}
-            className="p-1.5 sm:px-2.5 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
+            className="p-1.5 sm:px-2 sm:py-1.5 bg-white border-2 border-[#854836] rounded-lg hover:bg-[#FFB22C] transition-all flex items-center gap-1 text-[11px] font-bold text-[#854836] shadow-sm active:scale-95"
             title="Kasus Klien Baru"
           >
             <RotateCcw className="w-3.5 h-3.5 shrink-0" />
@@ -231,6 +308,9 @@ export const App: React.FC = () => {
       <ReferenceBoard />
       <EndingScreen />
       <RelaxationModal />
+      <CounselorPhoneModal />
+      <DecorationShopModal />
+      <PhoneFloatingToast />
 
       {/* --- RETURN TO SESSION FLOATING NOTIFICATION --- */}
       {gameMode === 'EXPLORATION' && currentClient && !evaluationResult && hasEnteredDialogue && showReturnNotif && !returnNotifDismissed && (
@@ -313,6 +393,9 @@ export const App: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* --- LEVEL UP CELEBRATORY NOTIFICATION MODAL --- */}
+      <LevelUpModal />
 
       {/* --- HOW TO PLAY / CONTROLS HELP MODAL --- */}
       {showHelpModal && (

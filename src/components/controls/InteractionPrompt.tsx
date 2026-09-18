@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { MapGrid } from '../canvas/MapGrid';
-import { MessageSquare, BookOpen, Coffee, Sparkles, Award, Radio } from 'lucide-react';
+import { MessageSquare, BookOpen, Coffee, Sparkles, Award, Radio, Store } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const InteractionPrompt: React.FC = () => {
@@ -13,7 +13,8 @@ export const InteractionPrompt: React.FC = () => {
     toggleRadio,
     setGameMode, 
     startWalkToClient,
-    setActiveRelaxationModal 
+    setActiveRelaxationModal,
+    setShopOpen
   } = useGameStore();
 
   const [screenPos, setScreenPos] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2, isBelow: false });
@@ -51,7 +52,7 @@ export const InteractionPrompt: React.FC = () => {
         const floatYOffsetBelow = Math.round(12 * (tileSize / MapGrid.BASE_TILE_SIZE));
         posY = offsetY + (targetY + 1.2) * tileSize + floatYOffsetBelow;
       } else {
-        // Normal objects (e.g. Client): float above object
+        // Normal objects (e.g. Client, Shop Easel): float above object
         isBelow = false;
         const floatYOffset = Math.round(24 * (tileSize / MapGrid.BASE_TILE_SIZE));
         const rawPosY = offsetY + targetY * tileSize - floatYOffset;
@@ -94,6 +95,8 @@ export const InteractionPrompt: React.FC = () => {
       setActiveRelaxationModal('plant');
     } else if (targetType === 'radio' || targetType === 'desk') {
       toggleRadio();
+    } else if (targetType === 'shop') {
+      setShopOpen(true);
     }
   };
 
@@ -108,6 +111,7 @@ export const InteractionPrompt: React.FC = () => {
     if (nearbyObject?.type === 'bookshelf') return <BookOpen className="w-4 h-4 text-[#000000]" />;
     if (nearbyObject?.type === 'tea_station') return <Coffee className="w-4 h-4 text-[#000000]" />;
     if (nearbyObject?.type === 'radio' || nearbyObject?.type === 'desk') return <Radio className="w-4 h-4 text-[#000000]" />;
+    if (nearbyObject?.type === 'shop') return <Store className="w-4 h-4 text-[#000000]" />;
     return <Sparkles className="w-4 h-4 text-[#000000]" />;
   };
 

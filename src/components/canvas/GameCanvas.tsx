@@ -25,6 +25,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
     gameMode,
     currentClient,
     isRadioPlaying,
+    equippedDecorations,
     toggleRadio,
     setPlayerPos,
     setPlayerDir,
@@ -80,6 +81,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
             useGameStore.getState().setActiveRelaxationModal('plant');
           } else if (nearby.type === 'radio' || nearby.type === 'desk') {
             useGameStore.getState().toggleRadio();
+          } else if (nearby.type === 'shop') {
+            useGameStore.getState().setShopOpen(true);
           }
           if (onInteract) onInteract();
         }
@@ -238,7 +241,14 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
       ctx.fillRect(0, 0, width, height);
 
       // Render map grid
-      const { offsetX, offsetY, tileSize } = MapGrid.renderMap(ctx, width, height, time, isRadioPlaying);
+      const { offsetX, offsetY, tileSize } = MapGrid.renderMap(
+        ctx,
+        width,
+        height,
+        time,
+        isRadioPlaying,
+        equippedDecorations
+      );
 
       // --- ENTRANCE DOOR GLOW EFFECT (while entering) ---
       if (gameMode === 'ENTERING') {

@@ -128,3 +128,29 @@
 .animate-pulse-subtle {
   animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Hardware Accelerated GPU Particle Burst for Zero-Lag Modals */
+@keyframes particleBurst {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.2);
+  }
+  20% {
+    opacity: 1;
+    transform: translate3d(calc(var(--px) * 0.4), calc(var(--py) * 0.4), 0) scale(1.2);
+  }
+  75% {
+    opacity: 1;
+    transform: translate3d(var(--px), var(--py), 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--px), var(--py), 0) scale(0.2);
+  }
+}
+
+.animate-particle-burst {
+  animation: particleBurst 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+

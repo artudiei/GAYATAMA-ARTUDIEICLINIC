@@ -1,4 +1,4 @@
-import { Position, InteractiveObject } from '../../types/game';
+import { Position, InteractiveObject, EquippedDecorations } from '../../types/game';
 
 export interface TileMapConfig {
   cols: number;
@@ -115,6 +115,16 @@ export class MapGrid {
       type: 'radio',
       name: 'Radio Vintage Meja',
       promptText: 'Putar Musik'
+    },
+    {
+      id: 'shop_easel',
+      x: 1.5,
+      y: 8,
+      width: 1.5,
+      height: 1.5,
+      type: 'shop',
+      name: 'Papan Desain & Toko Klinik',
+      promptText: 'Buka Toko Dekorasi Klinik'
     }
   ];
 
@@ -210,7 +220,8 @@ export class MapGrid {
     viewWidth: number,
     viewHeight: number,
     time: number,
-    isRadioPlaying: boolean = false
+    isRadioPlaying: boolean = false,
+    equippedDecorations: EquippedDecorations = {}
   ) {
     const tileSize = this.getTileSize(viewWidth, viewHeight);
     const mapWidth = this.COLS * tileSize;
@@ -235,7 +246,7 @@ export class MapGrid {
 
         // Rug under consultation
         if (tile === 9 || tile === 4 || tile === 5 || tile === 6) {
-          this.drawRugTile(ctx, x, y, tileSize, r, c);
+          this.drawRugTile(ctx, x, y, tileSize, r, c, equippedDecorations);
         }
       }
     }
@@ -248,13 +259,13 @@ export class MapGrid {
         const tile = this.GRID[r][c];
 
         if (tile === 1) {
-          this.drawWallTile(ctx, x, y, tileSize, r, c);
+          this.drawWallTile(ctx, x, y, tileSize, r, c, equippedDecorations);
         }
       }
     }
 
-    // 3. Draw Static Objects & Furniture
-    this.drawFurniture(ctx, tileSize, time, isRadioPlaying);
+    // 3. Draw Static Objects & Furniture & Equipped Deco
+    this.drawFurniture(ctx, tileSize, time, isRadioPlaying, equippedDecorations);
 
     ctx.restore();
     return { offsetX, offsetY, tileSize };
@@ -307,9 +318,35 @@ export class MapGrid {
     y: number,
     size: number,
     _r: number,
-    _c: number
+    _c: number,
+    equippedDecorations: EquippedDecorations = {}
   ) {
-    // Russet Terracotta & Gold Woven Rug
+    if (equippedDecorations.rug === 'persian_rug') {
+      // Imperial Emerald & Gold Silk Persian Rug
+      ctx.fillStyle = '#064E3B';
+      ctx.fillRect(x + 1, y + 1, size - 2, size - 2);
+
+      // Gold Outer Trim
+      ctx.strokeStyle = '#FBBF24';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x + 3, y + 3, size - 6, size - 6);
+
+      // Inner Intricate Geometric Motif
+      ctx.fillStyle = '#047857';
+      ctx.fillRect(x + 6, y + 6, size - 12, size - 12);
+      ctx.fillStyle = '#FDE68A';
+      ctx.fillRect(x + size / 2 - 3, y + size / 2 - 3, 6, 6);
+
+      // Corner Emerald Dots
+      ctx.fillStyle = '#34D399';
+      ctx.fillRect(x + 1, y + 1, 2, 2);
+      ctx.fillRect(x + size - 3, y + 1, 2, 2);
+      ctx.fillRect(x + 1, y + size - 3, 2, 2);
+      ctx.fillRect(x + size - 3, y + size - 3, 2, 2);
+      return;
+    }
+
+    // Standard: Russet Terracotta & Gold Woven Rug
     ctx.fillStyle = '#5E2F22';
     ctx.fillRect(x + 1, y + 1, size - 2, size - 2);
 
@@ -338,7 +375,8 @@ export class MapGrid {
     y: number,
     size: number,
     r: number,
-    c: number
+    c: number,
+    equippedDecorations: EquippedDecorations = {}
   ) {
     const s = size / 54; // Relative scale factor
 
@@ -381,7 +419,45 @@ export class MapGrid {
       ctx.fillRect(x + 4, y + 6, size - 8, size - 12);
     }
 
-    // Diploma Frame on Top Wall (Scaled to stay 100% inside tile 0,3 and 0,8)
+    // Zen Mountain Painting on Wall (Row 0, Col 5-6)
+    if (equippedDecorations.wall === 'zen_mountain_art' && r === 0 && (c === 5 || c === 6)) {
+      if (c === 5) {
+        const artW = Math.round(size * 1.8);
+        const artH = Math.round(size * 0.7);
+        const artX = x + Math.round(size * 0.1);
+        const artY = y + Math.round(size * 0.25);
+
+        // Frame
+        ctx.fillStyle = '#2E1E16';
+        ctx.fillRect(artX, artY, artW, artH);
+        ctx.fillStyle = '#0F172A'; // Canvas midnight blue
+        ctx.fillRect(artX + 2, artY + 2, artW - 4, artH - 4);
+
+        // Mountain Gradient & Rising Sun
+        ctx.fillStyle = '#EF4444'; // Red Sun
+        ctx.beginPath();
+        ctx.arc(artX + Math.round(artW * 0.7), artY + Math.round(artH * 0.4), Math.max(4, Math.round(7 * s)), 0, Math.PI * 2);
+        ctx.fill();
+
+        // Misty Mountain Peaks
+        ctx.fillStyle = '#334155';
+        ctx.beginPath();
+        ctx.moveTo(artX + 4, artY + artH - 3);
+        ctx.lineTo(artX + Math.round(artW * 0.4), artY + Math.round(artH * 0.35));
+        ctx.lineTo(artX + Math.round(artW * 0.8), artY + artH - 3);
+        ctx.fill();
+
+        ctx.fillStyle = '#64748B';
+        ctx.beginPath();
+        ctx.moveTo(artX + Math.round(artW * 0.3), artY + artH - 3);
+        ctx.lineTo(artX + Math.round(artW * 0.65), artY + Math.round(artH * 0.45));
+        ctx.lineTo(artX + artW - 4, artY + artH - 3);
+        ctx.fill();
+      }
+      return;
+    }
+
+    // Standard Diploma Frames on Top Wall
     if (r === 0 && (c === 3 || c === 8)) {
       const frameW = Math.round(size * 0.65);
       const frameH = Math.round(size * 0.48);
@@ -403,7 +479,8 @@ export class MapGrid {
     ctx: CanvasRenderingContext2D,
     tileSize: number,
     time: number,
-    isRadioPlaying: boolean = false
+    isRadioPlaying: boolean = false,
+    equippedDecorations: EquippedDecorations = {}
   ) {
     const s = tileSize / 54; // Relative scale factor
     const border = Math.max(2, Math.round(4 * s));
@@ -449,7 +526,53 @@ export class MapGrid {
       curX += bw + 1;
     }
 
-    // --- 2. Tea Station (Row 1, Col 5-6) ---
+    // --- 1b. Wall Aquarium (Row 1, Col 3-4) if equipped ---
+    if (equippedDecorations.wall === 'aquarium_wall') {
+      const aqX = 3 * tileSize + Math.round(4 * s);
+      const aqY = 1 * tileSize;
+      const aqW = 2 * tileSize - Math.round(8 * s);
+      const aqH = tileSize - Math.round(4 * s);
+
+      // Glass frame
+      ctx.fillStyle = '#0F172A';
+      ctx.fillRect(aqX, aqY, aqW, aqH);
+      ctx.fillStyle = '#0284C7';
+      ctx.fillRect(aqX + 2, aqY + 2, aqW - 4, aqH - 4);
+
+      // Water gradient / light reflection
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.fillRect(aqX + 4, aqY + 4, aqW - 8, Math.round(6 * s));
+
+      // Animated rising air bubbles
+      for (let b = 0; b < 4; b++) {
+        const bubbleProg = ((time * 0.0015 + b * 0.25) % 1);
+        const bx = aqX + Math.round(aqW * 0.2) + b * Math.round(aqW * 0.2);
+        const by = aqY + aqH - 4 - bubbleProg * (aqH - 8);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillRect(bx, by, Math.max(1, Math.round(2 * s)), Math.max(1, Math.round(2 * s)));
+      }
+
+      // Animated Swimming Neon Fish
+      const fish1Prog = (Math.sin(time * 0.002) + 1) / 2;
+      const f1x = aqX + Math.round(6 * s) + fish1Prog * (aqW - Math.round(24 * s));
+      const f1y = aqY + Math.round(aqH * 0.45) + Math.sin(time * 0.005) * 3;
+      const isF1Right = Math.cos(time * 0.002) > 0;
+
+      // Fish 1 (Neon Cyan & Orange)
+      ctx.fillStyle = '#06B6D4';
+      ctx.fillRect(f1x, f1y, Math.round(8 * s), Math.round(4 * s));
+      ctx.fillStyle = '#F97316';
+      ctx.fillRect(isF1Right ? f1x - Math.round(3 * s) : f1x + Math.round(8 * s), f1y + 1, Math.round(3 * s), Math.round(2 * s));
+
+      // Fish 2 (Golden Guppy)
+      const fish2Prog = (Math.cos(time * 0.0015) + 1) / 2;
+      const f2x = aqX + Math.round(6 * s) + fish2Prog * (aqW - Math.round(22 * s));
+      const f2y = aqY + Math.round(aqH * 0.7) + Math.cos(time * 0.004) * 2;
+      ctx.fillStyle = '#FBBF24';
+      ctx.fillRect(f2x, f2y, Math.round(7 * s), Math.round(3 * s));
+    }
+
+    // --- 2. Tea / Relaxation Station (Row 1, Col 5-6) ---
     const teaX = 5 * tileSize;
     const teaY = 1 * tileSize;
     const teaW = 2 * tileSize;
@@ -474,11 +597,38 @@ export class MapGrid {
     ctx.fillRect(teaX + Math.round(teaW * 0.45), teaY + Math.round(teaH * 0.42), mw, mh);
     ctx.fillRect(teaX + Math.round(teaW * 0.62), teaY + Math.round(teaH * 0.42), mw, mh);
 
-    // Steam particles
+    // Steam / Mist particles
     const steamFloat = (time * 0.003) % (Math.PI * 2);
     ctx.fillStyle = 'rgba(247, 247, 247, 0.55)';
     const pw = Math.max(2, Math.round(3 * s));
     ctx.fillRect(kettleX + Math.round(3 * s) + Math.sin(steamFloat) * 3, kettleY - Math.round(8 * s) - (time * 0.02 % 8), pw, pw);
+
+    // Ultrasonic Diffuser on Tea Station if equipped
+    if (equippedDecorations.station === 'diffuser_station') {
+      const diffW = Math.round(14 * s);
+      const diffH = Math.round(16 * s);
+      const diffX = teaX + Math.round(teaW * 0.78);
+      const diffY = teaY + Math.round(teaH * 0.32);
+
+      // Wooden diffuser cone base
+      ctx.fillStyle = '#92400E';
+      ctx.fillRect(diffX, diffY + Math.round(8 * s), diffW, diffH - Math.round(8 * s));
+      ctx.fillStyle = '#FEF3C7';
+      ctx.beginPath();
+      ctx.arc(diffX + diffW / 2, diffY + Math.round(8 * s), diffW / 2, Math.PI, 0);
+      ctx.fill();
+
+      // Soft mist plume
+      for (let m = 0; m < 3; m++) {
+        const mistP = ((time * 0.002 + m * 0.33) % 1);
+        const my = diffY - mistP * Math.round(18 * s);
+        const mx = diffX + diffW / 2 + Math.sin(time * 0.005 + m) * 4;
+        ctx.fillStyle = `rgba(254, 240, 138, ${Math.max(0, 0.6 - mistP * 0.6)})`;
+        ctx.beginPath();
+        ctx.arc(mx, my, Math.max(2, Math.round((3 + mistP * 4) * s)), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
 
     // --- 3. Psychologist Executive Desk (Row 3-4, Col 2-3) ---
     const deskX = 2 * tileSize;
@@ -505,24 +655,44 @@ export class MapGrid {
     ctx.fillStyle = '#854836';
     ctx.fillRect(laptopX + 4, laptopY + 4, laptopW - 8, Math.max(1, Math.round(2 * s))); // UI bar on screen
 
-    // 3b. Diagnostic Desk Lamp (Upper-right of desk)
+    // 3b. Diagnostic Desk Lamp or Himalayan Salt Lamp
     const lampX = deskX + Math.round(deskW * 0.82);
     const lampY = deskY + Math.round(deskH * 0.22);
     const lampRadius = Math.max(4, Math.round(7 * s));
     
-    // Lamp glow halo
-    ctx.fillStyle = 'rgba(255, 178, 44, 0.15)';
-    ctx.beginPath();
-    ctx.arc(lampX, lampY, lampRadius * 2, 0, Math.PI * 2);
-    ctx.fill();
+    if (equippedDecorations.desk === 'himalayan_lamp') {
+      // Warm pulsating salt halo
+      const pulse = Math.sin(time * 0.003) * 3;
+      ctx.fillStyle = 'rgba(249, 115, 22, 0.28)';
+      ctx.beginPath();
+      ctx.arc(lampX, lampY, Math.max(12, Math.round(18 * s) + pulse), 0, Math.PI * 2);
+      ctx.fill();
 
-    // Lamp shade & stand
-    ctx.fillStyle = '#120E0C';
-    ctx.fillRect(lampX - 1, lampY, 2, Math.round(10 * s));
-    ctx.fillStyle = '#FFB22C';
-    ctx.beginPath();
-    ctx.arc(lampX, lampY, lampRadius, 0, Math.PI * 2);
-    ctx.fill();
+      // Natural faceted salt crystal rock
+      ctx.fillStyle = '#FB923C';
+      ctx.fillRect(lampX - Math.round(7 * s), lampY - Math.round(8 * s), Math.round(14 * s), Math.round(16 * s));
+      ctx.fillStyle = '#F43F5E';
+      ctx.fillRect(lampX - Math.round(5 * s), lampY - Math.round(6 * s), Math.round(10 * s), Math.round(12 * s));
+      ctx.fillStyle = '#FED7AA'; // Glowing core
+      ctx.fillRect(lampX - Math.round(2 * s), lampY - Math.round(3 * s), Math.round(5 * s), Math.round(6 * s));
+      // Wooden base
+      ctx.fillStyle = '#2E1E16';
+      ctx.fillRect(lampX - Math.round(8 * s), lampY + Math.round(8 * s), Math.round(16 * s), Math.round(3 * s));
+    } else {
+      // Standard Diagnostic Lamp glow halo
+      ctx.fillStyle = 'rgba(255, 178, 44, 0.15)';
+      ctx.beginPath();
+      ctx.arc(lampX, lampY, lampRadius * 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Lamp shade & stand
+      ctx.fillStyle = '#120E0C';
+      ctx.fillRect(lampX - 1, lampY, 2, Math.round(10 * s));
+      ctx.fillStyle = '#FFB22C';
+      ctx.beginPath();
+      ctx.arc(lampX, lampY, lampRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
     // 3c. Case Notebook (Lower-left of desk)
     const noteW = Math.round(deskW * 0.26);
@@ -640,25 +810,26 @@ export class MapGrid {
     const sofaY = 4 * tileSize;
     const sofaW = 2 * tileSize;
     const sofaH = tileSize;
+    const isEmeraldSofa = equippedDecorations.furniture === 'emerald_sofa';
 
     // Sofa base & backrest
-    ctx.fillStyle = '#3D261B';
+    ctx.fillStyle = isEmeraldSofa ? '#064E3B' : '#3D261B';
     ctx.fillRect(sofaX, sofaY, sofaW, sofaH);
-    ctx.fillStyle = '#543627';
+    ctx.fillStyle = isEmeraldSofa ? '#047857' : '#543627';
     ctx.fillRect(sofaX + border, sofaY + border, sofaW - border * 2, sofaH - border * 2);
 
     // Cushions
-    ctx.fillStyle = '#5E2F22';
+    ctx.fillStyle = isEmeraldSofa ? '#059669' : '#5E2F22';
     const cushionW = Math.round(sofaW / 2 - 8 * s);
     const cushionH = Math.round(sofaH - 16 * s);
     ctx.fillRect(sofaX + Math.round(6 * s), sofaY + Math.round(12 * s), cushionW, cushionH);
     ctx.fillRect(sofaX + Math.round(sofaW / 2 + 2 * s), sofaY + Math.round(12 * s), cushionW, cushionH);
 
-    // Accent Pillows (Warm Amber & Russet)
+    // Accent Pillows
     const pillowS = Math.round(12 * s);
-    ctx.fillStyle = '#FFB22C';
+    ctx.fillStyle = isEmeraldSofa ? '#FBBF24' : '#FFB22C';
     ctx.fillRect(sofaX + Math.round(8 * s), sofaY + Math.round(6 * s), pillowS, pillowS);
-    ctx.fillStyle = '#854836';
+    ctx.fillStyle = isEmeraldSofa ? '#10B981' : '#854836';
     ctx.fillRect(sofaX + sofaW - Math.round(8 * s) - pillowS, sofaY + Math.round(6 * s), pillowS, pillowS);
 
     // --- 5. Center Coffee Table (Row 5, Col 6-7) ---
@@ -683,25 +854,39 @@ export class MapGrid {
     ctx.fillStyle = '#FFB22C';
     ctx.fillRect(tableX + Math.round(tableW * 0.6), tableY + Math.round(tableH * 0.3), Math.round(12 * s), Math.round(8 * s));
 
-    // --- 6. Therapist Armchair (Row 6, Col 6-7) ---
-    const chairX = 6 * tileSize + Math.round(10 * s);
-    const chairY = 6 * tileSize + Math.round(4 * s);
-    const chairW = 2 * tileSize - Math.round(20 * s);
-    const chairH = tileSize - Math.round(8 * s);
+    // --- 6. Psychologist Counseling Sofa (Row 6, Col 6-7 - Opposite Client Sofa, Facing Up) ---
+    const pSofaX = 6 * tileSize;
+    const pSofaY = 6 * tileSize;
+    const pSofaW = 2 * tileSize;
+    const pSofaH = tileSize;
 
-    ctx.fillStyle = '#2D1F18';
-    ctx.fillRect(chairX, chairY, chairW, chairH);
-    ctx.fillStyle = '#48281E';
-    ctx.fillRect(chairX + border, chairY + border, chairW - border * 2, chairH - border * 2);
+    // Base & Frame
+    ctx.fillStyle = isEmeraldSofa ? '#064E3B' : '#3D261B';
+    ctx.fillRect(pSofaX, pSofaY, pSofaW, pSofaH);
+    ctx.fillStyle = isEmeraldSofa ? '#047857' : '#543627';
+    ctx.fillRect(pSofaX + border, pSofaY + border, pSofaW - border * 2, pSofaH - border * 2);
 
-    // --- 7. Potted Monstera Plants (Corners) ---
-    this.drawPlant(ctx, 1 * tileSize + Math.round(8 * s), 8 * tileSize + Math.round(6 * s), time, tileSize);
-    this.drawPlant(ctx, 10 * tileSize + Math.round(8 * s), 8 * tileSize + Math.round(6 * s), time + 500, tileSize);
-    this.drawPlant(ctx, 9 * tileSize + Math.round(10 * s), 1 * tileSize + Math.round(8 * s), time + 1000, tileSize);
-    this.drawPlant(ctx, 10 * tileSize + Math.round(10 * s), 1 * tileSize + Math.round(8 * s), time + 1500, tileSize);
+    // Plush Cushions (seat cushion on upper half facing coffee table)
+    ctx.fillStyle = isEmeraldSofa ? '#059669' : '#5E2F22';
+    ctx.fillRect(pSofaX + Math.round(6 * s), pSofaY + Math.round(4 * s), cushionW, cushionH);
+    ctx.fillRect(pSofaX + Math.round(pSofaW / 2 + 2 * s), pSofaY + Math.round(4 * s), cushionW, cushionH);
+
+    // Accent Pillows (near bottom backrest)
+    ctx.fillStyle = isEmeraldSofa ? '#FBBF24' : '#FFB22C';
+    ctx.fillRect(pSofaX + Math.round(8 * s), pSofaY + pSofaH - Math.round(6 * s) - pillowS, pillowS, pillowS);
+    ctx.fillStyle = isEmeraldSofa ? '#10B981' : '#854836';
+    ctx.fillRect(pSofaX + pSofaW - Math.round(8 * s) - pillowS, pSofaY + pSofaH - Math.round(6 * s) - pillowS, pillowS, pillowS);
+
+    // --- 7. Clinic Shop & Design Drafting Easel (Row 8, Col 1 - Bottom Left Corner) ---
+    this.drawShopEasel(ctx, 1 * tileSize + Math.round(4 * s), 8 * tileSize + Math.round(2 * s), time, tileSize);
+
+    // --- 8. Potted Plants (Remaining Corners) ---
+    this.drawPlant(ctx, 10 * tileSize + Math.round(8 * s), 8 * tileSize + Math.round(6 * s), time + 500, tileSize, equippedDecorations);
+    this.drawPlant(ctx, 9 * tileSize + Math.round(10 * s), 1 * tileSize + Math.round(8 * s), time + 1000, tileSize, equippedDecorations);
+    this.drawPlant(ctx, 10 * tileSize + Math.round(10 * s), 1 * tileSize + Math.round(8 * s), time + 1500, tileSize, equippedDecorations);
   }
 
-  private static drawPlant(
+  private static drawShopEasel(
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
@@ -709,26 +894,133 @@ export class MapGrid {
     tileSize: number = MapGrid.BASE_TILE_SIZE
   ) {
     const s = tileSize / 54; // Relative scale factor
-    const sway = Math.sin(time * 0.003) * (2 * s);
 
-    // Ceramic Russet/Terracotta Pot (Proportional to tileSize)
+    // Easel Dimensions
+    const easelW = Math.round(26 * s);
+    const easelH = Math.round(30 * s);
+    const easelX = x + Math.round(4 * s);
+    const easelY = y + Math.round(2 * s);
+
+    // 1. Tripod Wooden Legs (Deep Mahogany)
+    ctx.fillStyle = '#3D2216';
+    ctx.fillRect(easelX + 3, easelY + Math.round(10 * s), Math.max(2, Math.round(3 * s)), easelH - Math.round(10 * s));
+    ctx.fillRect(easelX + easelW - Math.round(5 * s), easelY + Math.round(10 * s), Math.max(2, Math.round(3 * s)), easelH - Math.round(10 * s));
+    ctx.fillRect(easelX + Math.round(easelW / 2) - 1, easelY + Math.round(12 * s), Math.max(2, Math.round(3 * s)), easelH - Math.round(12 * s));
+
+    // 2. Drafting Board (Warm Oak Tilt)
+    const boardW = Math.round(easelW * 1.1);
+    const boardH = Math.round(easelH * 0.65);
+    const boardX = easelX - Math.round(2 * s);
+    const boardY = easelY + Math.round(2 * s);
+
+    ctx.fillStyle = '#1A120E'; // Board shadow
+    ctx.fillRect(boardX - 1, boardY - 1, boardW + 2, boardH + 2);
+    ctx.fillStyle = '#5A3422';
+    ctx.fillRect(boardX, boardY, boardW, boardH);
+
+    // 3. Blueprint / Catalog Sheet (Glowing Cyan Schematic Paper)
+    const sheetW = boardW - Math.round(6 * s);
+    const sheetH = boardH - Math.round(6 * s);
+    const sheetX = boardX + Math.round(3 * s);
+    const sheetY = boardY + Math.round(3 * s);
+
+    ctx.fillStyle = '#0369A1'; // Blueprint blue
+    ctx.fillRect(sheetX, sheetY, sheetW, sheetH);
+
+    // Blueprint grid lines
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+    ctx.fillRect(sheetX + 2, sheetY + Math.round(sheetH * 0.35), sheetW - 4, 1);
+    ctx.fillRect(sheetX + 2, sheetY + Math.round(sheetH * 0.7), sheetW - 4, 1);
+    ctx.fillRect(sheetX + Math.round(sheetW * 0.5), sheetY + 2, 1, sheetH - 4);
+
+    // Floorplan miniature pixel icons on blueprint
+    ctx.fillStyle = '#38BDF8';
+    ctx.fillRect(sheetX + Math.round(4 * s), sheetY + Math.round(4 * s), Math.round(5 * s), Math.round(4 * s));
+    ctx.fillRect(sheetX + sheetW - Math.round(9 * s), sheetY + sheetH - Math.round(7 * s), Math.round(6 * s), Math.round(4 * s));
+
+    // 4. Golden Star / Shop Beacon on Top of Easel
+    const starPulse = Math.sin(time * 0.005) * 2;
+    const starX = easelX + Math.round(easelW / 2);
+    const starY = easelY - Math.round(3 * s);
+
+    ctx.fillStyle = 'rgba(255, 178, 44, 0.3)';
+    ctx.beginPath();
+    ctx.arc(starX, starY, Math.max(6, Math.round(8 * s) + starPulse), 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#FFB22C';
+    ctx.beginPath();
+    ctx.arc(starX, starY, Math.max(3, Math.round(4 * s)), 0, Math.PI * 2);
+    ctx.fill();
+
+    // 5. Floating ambient shop spark notes (✨)
+    const sparkProg = ((time * 0.0015) % 1);
+    const sparkY = starY - sparkProg * Math.round(14 * s);
+    const sparkAlpha = Math.sin(sparkProg * Math.PI);
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, sparkAlpha));
+    ctx.fillStyle = '#FFD382';
+    ctx.font = `bold ${Math.max(9, Math.round(11 * s))}px monospace`;
+    ctx.fillText('✦', starX - Math.round(4 * s), sparkY);
+    ctx.restore();
+  }
+
+  private static drawPlant(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    time: number,
+    tileSize: number = MapGrid.BASE_TILE_SIZE,
+    equippedDecorations: EquippedDecorations = {}
+  ) {
+    const s = tileSize / 54; // Relative scale factor
+    const sway = Math.sin(time * 0.003) * (2 * s);
+    const isLavender = equippedDecorations.plant === 'lavender_pot';
+
+    // Ceramic Pot
     const potW = Math.round(18 * s);
     const potH = Math.round(14 * s);
     const potX = x + Math.round(3 * s);
     const potY = y + Math.round(14 * s);
 
-    ctx.fillStyle = '#854836';
+    ctx.fillStyle = isLavender ? '#581C87' : '#854836';
     ctx.fillRect(potX, potY, potW, potH);
-    ctx.fillStyle = '#FFB22C';
+    ctx.fillStyle = isLavender ? '#A855F7' : '#FFB22C';
     ctx.fillRect(potX - 2, potY - 3, potW + 4, Math.max(2, Math.round(5 * s)));
     ctx.fillStyle = '#120E0C';
     ctx.fillRect(potX, potY - 2, potW, Math.max(1, Math.round(2 * s))); // Soil
 
-    // Lush Foliage (Proportional to tileSize)
+    // Foliage radii
     const r1 = Math.max(4, Math.round(7 * s));
     const r2 = Math.max(5, Math.round(9 * s));
     const r3 = Math.max(4, Math.round(8 * s));
 
+    if (isLavender) {
+      // Lavender purple blossoms
+      ctx.fillStyle = '#7E22CE';
+      ctx.beginPath();
+      ctx.arc(x + Math.round(6 * s) + sway, y + Math.round(6 * s), r1, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#9333EA';
+      ctx.beginPath();
+      ctx.arc(x + Math.round(16 * s) - sway, y + Math.round(4 * s), r2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#C084FC';
+      ctx.beginPath();
+      ctx.arc(x + Math.round(11 * s) + sway * 0.5, y - Math.round(1 * s), r3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Lavender flower spikes
+      ctx.fillStyle = '#F3E8FF';
+      ctx.fillRect(x + Math.round(10 * s) + sway * 0.5, y - Math.round(6 * s), Math.max(2, Math.round(3 * s)), Math.max(4, Math.round(7 * s)));
+      ctx.fillRect(x + Math.round(6 * s) + sway, y - Math.round(3 * s), Math.max(2, Math.round(3 * s)), Math.max(3, Math.round(5 * s)));
+      ctx.fillRect(x + Math.round(14 * s) - sway, y - Math.round(4 * s), Math.max(2, Math.round(3 * s)), Math.max(3, Math.round(6 * s)));
+      return;
+    }
+
+    // Standard Lush Monstera
     ctx.fillStyle = '#3E5C38';
     ctx.beginPath();
     ctx.arc(x + Math.round(6 * s) + sway, y + Math.round(6 * s), r1, 0, Math.PI * 2);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { ClientPixelAvatar } from '../ui/ClientPixelAvatar';
-import { Award, RotateCcw, Activity, Heart, CheckCircle2, Sparkles, Quote, Library, ExternalLink, FileText } from 'lucide-react';
+import { Award, RotateCcw, Activity, Heart, CheckCircle2, Sparkles, Quote, Library, ExternalLink, FileText, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const EndingScreen: React.FC = () => {
@@ -11,7 +11,8 @@ export const EndingScreen: React.FC = () => {
     currentClient,
     totalClientsHelped,
     generateNewClientCase,
-    setGameMode
+    setGameMode,
+    setPhoneOpen
   } = useGameStore();
 
   if (gameMode !== 'ENDING' || !evaluationResult) return null;
@@ -290,12 +291,21 @@ export const EndingScreen: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="bg-[#120E0C] border-t border-[#854836]/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <button
-            onClick={() => setGameMode('EXPLORATION')}
-            className="px-4 py-2 rounded-xl bg-[#221B17] hover:bg-[#35261F] border border-[#854836] text-xs font-bold text-[#F7F7F7]/90 transition-all active:scale-95"
-          >
-            Tinjau Ruangan Praktik
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={() => setGameMode('EXPLORATION')}
+              className="px-4 py-2.5 rounded-xl bg-[#221B17] hover:bg-[#35261F] border border-[#854836] text-xs font-bold text-[#F7F7F7]/90 transition-all active:scale-95 flex-1 sm:flex-none text-center"
+            >
+              Tinjau Ruangan
+            </button>
+            <button
+              onClick={() => setPhoneOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-[#3A241C] hover:bg-[#523326] border border-[#FFB22C]/70 text-xs font-bold text-[#FFD382] transition-all active:scale-95 flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
+            >
+              <Smartphone className="w-4 h-4 text-[#FFB22C]" />
+              <span>Cek Pesan HP</span>
+            </button>
+          </div>
 
           <button
             onClick={generateNewClientCase}
