@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
+import logoImg from '../../assets/logo-artudieiclinic.png';
 import { ClientPixelAvatar } from '../ui/ClientPixelAvatar';
 import { 
   Smartphone, 
@@ -60,7 +61,7 @@ export const CounselorPhoneModal: React.FC = () => {
         {/* Phone Top Speaker & Notch Bar */}
         <div className="bg-[#120E0C] px-5 py-2.5 border-b border-[#854836]/50 flex items-center justify-between select-none">
           <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E] animate-pulse" />
+            <img src={logoImg} alt="Logo" className="w-4 h-4 object-contain rounded shrink-0" />
             <span className="text-[11px] font-mono font-bold text-[#FFB22C] tracking-wide">
               ARTUDIEI OS • SMARTPHONE
             </span>

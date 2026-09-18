@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoImg from './assets/logo-artudieiclinic.png';
 import { GameCanvas } from './components/canvas/GameCanvas';
 import { VirtualJoystick } from './components/controls/VirtualJoystick';
 import { InteractionPrompt } from './components/controls/InteractionPrompt';
@@ -11,6 +12,7 @@ import { CounselorPhoneModal } from './components/game/CounselorPhoneModal';
 import { DecorationShopModal } from './components/game/DecorationShopModal';
 import { PhoneFloatingToast } from './components/game/PhoneFloatingToast';
 import { LevelUpModal } from './components/game/LevelUpModal';
+import { SplashScreen } from './components/ui/SplashScreen';
 import { useGameStore } from './store/useGameStore';
 import { useShallow } from 'zustand/react/shallow';
 import { PixelBadge, PixelButton } from './components/ui/PixelComponents';
@@ -73,6 +75,7 @@ export const App: React.FC = () => {
     }))
   );
 
+  const [showSplash, setShowSplash] = useState(true);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showPovBanner, setShowPovBanner] = useState(true);
   const [showReturnNotif, setShowReturnNotif] = useState(false);
@@ -135,6 +138,11 @@ export const App: React.FC = () => {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#120E0C] select-none font-sans text-[#F7F7F7]">
+      {/* --- SPLASH SCREEN VIDEO OVERLAY --- */}
+      <AnimatePresence>
+        {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      </AnimatePresence>
+
       {/* Background Audio Player */}
       <audio
         ref={audioRef}
@@ -149,8 +157,8 @@ export const App: React.FC = () => {
       >
         {/* LEFT: Clinic Title & Rank */}
         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 shrink">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#FFB22C] border-2 border-[#854836] rounded-lg flex items-center justify-center shadow-sm shrink-0">
-            <Sparkles className="w-4 h-4 text-[#000000] animate-pulse" />
+          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#FFB22C] border-2 border-[#854836] rounded-lg flex items-center justify-center shadow-sm shrink-0 overflow-hidden p-0.5">
+            <img src={logoImg} alt="ARTUDIEI Clinic Logo" className="w-full h-full object-contain" />
           </div>
           <div className="min-w-0 flex flex-col justify-center">
             <h1 className="text-[11px] sm:text-sm font-extrabold tracking-wider text-[#120E0C] whitespace-nowrap leading-tight">

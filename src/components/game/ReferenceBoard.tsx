@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/useGameStore';
 import endingsData from '../../data/endings.json';
 import { BookOpen, X, Sparkles, Brain, Quote, Library, ExternalLink, FileText, UserCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import logoImg from '../../assets/logo-artudieiclinic.png';
 
 export const ReferenceBoard: React.FC = () => {
   const { gameMode, currentClient, setGameMode } = useGameStore();
@@ -22,8 +23,8 @@ export const ReferenceBoard: React.FC = () => {
         {/* Top Header */}
         <div className="bg-[#120E0C] border-b border-[#854836]/60 px-4 sm:px-6 py-3.5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#241B17] border border-[#FFB22C]/60 flex items-center justify-center shadow-inner shrink-0">
-              <BookOpen className="w-5 h-5 text-[#FFB22C]" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FFB22C] border border-[#FFB22C]/60 flex items-center justify-center shadow-inner shrink-0 overflow-hidden p-0.5">
+              <img src={logoImg} alt="ARTUDIEI Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <h2 className="font-bold text-sm sm:text-lg text-[#F7F7F7] tracking-wide">

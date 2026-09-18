@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/useGameStore';
 import { ClientPixelAvatar } from '../ui/ClientPixelAvatar';
 import { Award, RotateCcw, Activity, Heart, CheckCircle2, Sparkles, Quote, Library, ExternalLink, FileText, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import logoImg from '../../assets/logo-artudieiclinic.png';
 
 export const EndingScreen: React.FC = () => {
   const {
@@ -45,8 +46,8 @@ export const EndingScreen: React.FC = () => {
         {/* Top Clean Header */}
         <div className="bg-[#120E0C] border-b border-[#854836]/60 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#241B17] border border-[#FFB22C]/60 flex items-center justify-center shadow-inner">
-              <Award className="w-5 h-5 text-[#FFB22C]" />
+            <div className="w-10 h-10 rounded-xl bg-[#FFB22C] border border-[#FFB22C]/60 flex items-center justify-center shadow-inner overflow-hidden p-0.5 shrink-0">
+              <img src={logoImg} alt="ARTUDIEI Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <h2 className="font-bold text-base sm:text-lg text-[#F7F7F7] tracking-wide">
