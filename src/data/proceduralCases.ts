@@ -51,7 +51,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
         primarySource: 'Beck, A. T., & Clark, D. A. (1997). An information processing model of anxiety. Behavior Therapy, 28(1), 49-58.',
         secondarySource: 'Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological Foundations of Emotions, Attachment, Communication, and Self-regulation.',
         scientificExplanation: 'Kecemasan saat ditunjuk di depan kelas memicu aktivasi sistem saraf simpatis (Fight or Flight) akibat amigdala yang menafsirkan tatapan teman sekelas sebagai ancaman penilaian sosial negatif (Catastrophizing). Melalui validasi empatik dan latihan napas berirama (Co-regulation), saraf vagus ventral teraktivasi sehingga detak jantung menurun dan korteks prefrontal dapat kembali berpikir logis.',
-        doiUrl: 'https://doi.org/10.1016/S0005-7894(97)80037-8',
+        doiUrl: 'https://doi.org/10.1016/S0005-7967(96)00069-1',
         scholarUrl: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3108032/'
       },
       phase1: {
@@ -72,7 +72,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
             journalRef: {
               title: "An Information Processing Model of Anxiety",
               citation: "Beck & Clark (1997), Behavior Therapy",
-              url: "https://doi.org/10.1016/S0005-7894(97)80037-8"
+              url: "https://doi.org/10.1016/S0005-7967(96)00069-1"
             }
           },
           {
@@ -230,7 +230,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
         primarySource: 'Beck, A. T., & Clark, D. A. (1997). An information processing model of anxiety. Behavior Therapy, 28(1), 49-58.',
         secondarySource: 'Gross, J. J. (2002). Emotion regulation: Affective, cognitive, and social consequences. Psychophysiology, 39(3), 281-291.',
         scientificExplanation: 'Distorsi kognitif Mind Reading (menebak pikiran orang lain secara negatif) dan Catastrophizing membuat klien menafsirkan keterlambatan pesan sebagai tanda penolakan sosial atau ancaman ditinggalkan (Abandonment Schema). Restrukturisasi kognitif membantu memisahkan ambiguitas stimulus dari narasi kecemasan internal.',
-        doiUrl: 'https://doi.org/10.1016/S0005-7894(97)80037-8',
+        doiUrl: 'https://doi.org/10.1016/S0005-7967(96)00069-1',
         scholarUrl: 'https://pubmed.ncbi.nlm.nih.gov/12212647/'
       },
       phase1: {
@@ -267,7 +267,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
             journalRef: {
               title: "Cognitive Therapy of Depression and Anxiety",
               citation: "Beck, A. T. (1979), Guilford Press",
-              url: "https://doi.org/10.1016/S0005-7894(97)80037-8"
+              url: "https://doi.org/10.1016/S0005-7967(96)00069-1"
             }
           },
           {
@@ -631,7 +631,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
             journalRef: {
               title: "An Information Processing Model of Anxiety",
               citation: "Beck & Clark (1997), Behavior Therapy",
-              url: "https://doi.org/10.1016/S0005-7894(97)80037-8"
+              url: "https://doi.org/10.1016/S0005-7967(96)00069-1"
             }
           },
           {
@@ -810,7 +810,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
             journalRef: {
               title: "Cognitive Processing of Success and Failure",
               citation: "Beck & Clark (1997), Behavior Therapy",
-              url: "https://doi.org/10.1016/S0005-7894(97)80037-8"
+              url: "https://doi.org/10.1016/S0005-7967(96)00069-1"
             }
           },
           {
@@ -920,7 +920,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
             journalRef: {
               title: "Cognitive Diary in Evidence-Based Therapy",
               citation: "Beck, A. T. (1997), Behavior Therapy",
-              url: "https://doi.org/10.1016/S0005-7894(97)80037-8"
+              url: "https://doi.org/10.1016/S0005-7967(96)00069-1"
             }
           },
           {
@@ -1235,7 +1235,7 @@ export const SCENARIO_SEEDS: Record<ArchetypeId, ScenarioSeed[]> = {
             journalRef: {
               title: "Metaphor in Cognitive Behavioral Therapy",
               citation: "Beck & Clark (1997), Behavior Therapy",
-              url: "https://doi.org/10.1016/S0005-7894(97)80037-8"
+              url: "https://doi.org/10.1016/S0005-7967(96)00069-1"
             }
           },
           {
