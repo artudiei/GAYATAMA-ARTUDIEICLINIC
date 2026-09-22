@@ -106,8 +106,8 @@ export const DialogueOverlay: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 40, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 340, damping: 32 }}
-          className="pointer-events-auto w-full px-2 sm:px-4 pb-safe pb-2 sm:pb-3 md:px-8 md:pb-5 flex flex-col gap-1.5 sm:gap-2 md:gap-3 max-w-7xl mx-auto overflow-y-auto"
-          style={{ maxHeight: 'min(85dvh, calc(100dvh - 60px))' }}
+          className="pointer-events-auto w-full px-2.5 sm:px-4 pb-safe pb-4 sm:pb-3 md:px-8 md:pb-5 mb-1 sm:mb-0 flex flex-col gap-1.5 sm:gap-2 md:gap-3 max-w-7xl mx-auto overflow-y-auto"
+          style={{ maxHeight: 'min(88dvh, calc(100dvh - 50px))' }}
         >
 
           {/* ─── CLIENT BUBBLE (compact & fluid di mobile, squarish di desktop) ─── */}
@@ -316,7 +316,7 @@ export const DialogueOverlay: React.FC = () => {
                 </div>
 
                 {/* 3 Cards — scrollable if screen is small */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 overflow-y-auto pr-0.5" style={{ maxHeight: 'min(32vh, 280px)' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 overflow-y-auto pr-1 pb-1" style={{ maxHeight: 'min(38vh, 300px)' }}>
                   {currentPhase?.options.map((option: DialogueOption, index: number) => {
                     const style = getApproachStyle(index);
                     return (

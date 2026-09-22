@@ -32,17 +32,27 @@ export const CounselorPhoneModal: React.FC = () => {
     sendChatReply
   } = useGameStore();
 
-  const [selectedChatId, setSelectedChatId] = useState<string | null>(
-    activeChatId || (phoneMessages.length > 0 ? phoneMessages[0].id : null)
-  );
+  const [selectedChatId, setSelectedChatId] = useState<string | null>(activeChatId);
+
+  React.useEffect(() => {
+    if (activeChatId) {
+      setSelectedChatId(activeChatId);
+    }
+  }, [activeChatId]);
 
   if (!isPhoneOpen) return null;
 
-  const currentChat = phoneMessages.find((m) => m.id === (activeChatId || selectedChatId)) || phoneMessages[0];
+  const activeId = selectedChatId ?? activeChatId;
+  const currentChat = activeId ? phoneMessages.find((m) => m.id === activeId) || null : null;
 
   const handleSelectChat = (id: string) => {
     setSelectedChatId(id);
     setActiveChatId(id);
+  };
+
+  const handleBackToList = () => {
+    setSelectedChatId(null);
+    setActiveChatId(null);
   };
 
   const handleSendQuickReply = (index: number) => {
@@ -159,10 +169,11 @@ export const CounselorPhoneModal: React.FC = () => {
                 <div className="p-3 bg-[#1A1310] border-b border-[#854836]/50 flex items-center justify-between">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <button
-                      onClick={() => setSelectedChatId(null)}
-                      className="sm:hidden p-1 rounded-lg bg-[#221B17] text-[#FFB22C]"
+                      onClick={handleBackToList}
+                      className="sm:hidden p-1.5 rounded-lg bg-[#221B17] hover:bg-[#3D281E] text-[#FFB22C] active:scale-95 transition-all shrink-0 mr-1"
+                      title="Kembali ke Daftar Pesan"
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="w-5 h-5" />
                     </button>
                     <ClientPixelAvatar
                       gender={currentChat.gender}

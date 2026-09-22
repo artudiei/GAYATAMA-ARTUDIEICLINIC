@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { MapGrid } from '../canvas/MapGrid';
-import { MessageSquare, BookOpen, Coffee, Sparkles, Award, Radio, Store } from 'lucide-react';
+import { MessageSquare, BookOpen, Coffee, Sparkles, Award, Radio, Music2, Store } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const InteractionPrompt: React.FC = () => {
@@ -110,7 +110,7 @@ export const InteractionPrompt: React.FC = () => {
     }
     if (nearbyObject?.type === 'bookshelf') return <BookOpen className="w-4 h-4 text-[#000000]" />;
     if (nearbyObject?.type === 'tea_station') return <Coffee className="w-4 h-4 text-[#000000]" />;
-    if (nearbyObject?.type === 'radio' || nearbyObject?.type === 'desk') return <Radio className="w-4 h-4 text-[#000000]" />;
+    if (nearbyObject?.type === 'radio' || nearbyObject?.type === 'desk') return <Music2 className="w-4 h-4 text-[#000000]" />;
     if (nearbyObject?.type === 'shop') return <Store className="w-4 h-4 text-[#000000]" />;
     return <Sparkles className="w-4 h-4 text-[#000000]" />;
   };

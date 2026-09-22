@@ -88,7 +88,7 @@ export const EndingScreen: React.FC = () => {
                 <ClientPixelAvatar
                   client={currentClient}
                   size="lg"
-                  className="hidden sm:inline-flex shrink-0"
+                  className="inline-flex shrink-0 rounded-2xl border-2 border-[#854836]/60 shadow-md"
                 />
               )}
 

@@ -32,6 +32,7 @@ import {
   ChevronUp,
   ArrowRight,
   Radio,
+  Music2,
   Smartphone,
   Store
 } from 'lucide-react';
@@ -146,7 +147,7 @@ export const App: React.FC = () => {
       {/* Background Audio Player */}
       <audio
         ref={audioRef}
-        src="/assets/backsound/guide2.wav"
+        src="/assets/backsound/backsound.wav"
         loop
         preload="auto"
       />
@@ -249,7 +250,7 @@ export const App: React.FC = () => {
             }`}
             title={isRadioPlaying ? 'Matikan Musik' : 'Putar Musik'}
           >
-            <Radio className={`w-3.5 h-3.5 shrink-0 ${isRadioPlaying ? 'animate-pulse text-[#120E0C]' : ''}`} />
+            <Music2 className={`w-3.5 h-3.5 shrink-0 ${isRadioPlaying ? 'animate-bounce text-[#120E0C]' : ''}`} />
             <span className="hidden 2xl:inline">{isRadioPlaying ? 'Musik: ON' : 'Musik: OFF'}</span>
           </button>
 
