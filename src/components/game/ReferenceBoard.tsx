@@ -4,10 +4,16 @@ import endingsData from '../../data/endings.json';
 import { BookOpen, X, Sparkles, Brain, Quote, Library, ExternalLink, FileText, UserCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import logoImg from '../../assets/logo-artudieiclinic.png';
+import { useTranslation } from '../../i18n/useTranslation';
 
 export const ReferenceBoard: React.FC = () => {
   const { gameMode, currentClient, setGameMode } = useGameStore();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'theories' | 'client_profile' | 'hots_rubric'>('theories');
+
+  const archetypeTrans = currentClient ? t.archetypes?.[currentClient.archetypeId] : undefined;
+  const currentArchetypeName = archetypeTrans?.name || currentClient?.archetypeName;
+  const currentArchetypeDesc = archetypeTrans?.description || currentClient?.archetypeDescription;
 
   if (gameMode !== 'REFERENCE') return null;
 
@@ -28,10 +34,10 @@ export const ReferenceBoard: React.FC = () => {
             </div>
             <div>
               <h2 className="font-bold text-sm sm:text-lg text-[#F7F7F7] tracking-wide">
-                Buku Referensi & Teori Klinis Psikologi
+                {t.referenceBoard.title}
               </h2>
               <span className="text-[10px] sm:text-[11px] text-[#FFB22C] font-mono">
-                ARTUDIEI PSYCHOLOGY ARCHIVE & PEER-REVIEWED JOURNAL SOURCES
+                {t.referenceBoard.subtitle}
               </span>
             </div>
           </div>
@@ -39,7 +45,7 @@ export const ReferenceBoard: React.FC = () => {
           <button
             onClick={() => setGameMode('EXPLORATION')}
             className="w-8 h-8 rounded-full bg-[#221B17] border border-[#854836] flex items-center justify-center text-[#F7F7F7]/70 hover:text-white hover:bg-[#9A342D] hover:border-transparent transition-all shrink-0"
-            title="Tutup Referensi"
+            title={t.common.close}
           >
             <X className="w-4 h-4" />
           </button>
@@ -55,7 +61,7 @@ export const ReferenceBoard: React.FC = () => {
               }`}
           >
             <Brain className="w-3.5 h-3.5" />
-            <span>Teori Terapi & Link Jurnal Ilmiah</span>
+            <span>{t.referenceBoard.tabTheories}</span>
           </button>
           <button
             onClick={() => setActiveTab('client_profile')}
@@ -65,7 +71,7 @@ export const ReferenceBoard: React.FC = () => {
               }`}
           >
             <UserCheck className="w-3.5 h-3.5" />
-            <span>Kasus Klien Aktif</span>
+            <span>{t.referenceBoard.tabClientProfile}</span>
           </button>
           <button
             onClick={() => setActiveTab('hots_rubric')}
@@ -75,7 +81,7 @@ export const ReferenceBoard: React.FC = () => {
               }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Konsep Bloom's HOTS (C4-C6)</span>
+            <span>{t.referenceBoard.tabHotsRubric}</span>
           </button>
         </div>
 
@@ -84,66 +90,73 @@ export const ReferenceBoard: React.FC = () => {
           {/* 1. THEORIES TAB WITH DIRECT JOURNAL CTAs */}
           {activeTab === 'theories' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {endingsData.theories.map((theory) => (
-                <div
-                  key={theory.id}
-                  className="bg-[#1C1613] border border-[#854836]/60 p-4 flex flex-col justify-between gap-3 rounded-xl hover:border-[#FFB22C]/70 transition-colors"
-                >
-                  <div>
-                    <h3 className="font-bold text-sm text-[#FFB22C] mb-1 flex items-center gap-2">
-                      <Brain className="w-4 h-4 text-[#854836] shrink-0" />
-                      {theory.name}
-                    </h3>
-                    <div className="text-[11px] text-[#FFD382] font-mono mb-2">
-                      Tokoh: {theory.theorist}
+              {endingsData.theories.map((theory) => {
+                const theoryTrans = t.referenceBoard.theories?.[theory.id];
+                const theoryName = theoryTrans?.name || theory.name;
+                const coreConcept = theoryTrans?.coreConcept || theory.coreConcept;
+                const clinicalApp = theoryTrans?.clinicalApplication || theory.clinicalApplication;
+
+                return (
+                  <div
+                    key={theory.id}
+                    className="bg-[#1C1613] border border-[#854836]/60 p-4 flex flex-col justify-between gap-3 rounded-xl hover:border-[#FFB22C]/70 transition-colors"
+                  >
+                    <div>
+                      <h3 className="font-bold text-sm text-[#FFB22C] mb-1 flex items-center gap-2">
+                        <Brain className="w-4 h-4 text-[#854836] shrink-0" />
+                        {theoryName}
+                      </h3>
+                      <div className="text-[11px] text-[#FFD382] font-mono mb-2">
+                        {t.referenceBoard.theoristLabel} {theory.theorist}
+                      </div>
+                      <p className="text-xs text-[#F7F7F7]/90 leading-relaxed mb-2">
+                        <strong>{t.referenceBoard.coreConceptLabel}</strong> {coreConcept}
+                      </p>
+                      <div className="p-2.5 bg-[#241B17] border border-[#854836]/60 rounded-lg text-xs text-[#F7F7F7]/85 mb-2">
+                        <span className="text-[#FFB22C] font-bold">{t.referenceBoard.practicalAppLabel}</span>{' '}
+                        {clinicalApp}
+                      </div>
                     </div>
-                    <p className="text-xs text-[#F7F7F7]/90 leading-relaxed mb-2">
-                      <strong>Konsep Inti:</strong> {theory.coreConcept}
-                    </p>
-                    <div className="p-2.5 bg-[#241B17] border border-[#854836]/60 rounded-lg text-xs text-[#F7F7F7]/85 mb-2">
-                      <span className="text-[#FFB22C] font-bold">Penerapan Praktis:</span>{' '}
-                      {theory.clinicalApplication}
+
+                    {/* Scientific Citations & CTA Buttons */}
+                    <div className="pt-2.5 border-t border-[#3D2E27] flex flex-col gap-2">
+                      <div className="text-[10px] text-[#F7F7F7]/80 font-mono leading-snug">
+                        <Quote className="w-3 h-3 inline mr-1 text-[#FFB22C]" />
+                        {theory.primarySource}
+                      </div>
+
+                      {/* Direct CTA Links to Journal Publisher / PubMed / Semantic Scholar */}
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        {theory.doiUrl && (
+                          <a
+                            href={theory.doiUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#854836] hover:bg-[#9F5742] text-[#F7F7F7] border border-[#FFB22C]/60 text-[11px] font-bold transition-all shadow-sm active:scale-95"
+                            title="Buka publikasi jurnal resmi via DOI"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5 text-[#FFB22C]" />
+                            <span>{t.referenceBoard.openDoiBtn}</span>
+                          </a>
+                        )}
+
+                        {theory.scholarUrl && (
+                          <a
+                            href={theory.scholarUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#35261F] text-[#FFD382] border border-[#854836] text-[11px] font-bold transition-all shadow-sm active:scale-95"
+                            title="Buka repositori artikel lengkap / PubMed / Semantic Scholar"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-[#FFB22C]" />
+                            <span>{t.referenceBoard.fullTextBtn}</span>
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
-
-                  {/* Scientific Citations & CTA Buttons */}
-                  <div className="pt-2.5 border-t border-[#3D2E27] flex flex-col gap-2">
-                    <div className="text-[10px] text-[#F7F7F7]/80 font-mono leading-snug">
-                      <Quote className="w-3 h-3 inline mr-1 text-[#FFB22C]" />
-                      {theory.primarySource}
-                    </div>
-
-                    {/* Direct CTA Links to Journal Publisher / PubMed / Semantic Scholar */}
-                    <div className="flex flex-wrap items-center gap-2 pt-1">
-                      {theory.doiUrl && (
-                        <a
-                          href={theory.doiUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#854836] hover:bg-[#9F5742] text-[#F7F7F7] border border-[#FFB22C]/60 text-[11px] font-bold transition-all shadow-sm active:scale-95"
-                          title="Buka publikasi jurnal resmi via DOI"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5 text-[#FFB22C]" />
-                          <span>Buka Jurnal / DOI Asli ↗</span>
-                        </a>
-                      )}
-
-                      {theory.scholarUrl && (
-                        <a
-                          href={theory.scholarUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#35261F] text-[#FFD382] border border-[#854836] text-[11px] font-bold transition-all shadow-sm active:scale-95"
-                          title="Buka repositori artikel lengkap / PubMed / Semantic Scholar"
-                        >
-                          <FileText className="w-3.5 h-3.5 text-[#FFB22C]" />
-                          <span>Arsip Naskah Lengkap ↗</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 
@@ -158,38 +171,38 @@ export const ReferenceBoard: React.FC = () => {
                         {currentClient.name} ({currentClient.profession})
                       </h3>
                       <p className="text-xs text-[#FFB22C] mt-0.5">
-                        Keluhan: "{currentClient.complaintTitle}"
+                        {t.referenceBoard.clientComplaintLabel} "{currentClient.complaintTitle}"
                       </p>
                     </div>
                     <span className="text-xs font-bold text-[#FFB22C] bg-[#241B17] px-3 py-1 rounded-full border border-[#854836]">
-                      {currentClient.archetypeName}
+                      {currentArchetypeName}
                     </span>
                   </div>
 
                   <div className="text-xs leading-relaxed text-[#F7F7F7]/90">
                     <strong className="text-[#FFB22C] block mb-1">
-                      Cerita Latar Belakang:
+                      {t.referenceBoard.backgroundStoryLabel}
                     </strong>
                     {currentClient.backgroundStory}
                   </div>
 
                   <div className="p-3 bg-[#241B17] border border-[#854836]/60 rounded-lg text-xs leading-relaxed">
                     <strong className="text-[#FFD382] block mb-1">
-                      Dinamika Kepribadian ({currentClient.archetypeName}):
+                      {t.referenceBoard.personalityDynamicsLabel} ({currentArchetypeName}):
                     </strong>
-                    {currentClient.archetypeDescription}
+                    {currentArchetypeDesc}
                   </div>
 
                   {currentClient.theoryConnection && (
                     <div className="p-3.5 bg-[#241B17] border border-[#FFB22C]/60 rounded-lg text-xs flex flex-col gap-2">
                       <strong className="text-[#FFB22C] block flex items-center gap-1.5">
-                        <Library className="w-3.5 h-3.5" /> Kerangka Teori Ilmiah Terkait:
+                        <Library className="w-3.5 h-3.5" /> {t.referenceBoard.relatedFrameworkLabel}
                       </strong>
                       <p className="text-[#F7F7F7] font-semibold">
                         {currentClient.theoryConnection.framework}
                       </p>
                       <span className="text-[11px] text-[#FFD382] font-mono block">
-                        Rujukan: {currentClient.theoryConnection.primarySource}
+                        {t.referenceBoard.citationLabel} {currentClient.theoryConnection.primarySource}
                       </span>
 
                       {/* Direct Verification Links */}
@@ -203,7 +216,7 @@ export const ReferenceBoard: React.FC = () => {
                             title="Buka publikasi jurnal via DOI"
                           >
                             <ExternalLink className="w-3 h-3 text-[#FFB22C]" />
-                            <span>Buka Jurnal Resmi (DOI) ↗</span>
+                            <span>{t.referenceBoard.openOfficialDoiBtn}</span>
                           </a>
                         )}
 
@@ -215,7 +228,7 @@ export const ReferenceBoard: React.FC = () => {
                           title="Cek artikel lengkap di PubMed / PMC / Scholar"
                         >
                           <FileText className="w-3 h-3 text-[#FFB22C]" />
-                          <span>Arsip Naskah Ilmiah (PubMed / PMC) ↗</span>
+                          <span>{t.referenceBoard.scientificArchiveBtn}</span>
                         </a>
                       </div>
                     </div>
@@ -224,7 +237,7 @@ export const ReferenceBoard: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs">
                     <div className="p-3 bg-[#241B17] border border-[#FFB22C]/50 rounded-lg">
                       <span className="text-[#FFB22C] font-bold block mb-1">
-                        ✅ Pendekatan Terapeutik yang Efektif:
+                        {t.referenceBoard.effectiveApproachLabel}
                       </span>
                       {currentClient.preferredTechniques.map(t => (
                         <span key={t} className="inline-block mr-1.5 mb-1 px-2 py-0.5 bg-[#18120F] border border-[#854836] text-[10px] text-[#FFD382] font-mono rounded">
@@ -234,7 +247,7 @@ export const ReferenceBoard: React.FC = () => {
                     </div>
                     <div className="p-3 bg-[#241B17] border border-[#9A342D]/60 rounded-lg">
                       <span className="text-[#FFA8A8] font-bold block mb-1">
-                        ⚠️ Pendekatan yang Rentan Memicu Defensif:
+                        {t.referenceBoard.aversionApproachLabel}
                       </span>
                       {currentClient.aversionTechniques.map(t => (
                         <span key={t} className="inline-block mr-1.5 mb-1 px-2 py-0.5 bg-[#2A1715] border border-[#9A342D] text-[10px] text-[#FFA8A8] font-mono rounded">
@@ -246,7 +259,7 @@ export const ReferenceBoard: React.FC = () => {
                 </div>
               ) : (
                 <div className="p-6 text-center text-[#F7F7F7]/60">
-                  Tidak ada klien aktif di ruangan saat ini.
+                  {t.referenceBoard.noActiveClient}
                 </div>
               )}
             </div>
@@ -258,32 +271,32 @@ export const ReferenceBoard: React.FC = () => {
               <div className="p-4 bg-[#1C1613] border border-[#854836]/60 rounded-xl flex flex-col gap-2">
                 <h3 className="font-bold text-sm text-[#FFB22C] flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-[#854836]" />
-                  Taksonomi Bloom HOTS (Higher-Order Thinking Skills) dalam Konseling
+                  {t.referenceBoard.hotsRubricHeader}
                 </h3>
                 <p className="text-xs text-[#F7F7F7]/85 leading-relaxed">
-                  Dalam ARTUDIEI Clinic, pengambilan keputusan klinis dievaluasi berdasarkan tiga tingkat kognisi tingkat tinggi:
+                  {t.referenceBoard.hotsRubricIntro}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="p-4 bg-[#1C1613] border border-[#FFB22C]/60 rounded-xl flex flex-col gap-2">
-                  <span className="text-xs font-bold text-[#FFB22C]">C4: ANALYZING (Mengurai Pola)</span>
+                  <span className="text-xs font-bold text-[#FFB22C]">{t.referenceBoard.c4Title}</span>
                   <p className="text-xs text-[#F7F7F7]/85 leading-relaxed">
-                    Membantu klien mengurai pemicu emosional, sensasi somatis, dan pola perlindungan diri masa lalu tanpa menghakimi.
+                    {t.referenceBoard.c4Desc}
                   </p>
                 </div>
 
                 <div className="p-4 bg-[#1C1613] border border-[#854836] rounded-xl flex flex-col gap-2">
-                  <span className="text-xs font-bold text-[#FFD382]">C5: EVALUATING (Uji Realitas)</span>
+                  <span className="text-xs font-bold text-[#FFD382]">{t.referenceBoard.c5Title}</span>
                   <p className="text-xs text-[#F7F7F7]/85 leading-relaxed">
-                    Mengajak klien memeriksa bukti objektif dan menimbang biaya energi dari distorsi kognitif yang selama ini diyakininya.
+                    {t.referenceBoard.c5Desc}
                   </p>
                 </div>
 
                 <div className="p-4 bg-[#1C1613] border border-[#FFB22C]/60 rounded-xl flex flex-col gap-2">
-                  <span className="text-xs font-bold text-[#F7F7F7]">C6: CREATING (Rencana Adaptif)</span>
+                  <span className="text-xs font-bold text-[#F7F7F7]">{t.referenceBoard.c6Title}</span>
                   <p className="text-xs text-[#F7F7F7]/85 leading-relaxed">
-                    Merumuskan komitmen mikro yang realistis (jangkar somatis, aturan jeda, atau kebiasaan baru) untuk dipraktikkan di dunia nyata.
+                    {t.referenceBoard.c6Desc}
                   </p>
                 </div>
               </div>

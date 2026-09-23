@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/useGameStore';
 import { SpriteRenderer } from './SpriteRenderer';
 import { MapGrid } from './MapGrid';
 import { Direction } from '../../types/game';
+import { useTranslation } from '../../i18n/useTranslation';
 
 interface GameCanvasProps {
   onInteract?: () => void;
@@ -16,6 +17,7 @@ const ENTRANCE_END_Y = 7.0;
 
 export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { language } = useTranslation();
 
   // Zustand Store
   const {
@@ -385,7 +387,9 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
       // POV Role indicator label over Psychologist (only when not entering and not in dialogue modes)
       if (gameMode === 'EXPLORATION' || gameMode === 'WALKING_TO_CLIENT') {
         const isCompact = width < 640 || tileSize < 44;
-        const labelText = isCompact ? '🩺 Anda' : '🩺 Anda (POV Psikolog)';
+        const labelText = isCompact 
+          ? (language === 'id' ? '🩺 Anda' : '🩺 You') 
+          : (language === 'id' ? '🩺 Anda (POV Psikolog)' : '🩺 You (Psychologist POV)');
         const fontSize = Math.max(8, Math.min(10, Math.round(9.5 * charScaleRatio * 10) / 10));
 
         ctx.font = `bold ${fontSize}px "Plus Jakarta Sans", sans-serif`;
@@ -417,7 +421,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
         ctx.fillStyle = `rgba(152, 226, 179, ${hintAlpha * entranceAlpha})`;
         ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('Psikolog memasuki klinik...', playerScreenX, playerScreenY - 68);
+        ctx.fillText(language === 'id' ? 'Psikolog memasuki klinik...' : 'Psychologist entering clinic...', playerScreenX, playerScreenY - 68);
       }
 
       // "Menghampiri klien..." hint during walk-to-client
@@ -426,7 +430,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ onInteract }) => {
         ctx.fillStyle = `rgba(255, 178, 44, ${hintAlpha})`;
         ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('Menghampiri klien...', playerScreenX, playerScreenY - 68);
+        ctx.fillText(language === 'id' ? 'Menghampiri klien...' : 'Approaching client...', playerScreenX, playerScreenY - 68);
       }
 
       ctx.restore();

@@ -18,8 +18,11 @@ import {
   UserCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '../../i18n/useTranslation';
+import { tDialogue, tProfession } from '../../i18n/dialogueTranslator';
 
 export const DialogueOverlay: React.FC = () => {
+  const { t, language } = useTranslation();
   const {
     gameMode,
     currentClient,
@@ -41,9 +44,30 @@ export const DialogueOverlay: React.FC = () => {
 
   const getApproachStyle = (index: number) => {
     switch (index % 3) {
-      case 0: return { icon: '🌱', label: 'Mendengarkan', borderHover: 'hover:border-[#FFB22C]', accent: 'text-[#FFD382]', bgTag: 'bg-[#3D261B]', badgeBorder: 'border-[#FFB22C]/40' };
-      case 1: return { icon: '🔍', label: 'Memeriksa Fakta', borderHover: 'hover:border-[#FFB22C]', accent: 'text-[#FFB22C]', bgTag: 'bg-[#48281E]', badgeBorder: 'border-[#854836]' };
-      default: return { icon: '🤝', label: 'Solusi Bersama', borderHover: 'hover:border-[#FFB22C]', accent: 'text-[#F7F7F7]', bgTag: 'bg-[#2A1D17]', badgeBorder: 'border-[#FFB22C]/40' };
+      case 0: return { 
+        icon: '🌱', 
+        label: language === 'id' ? 'Mendengarkan' : 'Active Listening', 
+        borderHover: 'hover:border-[#FFB22C]', 
+        accent: 'text-[#FFD382]', 
+        bgTag: 'bg-[#3D261B]', 
+        badgeBorder: 'border-[#FFB22C]/40' 
+      };
+      case 1: return { 
+        icon: '🔍', 
+        label: language === 'id' ? 'Memeriksa Fakta' : 'Fact Checking', 
+        borderHover: 'hover:border-[#FFB22C]', 
+        accent: 'text-[#FFB22C]', 
+        bgTag: 'bg-[#48281E]', 
+        badgeBorder: 'border-[#854836]' 
+      };
+      default: return { 
+        icon: '🤝', 
+        label: language === 'id' ? 'Solusi Bersama' : 'Collaborative Solution', 
+        borderHover: 'hover:border-[#FFB22C]', 
+        accent: 'text-[#F7F7F7]', 
+        bgTag: 'bg-[#2A1D17]', 
+        badgeBorder: 'border-[#FFB22C]/40' 
+      };
     }
   };
 
@@ -51,7 +75,7 @@ export const DialogueOverlay: React.FC = () => {
     switch (phaseIdx) {
       case 0: return { stage: 'Pre-Contemplation', color: 'text-[#FFB22C]' };
       case 1: return { stage: 'Contemplation', color: 'text-[#FFD382]' };
-      default: return { stage: 'Preparation & Aksi', color: 'text-[#F7F7F7]' };
+      default: return { stage: language === 'id' ? 'Preparation & Aksi' : 'Preparation & Action', color: 'text-[#F7F7F7]' };
     }
   };
 
@@ -85,15 +109,15 @@ export const DialogueOverlay: React.FC = () => {
           <button
             onClick={() => setShowFormulationModal(true)}
             className="px-2 py-1 rounded-md bg-[#18120F]/95 border-2 border-[#854836] hover:border-[#FFB22C] text-[#FFD382] text-[10px] font-bold shadow-md flex items-center gap-1 transition-all active:scale-95"
-            title="Catatan Klinis"
+            title={language === 'id' ? 'Catatan Klinis' : 'Clinical Notes'}
           >
             <ClipboardList className="w-3 h-3 text-[#FFB22C]" />
-            <span className="hidden sm:inline">Catatan</span>
+            <span className="hidden sm:inline">{language === 'id' ? 'Catatan' : 'Notes'}</span>
           </button>
           <button
             onClick={() => setShowExitConfirm(true)}
             className="p-1.5 rounded-md bg-[#18120F]/95 border-2 border-[#854836] hover:bg-[#9A342D] text-[#F7F7F7] shadow-md transition-all active:scale-95"
-            title="Keluar sesi"
+            title={t.dialogueOverlay.leaveSession}
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -131,14 +155,16 @@ export const DialogueOverlay: React.FC = () => {
                     <div className="flex items-center gap-1">
                       <span className="text-[11px] md:text-xs font-extrabold text-[#F7F7F7] truncate">{currentClient.name}</span>
                       <span className="text-[8.5px] sm:text-[9px] px-1 py-0.2 rounded font-bold bg-[#FFB22C]/20 text-[#FFD382] border border-[#FFB22C]/40 shrink-0">
-                        {currentClient.gender === 'female' ? '♀ Puan' : '♂ Tuan'}
+                        {currentClient.gender === 'female' 
+                          ? (language === 'id' ? '♀ Puan' : '♀ Ms.') 
+                          : (language === 'id' ? '♂ Tuan' : '♂ Mr.')}
                       </span>
                     </div>
                     <span
                       className="text-[9px] md:text-[10px] text-[#FFB22C] font-semibold truncate block cursor-default"
-                      title={currentClient.archetypeName}
+                      title={t.archetypes?.[currentClient.archetypeId]?.name || currentClient.archetypeName}
                     >
-                      {currentClient.archetypeName}
+                      {t.archetypes?.[currentClient.archetypeId]?.name || currentClient.archetypeName}
                     </span>
                   </div>
                 </div>
@@ -146,7 +172,7 @@ export const DialogueOverlay: React.FC = () => {
                   onClick={() => setShowDetails(d => !d)}
                   className="text-[8.5px] sm:text-[10px] text-[#FFD382] flex items-center gap-0.5 bg-[#241B17] px-1.5 py-0.5 md:px-2 md:py-1 rounded border border-[#854836]/60 transition-colors shrink-0 hover:text-[#FFB22C]"
                 >
-                  {showDetails ? 'Tutup' : 'Petunjuk'}
+                  {showDetails ? (language === 'id' ? 'Tutup' : 'Close') : (language === 'id' ? 'Petunjuk' : 'Hints')}
                   {showDetails ? <ChevronUp className="w-2.5 h-2.5 md:w-3 md:h-3" /> : <ChevronDown className="w-2.5 h-2.5 md:w-3 md:h-3" />}
                 </button>
               </div>
@@ -154,7 +180,7 @@ export const DialogueOverlay: React.FC = () => {
               {/* Speech text */}
               <div className="pl-2 md:pl-3 border-l-2 border-[#FFB22C] my-auto">
                 <p className="text-[10.5px] sm:text-[11.5px] md:text-[13px] text-[#F7F7F7] leading-snug md:leading-relaxed font-medium overflow-y-auto" style={{ maxHeight: 'min(14vh, 120px)' }}>
-                  "{currentPhase?.clientSpeech}"
+                  "{tDialogue(currentPhase?.clientSpeech, language)}"
                 </p>
               </div>
 
@@ -170,11 +196,11 @@ export const DialogueOverlay: React.FC = () => {
                   >
                     <div className="flex items-start gap-1 p-1.5 md:p-2 rounded bg-[#241B17] border border-[#854836]/50 leading-tight">
                       <span className="shrink-0">👁️</span>
-                      <div><strong className="text-[#FFB22C] mr-1">Bahasa Tubuh:</strong><span className="text-[#F7F7F7]/85">{currentPhase?.clientNonVerbal}</span></div>
+                      <div><strong className="text-[#FFB22C] mr-1">{language === 'id' ? 'Bahasa Tubuh:' : 'Body Language:'}</strong><span className="text-[#F7F7F7]/85">{tDialogue(currentPhase?.clientNonVerbal, language)}</span></div>
                     </div>
                     <div className="flex items-start gap-1 p-1.5 md:p-2 rounded bg-[#241B17] border border-[#854836]/50 leading-tight">
                       <span className="shrink-0">💭</span>
-                      <div><strong className="text-[#FFD382] mr-1">Dinamika Batin:</strong><span className="text-[#F7F7F7]/85">{currentPhase?.clientInnerDistress}</span></div>
+                      <div><strong className="text-[#FFD382] mr-1">{language === 'id' ? 'Dinamika Batin:' : 'Inner Distress:'}</strong><span className="text-[#F7F7F7]/85">{tDialogue(currentPhase?.clientInnerDistress, language)}</span></div>
                     </div>
                   </motion.div>
                 )}
@@ -198,11 +224,11 @@ export const DialogueOverlay: React.FC = () => {
               >
                 <div className="flex items-center gap-1 text-[9px] md:text-[10px] text-[#FFD382]/70 font-semibold">
                   <UserCheck className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                  <span>Anda (Psikolog)</span>
+                  <span>{language === 'id' ? 'Anda (Psikolog)' : 'You (Psychologist)'}</span>
                 </div>
                 <div className="w-full relative bg-[#FFB22C]/15 border-2 border-[#FFB22C]/60 px-2.5 py-2 sm:px-3 sm:py-2.5 md:p-4 rounded-xl rounded-tr-sm shadow-xl md:min-h-[120px] lg:min-h-[140px] flex flex-col justify-center">
                   <p className="text-[10.5px] sm:text-[11.5px] md:text-[13px] text-[#FFD382] leading-snug md:leading-relaxed font-medium italic overflow-y-auto" style={{ maxHeight: 'min(12vh, 100px)' }}>
-                    "{pendingChoice.text}"
+                    "{tDialogue(pendingChoice.text, language)}"
                   </p>
                   <div className="absolute -top-2 right-4 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[7px] border-b-[#FFB22C]/60" />
                 </div>
@@ -210,7 +236,7 @@ export const DialogueOverlay: React.FC = () => {
                   onClick={handleConfirmChoice}
                   className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] text-[11px] md:text-xs font-extrabold shadow-md transition-all active:scale-95 cursor-pointer"
                 >
-                  <span>Kirim Respons</span>
+                  <span>{language === 'id' ? 'Kirim Respons' : 'Send Response'}</span>
                   <ArrowRight className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 </button>
               </motion.div>
@@ -232,25 +258,25 @@ export const DialogueOverlay: React.FC = () => {
               >
                 <div className="flex items-center justify-between border-b border-[#3D2E27] pb-1 sm:pb-1.5 text-[10px] sm:text-[11px]">
                   <span className="font-bold text-[#FFB22C] flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#FFB22C] animate-pulse" /> Reaksi Klien:
+                    <Sparkles className="w-3 h-3 text-[#FFB22C] animate-pulse" /> {language === 'id' ? 'Reaksi Klien:' : 'Client Reaction:'}
                   </span>
                   <div className="flex items-center gap-1.5 sm:gap-2 font-mono font-bold text-[9.5px] sm:text-[10px]">
                     <span className={lastDecisionFeedback.tensionDelta <= 0 ? 'text-[#10B981]' : 'text-[#EF4444]'}>
-                      {lastDecisionFeedback.tensionDelta > 0 ? '+' : ''}{lastDecisionFeedback.tensionDelta}% Beban
+                      {lastDecisionFeedback.tensionDelta > 0 ? '+' : ''}{lastDecisionFeedback.tensionDelta}% {language === 'id' ? 'Beban' : 'Tension'}
                     </span>
                     <span className={lastDecisionFeedback.rapportDelta >= 0 ? 'text-[#FFB22C]' : 'text-[#EF4444]'}>
-                      {lastDecisionFeedback.rapportDelta > 0 ? '+' : ''}{lastDecisionFeedback.rapportDelta}% Percaya
+                      {lastDecisionFeedback.rapportDelta > 0 ? '+' : ''}{lastDecisionFeedback.rapportDelta}% {language === 'id' ? 'Percaya' : 'Rapport'}
                     </span>
                   </div>
                 </div>
 
                 <div className="p-2 bg-[#120E0C] rounded-lg border border-[#854836]/70 italic text-[10px] sm:text-[11px] text-[#F7F7F7]">
-                  🗣️ "{lastDecisionFeedback.clientReaction}"
+                  🗣️ "{tDialogue(lastDecisionFeedback.clientReaction, language)}"
                 </div>
 
                 <div className="p-2 bg-[#241B17] rounded-lg border border-[#854836]/60 text-[10px] sm:text-[11px] text-[#F7F7F7]/90 leading-snug">
-                  <strong className="text-[#FFB22C] mr-1">💡 Observasi:</strong>
-                  {lastDecisionFeedback.feedback}
+                  <strong className="text-[#FFB22C] mr-1">💡 {language === 'id' ? 'Observasi:' : 'Observation:'}</strong>
+                  {tDialogue(lastDecisionFeedback.feedback, language)}
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-1.5 pt-0.5">
@@ -276,7 +302,7 @@ export const DialogueOverlay: React.FC = () => {
                     onClick={advanceToNextPhase}
                     className="px-4 py-2 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-extrabold text-[11px] sm:text-xs flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95 shrink-0"
                   >
-                    <span>Tahap Berikutnya</span>
+                    <span>{t.dialogueOverlay.nextPhaseBtn}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -292,7 +318,7 @@ export const DialogueOverlay: React.FC = () => {
                 className="bg-[#18120F]/80 border-2 border-[#FFB22C]/30 px-3 py-2 rounded-xl backdrop-blur-xl flex items-center gap-2 text-[#FFD382]/70 text-[10px]"
               >
                 <span>✍️</span>
-                <span>Tinjau respons di atas, lalu tekan <strong className="text-[#FFB22C]">Kirim Respons</strong>.</span>
+                <span>{language === 'id' ? 'Tinjau respons di atas, lalu tekan ' : 'Review response above, then press '}<strong className="text-[#FFB22C]">{language === 'id' ? 'Kirim Respons' : 'Send Response'}</strong>.</span>
               </motion.div>
 
             ) : (
@@ -308,7 +334,7 @@ export const DialogueOverlay: React.FC = () => {
                 <div className="flex items-center justify-between border-b border-[#3D2E27] pb-1">
                   <span className="text-[10px] sm:text-[11px] font-bold text-[#FFB22C] flex items-center gap-1">
                     <MessageSquare className="w-3 h-3" />
-                    Respon Komunikasi:
+                    {language === 'id' ? 'Respon Komunikasi:' : 'Communication Response:'}
                   </span>
                   <span className="text-[9px] text-[#F7F7F7]/50 font-mono">
                     <strong className={readiness.color}>{readiness.stage}</strong>
@@ -327,13 +353,13 @@ export const DialogueOverlay: React.FC = () => {
                         className={`p-2 sm:p-2.5 text-left rounded-lg border transition-all duration-150 flex flex-col gap-1 relative group bg-[#1C1613] border-[#854836]/60 ${style.borderHover} hover:bg-[#261E1A] hover:-translate-y-0.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed`}
                       >
                         <div className={`text-[8.5px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded border ${style.badgeBorder} ${style.bgTag} ${style.accent} self-start inline-flex items-center gap-1`}>
-                          {option.hotsTitle || `${style.icon} ${style.label}`}
+                          {tDialogue(option.hotsTitle, language) || `${style.icon} ${style.label}`}
                         </div>
                         <p className="text-[10px] sm:text-[11px] text-[#F7F7F7]/95 leading-snug flex-1">
-                          "{option.text}"
+                          "{tDialogue(option.text, language)}"
                         </p>
                         <div className="pt-1 border-t border-[#3D2E27] flex items-center justify-between text-[9px] text-[#F7F7F7]/40 group-hover:text-[#FFB22C] transition-colors">
-                          <span className="font-semibold">Pilih</span>
+                          <span className="font-semibold">{language === 'id' ? 'Pilih' : 'Select'}</span>
                           <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                         </div>
                       </button>
@@ -370,15 +396,19 @@ export const DialogueOverlay: React.FC = () => {
                   <X className="w-4 h-4 text-[#EF4444]" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-extrabold text-[#FFB22C] leading-tight">Tinggalkan Sesi?</h4>
-                  <p className="text-[10px] text-[#F7F7F7]/50 mt-0.5">Sesi konseling sedang berlangsung</p>
+                  <h4 className="text-sm font-extrabold text-[#FFB22C] leading-tight">
+                    {language === 'id' ? 'Tinggalkan Sesi?' : 'Leave Session?'}
+                  </h4>
+                  <p className="text-[10px] text-[#F7F7F7]/50 mt-0.5">
+                    {language === 'id' ? 'Sesi konseling sedang berlangsung' : 'Counseling session is in progress'}
+                  </p>
                 </div>
               </div>
 
               {/* Warning body */}
               <div className="p-3 bg-[#241B17] border border-[#854836] rounded-xl text-[11px] leading-relaxed text-[#F7F7F7]/85 space-y-1.5">
-                <p>⚠️ <strong className="text-[#FFD382]">Klien {currentClient?.name}</strong> masih menunggu respons Anda di sesi ini.</p>
-                <p>Jika Anda keluar sekarang, progres sesi tidak hilang — Anda bisa kembali kapan saja dengan mendekati klien lagi.</p>
+                <p>⚠️ <strong className="text-[#FFD382]">{language === 'id' ? `Klien ${currentClient?.name}` : `Client ${currentClient?.name}`}</strong> {language === 'id' ? 'masih menunggu respons Anda di sesi ini.' : 'is still waiting for your response in this session.'}</p>
+                <p>{t.dialogueOverlay.exitConfirm}</p>
               </div>
 
               {/* Actions */}
@@ -388,13 +418,13 @@ export const DialogueOverlay: React.FC = () => {
                   className="w-full py-2.5 rounded-xl bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-extrabold text-[12px] transition-all active:scale-95 shadow-md flex items-center justify-center gap-1.5"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
-                  Lanjutkan Sesi Konseling
+                  {t.dialogueOverlay.resume}
                 </button>
                 <button
                   onClick={() => { setShowExitConfirm(false); exitDialogueToExploration(); }}
                   className="w-full py-2 rounded-xl bg-transparent border border-[#854836] hover:bg-[#9A342D]/30 text-[#F7F7F7]/60 hover:text-[#F7F7F7] font-semibold text-[11px] transition-all active:scale-95"
                 >
-                  Keluar & Eksplorasi Ruangan
+                  {t.dialogueOverlay.leaveSession}
                 </button>
               </div>
             </motion.div>
@@ -414,7 +444,9 @@ export const DialogueOverlay: React.FC = () => {
             <div className="flex items-center justify-between border-b border-[#3D2E27] pb-2.5">
               <div className="flex items-center gap-2">
                 <Brain className="w-4 h-4 text-[#FFB22C]" />
-                <h3 className="font-bold text-sm text-[#F7F7F7]">Formulasi Kasus & Rekam Jejak Klinis</h3>
+                <h3 className="font-bold text-sm text-[#F7F7F7]">
+                  {language === 'id' ? 'Formulasi Kasus & Rekam Jejak Klinis' : 'Case Formulation & Clinical Records'}
+                </h3>
               </div>
               <button
                 onClick={() => setShowFormulationModal(false)}
@@ -424,23 +456,34 @@ export const DialogueOverlay: React.FC = () => {
 
             <div className="flex flex-col gap-3 text-xs">
               <div className="p-3 bg-[#241B17] border border-[#854836]/60 rounded-xl flex flex-col gap-2">
-                <div><span className="text-[#FFB22C] font-bold block mb-0.5">Klien:</span><p className="text-[#F7F7F7]">{currentClient.name} ({currentClient.profession}) - {currentClient.archetypeName}</p></div>
-                <div><span className="text-[#FFB22C] font-bold block mb-0.5">Keluhan Utama:</span><p className="text-[#F7F7F7]/85">"{currentClient.complaintTitle}"</p></div>
-                <div><span className="text-[#FFD382] font-bold block mb-0.5">Kerangka Teori Rujukan:</span><p className="text-[#F7F7F7]/85">{currentClient.theoryConnection?.framework || 'CBT & Polyvagal Model'}</p></div>
+                <div>
+                  <span className="text-[#FFB22C] font-bold block mb-0.5">{language === 'id' ? 'Klien:' : 'Client:'}</span>
+                  <p className="text-[#F7F7F7]">{currentClient.name} ({currentClient.profession}) - {currentClient.archetypeName}</p>
+                </div>
+                <div>
+                  <span className="text-[#FFB22C] font-bold block mb-0.5">{language === 'id' ? 'Keluhan Utama:' : 'Main Complaint:'}</span>
+                  <p className="text-[#F7F7F7]/85">"{currentClient.complaintTitle}"</p>
+                </div>
+                <div>
+                  <span className="text-[#FFD382] font-bold block mb-0.5">{language === 'id' ? 'Kerangka Teori Rujukan:' : 'Theoretical Framework:'}</span>
+                  <p className="text-[#F7F7F7]/85">{currentClient.theoryConnection?.framework || 'CBT & Polyvagal Model'}</p>
+                </div>
               </div>
 
               <div className="p-3 bg-[#241B17] border border-[#854836]/60 rounded-xl flex flex-col gap-2">
                 <div className="font-bold text-xs text-[#FFB22C] flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5" /> Rekam Jejak Keputusan Sesi Ini:
+                  <Layers className="w-3.5 h-3.5" /> {language === 'id' ? 'Rekam Jejak Keputusan Sesi Ini:' : 'Decision History for this Session:'}
                 </div>
                 {currentClient.sessionHistory.length === 0 ? (
-                  <p className="text-[#F7F7F7]/40 italic py-1 text-xs">Belum ada respon yang dipilih pada sesi ini.</p>
+                  <p className="text-[#F7F7F7]/40 italic py-1 text-xs">
+                    {language === 'id' ? 'Belum ada respon yang dipilih pada sesi ini.' : 'No responses chosen yet in this session.'}
+                  </p>
                 ) : (
                   <div className="space-y-2">
                     {currentClient.sessionHistory.map((item, idx) => (
                       <div key={idx} className="p-2.5 bg-[#18120F] border border-[#854836]/50 rounded-lg flex flex-col gap-1">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="font-bold text-[#FFB22C]">Tahap {idx + 1}: {item.phaseName}</span>
+                          <span className="font-bold text-[#FFB22C]">{language === 'id' ? `Tahap ${idx + 1}:` : `Phase ${idx + 1}:`} {item.phaseName}</span>
                           <span className="font-mono text-[#FFD382]">{item.resultingTension}% / {item.resultingRapport}%</span>
                         </div>
                         <p className="text-[11px] text-[#F7F7F7]/85">"{item.chosenOption.text}"</p>
@@ -459,7 +502,7 @@ export const DialogueOverlay: React.FC = () => {
                 onClick={() => setShowFormulationModal(false)}
                 className="px-4 py-2 rounded-lg bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] font-bold text-xs"
               >
-                Kembali ke Dialog
+                {language === 'id' ? 'Kembali ke Dialog' : 'Back to Dialogue'}
               </button>
             </div>
           </motion.div>

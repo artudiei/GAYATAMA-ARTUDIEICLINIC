@@ -2,6 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Award, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useGameStore } from '../../store/useGameStore';
+import { useTranslation } from '../../i18n/useTranslation';
 
 interface ParticleData {
   id: number;
@@ -13,6 +14,7 @@ interface ParticleData {
 }
 
 export const LevelUpModal: React.FC = React.memo(() => {
+  const { t, language } = useTranslation();
   const levelUpNotification = useGameStore(state => state.levelUpNotification);
   const dismissLevelUpNotification = useGameStore(state => state.dismissLevelUpNotification);
 
@@ -95,23 +97,23 @@ export const LevelUpModal: React.FC = React.memo(() => {
 
             {/* Header Title */}
             <h2 className="relative z-10 text-base sm:text-lg font-black text-[#FFD382] tracking-wider uppercase leading-tight">
-              🎉 NAIK GELAR KONSELOR!
+              🎉 {t.levelUpModal.title}
             </h2>
             <p className="relative z-10 text-[11px] text-[#F7F7F7]/70 font-mono mt-0.5">
-              Pencapaian Profesional Psikologi
+              {t.levelUpModal.desc}
             </p>
 
             {/* Old Rank -> New Rank Comparison Box */}
             <div className="relative z-10 mt-3.5 p-3 bg-[#120D0B] border-2 border-[#854836]/60 rounded-2xl space-y-2">
               <div className="flex items-center justify-between text-[11px] font-mono text-[#F7F7F7]/60">
-                <span>Gelar Sebelumnya:</span>
+                <span>{t.levelUpModal.prevRank}</span>
                 <span className="font-bold text-[#F7F7F7]/80 line-through decoration-[#FFB22C]">
                   {levelUpNotification.oldRank}
                 </span>
               </div>
 
               <div className="flex items-center justify-center gap-1.5 text-[#22C55E] text-xs font-extrabold uppercase tracking-wide">
-                <span>⬆ Naikan Gelar Baru ⬆</span>
+                <span>⬆ {t.levelUpModal.newRank} ⬆</span>
               </div>
 
               <div className="p-2.5 bg-[#0F2B18] border-2 border-[#22C55E] rounded-xl flex items-center justify-center gap-2 shadow-inner">
@@ -124,7 +126,7 @@ export const LevelUpModal: React.FC = React.memo(() => {
 
             {/* Total Reputation XP */}
             <div className="relative z-10 mt-3 text-[11px] font-mono text-[#FFB22C]">
-              ✨ Total Reputasi Klinik: <strong className="text-white">{levelUpNotification.xp} XP</strong>
+              ✨ {language === 'id' ? 'Total Reputasi Klinik:' : 'Total Clinic Reputation:'} <strong className="text-white">{levelUpNotification.xp} XP</strong>
             </div>
 
             {/* Dismiss Button */}
@@ -134,7 +136,7 @@ export const LevelUpModal: React.FC = React.memo(() => {
               className="relative z-10 mt-4 w-full py-2.5 px-4 rounded-xl bg-[#FFB22C] hover:bg-[#FFC45E] active:scale-95 text-[#120E0C] font-extrabold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>Terima Kasih & Lanjutkan!</span>
+              <span>{t.levelUpModal.continueBtn}</span>
             </button>
           </div>
         </motion.div>

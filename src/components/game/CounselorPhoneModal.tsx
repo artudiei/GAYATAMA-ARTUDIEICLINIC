@@ -19,6 +19,8 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '../../i18n/useTranslation';
+import { tDialogue, tProfession } from '../../i18n/dialogueTranslator';
 
 export const CounselorPhoneModal: React.FC = () => {
   const {
@@ -31,6 +33,8 @@ export const CounselorPhoneModal: React.FC = () => {
     setActiveChatId,
     sendChatReply
   } = useGameStore();
+
+  const { t, language } = useTranslation();
 
   const [selectedChatId, setSelectedChatId] = useState<string | null>(activeChatId);
 
@@ -73,7 +77,7 @@ export const CounselorPhoneModal: React.FC = () => {
           <div className="flex items-center gap-2">
             <img src={logoImg} alt="Logo" className="w-4 h-4 object-contain rounded shrink-0" />
             <span className="text-[11px] font-mono font-bold text-[#FFB22C] tracking-wide">
-              ARTUDIEI OS • SMARTPHONE
+              {t.counselorPhone.header}
             </span>
           </div>
           {/* Speaker grill */}
@@ -86,7 +90,7 @@ export const CounselorPhoneModal: React.FC = () => {
             <button
               onClick={() => setPhoneOpen(false)}
               className="p-1 rounded-lg bg-[#221B17] hover:bg-[#9A342D] text-white transition-colors ml-1"
-              title="Tutup HP"
+              title={t.common.close}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -100,7 +104,7 @@ export const CounselorPhoneModal: React.FC = () => {
             <div className="p-3 bg-[#120E0C]/80 border-b border-[#854836]/40 flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <MessageSquare className="w-4 h-4 text-[#FFB22C]" />
-                <span className="text-xs font-bold text-[#F7F7F7]">Pesan Klien</span>
+                <span className="text-xs font-bold text-[#F7F7F7]">{t.counselorPhone.clientList}</span>
               </div>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FFB22C] text-[#120E0C] font-bold">
                 {phoneMessages.length}
@@ -111,10 +115,7 @@ export const CounselorPhoneModal: React.FC = () => {
               {phoneMessages.length === 0 ? (
                 <div className="p-4 text-center text-xs text-[#F7F7F7]/50 flex flex-col items-center gap-2">
                   <Smartphone className="w-8 h-8 text-[#854836] opacity-40 mt-4" />
-                  <p>Belum ada pesan masuk.</p>
-                  <p className="text-[10px] text-[#FFD382]/70 leading-relaxed">
-                    Selesaikan sesi konseling untuk menerima kabar kabar gembira dari klien Anda!
-                  </p>
+                  <p>{t.counselorPhone.noMessages}</p>
                 </div>
               ) : (
                 phoneMessages.map((msg) => {
@@ -141,17 +142,17 @@ export const CounselorPhoneModal: React.FC = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1 mb-0.5">
                           <span className="text-xs font-bold text-[#F7F7F7] truncate">
-                            {msg.clientName}
+                            {tDialogue(msg.clientName, language)}
                           </span>
                           {!msg.isRead && (
                             <span className="w-2 h-2 rounded-full bg-[#FFB22C] shrink-0 animate-ping" />
                           )}
                         </div>
                         <p className="text-[10px] text-[#FFD382]/80 truncate">
-                          {msg.archetypeName}
+                          {t.archetypes?.[msg.archetypeId]?.name || tDialogue(msg.archetypeName, language)}
                         </p>
                         <p className="text-[10px] text-[#F7F7F7]/60 truncate mt-0.5">
-                          {msg.messageText}
+                          {tDialogue(msg.messageText, language)}
                         </p>
                       </div>
                     </button>
@@ -171,7 +172,7 @@ export const CounselorPhoneModal: React.FC = () => {
                     <button
                       onClick={handleBackToList}
                       className="sm:hidden p-1.5 rounded-lg bg-[#221B17] hover:bg-[#3D281E] text-[#FFB22C] active:scale-95 transition-all shrink-0 mr-1"
-                      title="Kembali ke Daftar Pesan"
+                      title={language === 'id' ? 'Kembali ke Daftar Pesan' : 'Back to Message List'}
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
@@ -187,14 +188,14 @@ export const CounselorPhoneModal: React.FC = () => {
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs font-bold text-[#F7F7F7] truncate">
-                          {currentChat.clientName}
+                          {tDialogue(currentChat.clientName, language)}
                         </span>
                         <span className="px-1.5 py-0.2 text-[9px] bg-[#FFB22C] text-[#120E0C] font-bold rounded">
                           Grade {currentChat.sessionGrade}
                         </span>
                       </div>
                       <span className="text-[10px] text-[#22C55E] flex items-center gap-1">
-                        ● Online • {currentChat.clientProfession}
+                        ● Online • {tProfession(currentChat.clientProfession, language)}
                       </span>
                     </div>
                   </div>
@@ -210,7 +211,7 @@ export const CounselorPhoneModal: React.FC = () => {
                   {/* Date Badge */}
                   <div className="flex justify-center">
                     <span className="px-3 py-1 rounded-full bg-[#241B17] text-[10px] text-[#F7F7F7]/60 font-mono border border-[#854836]/40">
-                      {currentChat.timestamp}
+                      {currentChat.timestamp.replace('Hari ini,', language === 'id' ? 'Hari ini,' : 'Today,')}
                     </span>
                   </div>
 
@@ -227,10 +228,10 @@ export const CounselorPhoneModal: React.FC = () => {
                     />
                     <div className="bg-[#261E1A] border border-[#854836]/60 rounded-2xl rounded-tl-sm p-3.5 shadow-md">
                       <p className="text-xs leading-relaxed text-[#F7F7F7]">
-                        {currentChat.messageText}
+                        {tDialogue(currentChat.messageText, language)}
                       </p>
                       <span className="text-[9px] text-[#F7F7F7]/40 block text-right mt-1.5 font-mono">
-                        Terkirim
+                        {language === 'id' ? 'Terkirim' : 'Sent'}
                       </span>
                     </div>
                   </div>
@@ -245,13 +246,13 @@ export const CounselorPhoneModal: React.FC = () => {
                       <div className="bg-[#854836] text-[#F7F7F7] border border-[#FFB22C]/70 rounded-2xl rounded-tr-sm p-3.5 max-w-[85%] shadow-md">
                         <div className="flex items-center gap-1.5 text-[10px] text-[#FFD382] font-bold mb-1">
                           <ShieldCheck className="w-3 h-3" />
-                          <span>Respon Terapeutik Anda:</span>
+                          <span>{language === 'id' ? 'Respon Terapeutik Anda:' : 'Your Therapeutic Response:'}</span>
                         </div>
                         <p className="text-xs leading-relaxed">
-                          {currentChat.chosenReplyText}
+                          {tDialogue(currentChat.chosenReplyText, language)}
                         </p>
                         <div className="flex items-center justify-end gap-1 text-[9px] text-[#FFD382]/80 mt-1.5 font-mono">
-                          <span>Diterima</span>
+                          <span>{language === 'id' ? 'Diterima' : 'Received'}</span>
                           <CheckCheck className="w-3 h-3 text-[#22C55E]" />
                         </div>
                       </div>
@@ -278,10 +279,10 @@ export const CounselorPhoneModal: React.FC = () => {
                       <div className="bg-[#2E221D] border border-[#FFB22C]/60 rounded-2xl rounded-tl-sm p-3.5 shadow-md">
                         <div className="flex items-center gap-1 text-[10px] text-[#FFB22C] font-bold mb-1">
                           <Heart className="w-3 h-3 fill-[#FFB22C]" />
-                          <span>{currentChat.clientName}:</span>
+                          <span>{tDialogue(currentChat.clientName, language)}:</span>
                         </div>
                         <p className="text-xs leading-relaxed text-[#F7F7F7]">
-                          {currentChat.clientPostReplyText}
+                          {tDialogue(currentChat.clientPostReplyText, language)}
                         </p>
                       </div>
                     </motion.div>
@@ -295,10 +296,10 @@ export const CounselorPhoneModal: React.FC = () => {
                       <div className="flex items-center justify-between text-[11px] text-[#FFB22C] font-bold">
                         <span className="flex items-center gap-1">
                           <Send className="w-3 h-3" />
-                          Pilih Respon Tindak Lanjut:
+                          {language === 'id' ? 'Pilih Respon Tindak Lanjut:' : 'Select Follow-up Response:'}
                         </span>
                         <span className="text-[10px] text-[#22C55E] font-mono font-normal">
-                          +15 XP Bonus Reputasi
+                          {language === 'id' ? '+15 XP Bonus Reputasi' : '+15 XP Reputation Bonus'}
                         </span>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -308,7 +309,7 @@ export const CounselorPhoneModal: React.FC = () => {
                             onClick={() => handleSendQuickReply(i)}
                             className="p-2.5 text-left rounded-xl bg-[#241B17] hover:bg-[#3D281E] border border-[#FFB22C]/60 hover:border-[#FFB22C] text-xs font-semibold text-[#F7F7F7] transition-all flex items-start justify-between gap-2 group active:scale-98 shadow-sm"
                           >
-                            <span className="leading-snug">{opt.text}</span>
+                            <span className="leading-snug">{tDialogue(opt.text, language)}</span>
                             <span className="px-1.5 py-0.5 rounded bg-[#FFB22C] text-[#120E0C] font-bold text-[9px] shrink-0 group-hover:scale-105 transition-transform">
                               +15 XP
                             </span>
@@ -320,9 +321,9 @@ export const CounselorPhoneModal: React.FC = () => {
                     <div className="flex items-center justify-between text-xs text-[#22C55E] bg-[#16291C] px-3.5 py-2.5 rounded-xl border border-[#22C55E]/40 font-mono">
                       <div className="flex items-center gap-1.5">
                         <CheckCheck className="w-4 h-4 text-[#22C55E]" />
-                        <span>Sesi chat selesai. Hubungan terapeutik terjalin kuat!</span>
+                        <span>{language === 'id' ? 'Sesi chat selesai. Hubungan terapeutik terjalin kuat!' : 'Chat session completed. Strong therapeutic alliance formed!'}</span>
                       </div>
-                      <span className="text-[10px] font-bold text-[#FFB22C]">+15 XP Diterima</span>
+                      <span className="text-[10px] font-bold text-[#FFB22C]">{language === 'id' ? '+15 XP Diterima' : '+15 XP Received'}</span>
                     </div>
                   )}
                 </div>
@@ -330,7 +331,7 @@ export const CounselorPhoneModal: React.FC = () => {
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-xs text-[#F7F7F7]/50">
                 <Smartphone className="w-12 h-12 text-[#854836] opacity-30 mb-2" />
-                <p>Pilih salah satu pesan di samping untuk membaca dan membalas kabar klien.</p>
+                <p>{t.counselorPhone.selectChatHint}</p>
               </div>
             )}
           </div>

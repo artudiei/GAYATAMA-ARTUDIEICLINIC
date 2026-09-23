@@ -4,6 +4,8 @@ import { ClientPixelAvatar } from '../ui/ClientPixelAvatar';
 import { Award, RotateCcw, Activity, Heart, CheckCircle2, Sparkles, Quote, Library, ExternalLink, FileText, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import logoImg from '../../assets/logo-artudieiclinic.png';
+import { useTranslation } from '../../i18n/useTranslation';
+import { tDialogue } from '../../i18n/dialogueTranslator';
 
 export const EndingScreen: React.FC = () => {
   const {
@@ -15,6 +17,8 @@ export const EndingScreen: React.FC = () => {
     setGameMode,
     setPhoneOpen
   } = useGameStore();
+
+  const { t, language } = useTranslation();
 
   if (gameMode !== 'ENDING' || !evaluationResult) return null;
 
@@ -51,19 +55,19 @@ export const EndingScreen: React.FC = () => {
             </div>
             <div>
               <h2 className="font-bold text-base sm:text-lg text-[#F7F7F7] tracking-wide">
-                Laporan Hasil Sesi & Refleksi Teori Ilmiah
+                {t.endingScreen.title}
               </h2>
               <span className="text-[11px] text-[#FFB22C]">
-                ARTUDIEI CLINICAL OUTCOME REPORT
+                {t.endingScreen.subtitle}
               </span>
             </div>
           </div>
           <div className="text-right">
             <span className="text-[11px] text-[#F7F7F7]/60 block font-mono">
-              Total Sesi Selesai
+              Total Sesi
             </span>
             <span className="text-sm font-bold text-[#FFB22C] font-mono">
-              #{totalClientsHelped} Kasus
+              #{totalClientsHelped}
             </span>
           </div>
         </div>
@@ -94,17 +98,17 @@ export const EndingScreen: React.FC = () => {
 
               <div>
                 <div className="text-xs font-bold text-[#FFB22C] uppercase tracking-wider mb-0.5">
-                  PREDIKAT TERCAPAI
+                  {t.endingScreen.gradeLabel}
                 </div>
                 <h3 className="text-base sm:text-lg font-bold text-[#F7F7F7]">
-                  {evaluationResult.titleAchieved}
+                  {tDialogue(evaluationResult.titleAchieved, language)}
                 </h3>
                 <p className="text-xs text-[#FFD382] font-mono mt-0.5">
-                  Klien: {evaluationResult.clientName} ({evaluationResult.archetype})
+                  {language === 'id' ? 'Klien:' : 'Client:'} {tDialogue(evaluationResult.clientName, language)} ({t.archetypes?.[currentClient?.archetypeId || 'anxious']?.name || evaluationResult.archetype})
                 </p>
                 {currentClient?.accessory && (
                   <p className="text-[11px] text-[#F7F7F7]/70 mt-0.5">
-                    ✨ Ciri Khas: {currentClient.accessory}
+                    ✨ {language === 'id' ? 'Ciri Khas:' : 'Special Feature:'} {currentClient.accessory}
                   </p>
                 )}
               </div>
@@ -112,7 +116,7 @@ export const EndingScreen: React.FC = () => {
 
             {/* Score Number */}
             <div className="flex flex-col items-center sm:items-end px-4 py-2.5 bg-[#241B17] border border-[#854836] rounded-xl">
-              <span className="text-[10px] text-[#F7F7F7]/70 uppercase font-bold tracking-wider">SKOR TERAPEUTIK</span>
+              <span className="text-[10px] text-[#F7F7F7]/70 uppercase font-bold tracking-wider">{t.endingScreen.scoreLabel}</span>
               <span className="text-2xl sm:text-3xl font-mono font-bold text-[#FFB22C]">
                 {evaluationResult.score}/100
               </span>
@@ -125,14 +129,14 @@ export const EndingScreen: React.FC = () => {
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-[#F7F7F7] flex items-center gap-1.5">
                   <Activity className="w-4 h-4 text-[#EF4444]" />
-                  Tingkat Ketegangan Emosi
+                  {t.common.tension}
                 </span>
                 <span className="font-mono text-[#FFB22C] font-bold">
                   {currentClient?.initialTension}% ➔ {evaluationResult.finalTension}%
                 </span>
               </div>
               <div className="text-[11px] text-[#F7F7F7]/80">
-                Reduksi beban emosional:{' '}
+                {t.endingScreen.tensionReduction}{' '}
                 <strong className="text-[#FFB22C]">
                   {evaluationResult.tensionReduced >= 0 ? '-' : '+'}
                   {Math.abs(evaluationResult.tensionReduced)}%
@@ -144,16 +148,16 @@ export const EndingScreen: React.FC = () => {
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-[#F7F7F7] flex items-center gap-1.5">
                   <Heart className="w-4 h-4 text-[#FFB22C]" />
-                  Rasa Aman & Kepercayaan (Rapport)
+                  {t.common.rapport}
                 </span>
                 <span className="font-mono text-[#FFB22C] font-bold">
                   {currentClient?.initialRapport}% ➔ {evaluationResult.finalRapport}%
                 </span>
               </div>
               <div className="text-[11px] text-[#F7F7F7]/80">
-                Keterhubungan terapeutik:{' '}
+                {t.endingScreen.finalRapport}{' '}
                 <strong className="text-[#FFB22C]">
-                  {evaluationResult.finalRapport >= 70 ? 'Sangat Erat & Terbuka' : 'Cukup Terhubung'}
+                  {evaluationResult.finalRapport >= 70 ? (language === 'id' ? '70%+ (Tingkat Kepercayaan Tinggi)' : '70%+ (High Trust)') : `${evaluationResult.finalRapport}%`}
                 </strong>
               </div>
             </div>
@@ -165,7 +169,7 @@ export const EndingScreen: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs font-bold text-[#FFB22C] uppercase tracking-wider">
                   <Library className="w-4 h-4 text-[#854836]" />
-                  Bedah Teori Psikologi Kasus Ini
+                  {t.endingScreen.diagnosticInsightTitle}
                 </div>
                 <span className="text-[10px] text-[#FFD382] bg-[#241B17] px-2.5 py-0.5 rounded-full border border-[#854836]">
                   Peer-Reviewed Literature
@@ -174,7 +178,7 @@ export const EndingScreen: React.FC = () => {
 
               <div className="text-xs">
                 <span className="text-[#FFB22C] font-bold block mb-0.5">
-                  📚 Kerangka Teori Utama:
+                  📚 {theory.framework}:
                 </span>
                 <p className="text-sm font-bold text-[#F7F7F7]">
                   {theory.framework}
@@ -184,15 +188,15 @@ export const EndingScreen: React.FC = () => {
               {/* Scientific Mechanism Explanation */}
               <div className="p-3 bg-[#241B17] border border-[#854836]/60 text-xs text-[#F7F7F7]/90 leading-relaxed rounded-lg">
                 <strong className="text-[#FFB22C] block mb-1 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" /> Penjelasan Mekanisme Psikologis:
+                  <Sparkles className="w-3.5 h-3.5" /> {language === 'id' ? 'Penjelasan Mekanisme:' : 'Mechanism Explanation:'}
                 </strong>
-                {theory.scientificExplanation}
+                {tDialogue(theory.scientificExplanation, language)}
               </div>
 
               {/* Academic Citations & CTA BUTTONS */}
               <div className="p-3.5 bg-[#201713] border border-[#854836] rounded-lg flex flex-col gap-2.5 text-[11px]">
                 <span className="text-[#FFB22C] font-bold flex items-center gap-1">
-                  <Quote className="w-3.5 h-3.5" /> Sumber Referensi Ilmiah (APA Citation):
+                  <Quote className="w-3.5 h-3.5" /> {t.endingScreen.journalCitation}
                 </span>
                 <div className="font-mono text-[#F7F7F7]/90 pl-2 border-l-2 border-[#FFB22C] leading-snug">
                   • {theory.primarySource}
@@ -211,10 +215,10 @@ export const EndingScreen: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#854836] hover:bg-[#9F5742] text-[#F7F7F7] border border-[#FFB22C]/60 text-xs font-bold transition-all shadow-sm active:scale-95"
-                      title="Buka publikasi jurnal resmi via DOI"
+                      title="DOI"
                     >
                       <ExternalLink className="w-3.5 h-3.5 text-[#FFB22C]" />
-                      <span>Buka Jurnal Resmi (DOI) ↗</span>
+                      <span>DOI ↗</span>
                     </a>
                   )}
 
@@ -223,10 +227,10 @@ export const EndingScreen: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#35261F] text-[#FFD382] border border-[#854836] text-xs font-bold transition-all shadow-sm active:scale-95"
-                    title="Cek arsip naskah ilmiah lengkap di PubMed / PMC / Scholar"
+                    title="PubMed / PMC"
                   >
                     <FileText className="w-3.5 h-3.5 text-[#FFB22C]" />
-                    <span>Arsip Naskah Ilmiah (PubMed / PMC) ↗</span>
+                    <span>PubMed / Scholar ↗</span>
                   </a>
                 </div>
               </div>
@@ -237,7 +241,7 @@ export const EndingScreen: React.FC = () => {
           <div className="bg-[#1C1613] border border-[#854836]/60 p-4 rounded-xl">
             <div className="text-xs font-bold text-[#FFB22C] mb-2 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#FFB22C]" />
-              DISTRIBUSI KEPUTUSAN KOGNITIF (BLOOM'S HOTS):
+              {t.endingScreen.hotsDistribution}
             </div>
             <div className="grid grid-cols-3 gap-3 text-center">
               <div className="p-2.5 bg-[#241B17] border border-[#FFB22C]/60 rounded-lg">
@@ -245,7 +249,7 @@ export const EndingScreen: React.FC = () => {
                 <div className="text-lg font-bold font-mono text-[#FFB22C] mt-0.5">
                   {evaluationResult.hotsBreakdown.c4Count}x
                 </div>
-                <div className="text-[10px] text-[#F7F7F7]/60">Pola & Pemicu</div>
+                <div className="text-[10px] text-[#F7F7F7]/60">{t.endingScreen.c4Analysis}</div>
               </div>
 
               <div className="p-2.5 bg-[#241B17] border border-[#854836] rounded-lg">
@@ -253,15 +257,15 @@ export const EndingScreen: React.FC = () => {
                 <div className="text-lg font-bold font-mono text-[#FFD382] mt-0.5">
                   {evaluationResult.hotsBreakdown.c5Count}x
                 </div>
-                <div className="text-[10px] text-[#F7F7F7]/60">Uji Realitas</div>
+                <div className="text-[10px] text-[#F7F7F7]/60">{t.endingScreen.c5Evaluation}</div>
               </div>
 
-              <div className="p-2.5 bg-[#241B17] border border-[#FFB22C]/60 rounded-lg">
+              <div className="p-2.5 bg-[#241B17] border border-[#854836] rounded-lg">
                 <span className="text-[11px] font-bold text-[#F7F7F7] block">C6 CREATING</span>
                 <div className="text-lg font-bold font-mono text-[#F7F7F7] mt-0.5">
                   {evaluationResult.hotsBreakdown.c6Count}x
                 </div>
-                <div className="text-[10px] text-[#F7F7F7]/60">Rencana Aksi</div>
+                <div className="text-[10px] text-[#F7F7F7]/60">{t.endingScreen.c6Creation}</div>
               </div>
             </div>
           </div>
@@ -269,21 +273,21 @@ export const EndingScreen: React.FC = () => {
           {/* Overall Diagnostic Insight */}
           <div className="bg-[#1C1613] border border-[#854836]/60 p-4 text-xs leading-relaxed rounded-xl">
             <strong className="text-[#FFB22C] block mb-1">
-              📝 Evaluasi Keseluruhan:
+              📝 {t.endingScreen.diagnosticInsightTitle}
             </strong>
-            {evaluationResult.diagnosticInsight}
+            {tDialogue(evaluationResult.diagnosticInsight, language)}
           </div>
 
           {/* Practical Recommendations */}
           <div className="bg-[#1C1613] border border-[#854836]/60 p-4 text-xs rounded-xl">
             <strong className="text-[#FFB22C] block mb-2">
-              💡 Pelajaran Praktis untuk Kehidupan Nyata:
+              💡 {t.endingScreen.recommendedIntervention}
             </strong>
             <ul className="space-y-1.5">
               {evaluationResult.recommendations.map((rec, i) => (
                 <li key={i} className="flex items-start gap-2 text-[#F7F7F7]/90">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#FFB22C] shrink-0 mt-0.5" />
-                  <span>{rec}</span>
+                  <span>{tDialogue(rec, language)}</span>
                 </li>
               ))}
             </ul>
@@ -297,14 +301,14 @@ export const EndingScreen: React.FC = () => {
               onClick={() => setGameMode('EXPLORATION')}
               className="px-4 py-2.5 rounded-xl bg-[#221B17] hover:bg-[#35261F] border border-[#854836] text-xs font-bold text-[#F7F7F7]/90 transition-all active:scale-95 flex-1 sm:flex-none text-center"
             >
-              Tinjau Ruangan
+              {t.endingScreen.reviewRoomBtn}
             </button>
             <button
               onClick={() => setPhoneOpen(true)}
               className="px-4 py-2.5 rounded-xl bg-[#3A241C] hover:bg-[#523326] border border-[#FFB22C]/70 text-xs font-bold text-[#FFD382] transition-all active:scale-95 flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
             >
               <Smartphone className="w-4 h-4 text-[#FFB22C]" />
-              <span>Cek Pesan HP</span>
+              <span>{t.nav.phone}</span>
             </button>
           </div>
 
@@ -313,7 +317,7 @@ export const EndingScreen: React.FC = () => {
             className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#FFB22C] hover:bg-[#FFC45E] text-[#000000] text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
           >
             <RotateCcw className="w-4 h-4" />
-            <span>Terima Klien Baru (Kasus Acak)</span>
+            <span>{t.endingScreen.newClientBtn}</span>
           </button>
         </div>
       </motion.div>

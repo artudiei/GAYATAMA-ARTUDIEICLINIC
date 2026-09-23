@@ -22,6 +22,7 @@ import endingsData from '../data/endings.json';
 import { SCENARIO_SEEDS, generateContextualPhaseOptions, ScenarioSeed } from '../data/proceduralCases';
 import { CLINIC_DECORATIONS } from '../data/decorations';
 import { generateFollowUpMessage } from '../data/followUpMessages';
+import { Language } from '../i18n/translations';
 
 interface GameState {
   // Player state
@@ -57,6 +58,9 @@ interface GameState {
     };
   } | null;
   
+  // Language state
+  language: Language;
+
   // Progression & Replayability Tracker
   reputationXP: number;
   counselorRank: string;
@@ -96,6 +100,8 @@ interface GameState {
   tickWalkToClient: () => void;
   setRadioPlaying: (playing: boolean) => void;
   toggleRadio: () => void;
+  setLanguage: (lang: Language) => void;
+  toggleLanguage: () => void;
 
   // Level Up Actions
   dismissLevelUpNotification: () => void;
@@ -492,7 +498,14 @@ const generateDynamicClient = (): ClientProfile => {
   };
 };
 
-const calculateRank = (xp: number): string => {
+export const calculateRank = (xp: number, lang: Language = 'id'): string => {
+  if (lang === 'en') {
+    if (xp >= 1000) return 'Senior Psychology Supervisor';
+    if (xp >= 600) return 'Master Clinical Practitioner';
+    if (xp >= 300) return 'Skilled Helper Counselor';
+    if (xp >= 100) return 'Developing Counselor Practitioner';
+    return 'Junior Apprentice Counselor';
+  }
   if (xp >= 1000) return 'Psikolog Maestro (Senior Supervisor)';
   if (xp >= 600) return 'Klinisi Mahir (Master Practitioner)';
   if (xp >= 300) return 'Konselor Terampil (Skilled Helper)';
@@ -507,7 +520,13 @@ const ENTRANCE_FINAL_POS: Position = { x: 5, y: 7 };
 // Client sofa-side seat (where psychologist sits on psychologist sofa opposite client)
 const CLIENT_MEETING_POS: Position = { x: 6.5, y: 6 };
 
-export const useGameStore = create<GameState>((set, get) => ({
+export const useGameStore = create<GameState>((set, get) => {
+  const initialLang: Language = (typeof window !== 'undefined' && (localStorage.getItem('artudiei_lang') as Language)) || 'id';
+
+  return {
+  // Language
+  language: initialLang,
+
   // Start below the door, will animate in
   playerPos: ENTRANCE_SPAWN_POS,
   playerDir: 'up',
@@ -526,7 +545,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   lastDecisionFeedback: null,
 
   reputationXP: 100, // Starter XP agar konselor bisa langsung bereksperimen di toko dekorasi
-  counselorRank: calculateRank(100), // 'Praktisi Berkembang (Associate Counselor)'
+  counselorRank: calculateRank(100, initialLang),
   evaluationResult: null,
   totalClientsHelped: 0,
   isRadioPlaying: false,
@@ -552,6 +571,20 @@ export const useGameStore = create<GameState>((set, get) => ({
   setActiveRelaxationModal: (activeRelaxationModal) => set({ activeRelaxationModal }),
   setRadioPlaying: (isRadioPlaying) => set({ isRadioPlaying }),
   toggleRadio: () => set((state) => ({ isRadioPlaying: !state.isRadioPlaying })),
+  setLanguage: (lang: Language) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('artudiei_lang', lang);
+    }
+    const currentXP = get().reputationXP;
+    set({
+      language: lang,
+      counselorRank: calculateRank(currentXP, lang)
+    });
+  },
+  toggleLanguage: () => {
+    const nextLang: Language = get().language === 'id' ? 'en' : 'id';
+    get().setLanguage(nextLang);
+  },
 
   // Level Up & Rank Notification State
   levelUpNotification: null,
@@ -598,7 +631,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     const bonusXP = chosenOption.xpReward || 15;
     const newXP = reputationXP + bonusXP;
-    const newRank = calculateRank(newXP);
+    const newRank = calculateRank(newXP, get().language);
     const isRankUp = newRank !== counselorRank;
 
     set((state) => ({
@@ -650,7 +683,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (reputationXP < item.costXP) return false;
 
     const newXP = reputationXP - item.costXP;
-    const newRank = calculateRank(newXP);
+    const newRank = calculateRank(newXP, get().language);
     const newUnlocked = [...unlockedDecorations, itemId];
     
     // Auto-equip item yang baru dibeli
@@ -867,7 +900,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     // Gain XP based on score
     const xpGained = finalScore * 2;
     const newXP = reputationXP + xpGained;
-    const newRank = calculateRank(newXP);
+    const newRank = calculateRank(newXP, get().language);
 
     let c4Count = 0;
     let c5Count = 0;
@@ -955,4 +988,5 @@ export const useGameStore = create<GameState>((set, get) => ({
       lastDecisionFeedback: null
     });
   }
-}));
+};
+});

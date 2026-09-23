@@ -2,6 +2,8 @@ import React from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { MessageSquare, ArrowRight, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '../../i18n/useTranslation';
+import { tDialogue } from '../../i18n/dialogueTranslator';
 
 export const PhoneFloatingToast: React.FC = () => {
   const {
@@ -12,6 +14,8 @@ export const PhoneFloatingToast: React.FC = () => {
     setPhoneOpen,
     setActiveChatId
   } = useGameStore();
+
+  const { language } = useTranslation();
 
   if (!phoneToastNotification || isPhoneOpen || (gameMode !== 'EXPLORATION' && gameMode !== 'ENDING')) {
     return null;
@@ -44,10 +48,10 @@ export const PhoneFloatingToast: React.FC = () => {
               </div>
               <div>
                 <span className="text-[10px] font-mono text-[#FFB22C] block uppercase font-bold tracking-wider">
-                  Pesan Masuk Klien
+                  {language === 'id' ? 'Pesan Masuk Klien' : 'Incoming Client Message'}
                 </span>
                 <h4 className="text-xs font-bold text-[#F7F7F7] leading-tight truncate">
-                  {phoneToastNotification.senderName}
+                  {tDialogue(phoneToastNotification.senderName, language)}
                 </h4>
               </div>
             </div>
@@ -55,7 +59,7 @@ export const PhoneFloatingToast: React.FC = () => {
             <button
               onClick={dismissPhoneToast}
               className="p-1 rounded-md text-[#F7F7F7]/50 hover:text-white hover:bg-[#2A1E19] transition-colors"
-              title="Tutup Notifikasi"
+              title={language === 'id' ? 'Tutup Notifikasi' : 'Dismiss Notification'}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -63,7 +67,7 @@ export const PhoneFloatingToast: React.FC = () => {
 
           {/* Snippet text */}
           <p className="text-[11px] text-[#F7F7F7]/85 italic line-clamp-2 leading-relaxed bg-[#241B17] p-2 rounded-lg border border-[#854836]/40">
-            "{phoneToastNotification.snippet}"
+            "{tDialogue(phoneToastNotification.snippet, language)}"
           </p>
 
           {/* Action button */}
@@ -71,7 +75,7 @@ export const PhoneFloatingToast: React.FC = () => {
             onClick={handleOpenChat}
             className="w-full py-1.5 px-3 rounded-xl bg-[#FFB22C] hover:bg-[#FFC45E] text-[#120E0C] text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5"
           >
-            <span>Buka & Balas di HP</span>
+            <span>{language === 'id' ? 'Buka & Balas di HP' : 'Open & Reply on Phone'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

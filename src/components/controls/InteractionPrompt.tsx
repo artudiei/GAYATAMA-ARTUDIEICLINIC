@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/useGameStore';
 import { MapGrid } from '../canvas/MapGrid';
 import { MessageSquare, BookOpen, Coffee, Sparkles, Award, Radio, Music2, Store } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '../../i18n/useTranslation';
 
 export const InteractionPrompt: React.FC = () => {
   const { 
@@ -16,6 +17,8 @@ export const InteractionPrompt: React.FC = () => {
     setActiveRelaxationModal,
     setShopOpen
   } = useGameStore();
+
+  const { t } = useTranslation();
 
   const [screenPos, setScreenPos] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2, isBelow: false });
 
@@ -116,10 +119,18 @@ export const InteractionPrompt: React.FC = () => {
   };
 
   const buttonText = isTargetClient
-    ? (isClientCompleted ? 'Laporan Sesi' : 'Bicara dengan Klien')
+    ? (isClientCompleted ? t.sessionBar.openReport : t.interactionPrompt.talk)
+    : (nearbyObject?.type === 'bookshelf')
+    ? t.interactionPrompt.bookshelf
+    : (nearbyObject?.type === 'tea_station')
+    ? t.interactionPrompt.tea
+    : (nearbyObject?.type === 'plant')
+    ? t.interactionPrompt.plant
     : (nearbyObject?.type === 'radio' || nearbyObject?.type === 'desk')
-    ? (isRadioPlaying ? 'Matikan Musik' : 'Putar Musik')
-    : (nearbyObject?.name || 'Interaksi');
+    ? (isRadioPlaying ? t.interactionPrompt.radioOff : t.interactionPrompt.radioOn)
+    : (nearbyObject?.type === 'shop')
+    ? t.mobileDrawer.shopTitle
+    : (nearbyObject?.name || 'Aksi');
 
   return (
     <>
@@ -188,7 +199,7 @@ export const InteractionPrompt: React.FC = () => {
         >
           {getIcon()}
           <span className="text-[10px] font-pixel font-bold text-[#000000] mt-1">
-            {isClientCompleted ? 'LAPORAN' : 'AKSI'}
+            {isClientCompleted ? t.sessionBar.openReport.toUpperCase() : t.interactionPrompt.actionBtn}
           </span>
         </button>
       </div>

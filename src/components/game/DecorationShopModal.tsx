@@ -23,6 +23,7 @@ import {
   PackageCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '../../i18n/useTranslation';
 
 const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
   Sun,
@@ -35,6 +36,7 @@ const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
 };
 
 export const DecorationShopModal: React.FC = () => {
+  const { t } = useTranslation();
   const {
     isShopOpen,
     reputationXP,
@@ -92,6 +94,12 @@ export const DecorationShopModal: React.FC = () => {
   };
 
   const currentItem: DecorationItem | undefined = filteredItems[currentIndex];
+  const itemTrans = currentItem ? t.decorationShop.items?.[currentItem.id] : undefined;
+  const itemName = itemTrans?.name || currentItem?.name;
+  const itemDesc = itemTrans?.description || currentItem?.description;
+  const itemBenefit = itemTrans?.clinicalBenefit || currentItem?.clinicalBenefit;
+  const itemBonus = itemTrans?.passiveBonusText || currentItem?.passiveBonusText;
+
   const isCurrentUnlocked = currentItem ? unlockedDecorations.includes(currentItem.id) : false;
   const isCurrentEquipped = currentItem ? equippedDecorations[currentItem.category] === currentItem.id : false;
   const canAffordCurrent = currentItem ? reputationXP >= currentItem.costXP : false;
@@ -147,10 +155,10 @@ export const DecorationShopModal: React.FC = () => {
             </div>
             <div>
               <h2 className="font-extrabold text-xs sm:text-sm text-[#F7F7F7] tracking-wider uppercase">
-                KATALOG DEKORASI KLINIK
+                {t.decorationShop.title}
               </h2>
               <span className="text-[10px] text-[#FFB22C] font-mono block">
-                PILIH & TATA ELEMEN TERAPEUTIK RUANGAN
+                {t.decorationShop.passiveEffect}
               </span>
             </div>
           </div>
@@ -160,7 +168,7 @@ export const DecorationShopModal: React.FC = () => {
             <div className="bg-[#201713] border border-[#FFB22C]/80 px-2.5 sm:px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-inner">
               <Sparkles className="w-3.5 h-3.5 text-[#FFB22C] animate-pulse" />
               <div className="text-right">
-                <span className="text-[8px] text-[#FFD382]/80 block font-mono leading-none">SALDO XP</span>
+                <span className="text-[8px] text-[#FFD382]/80 block font-mono leading-none">{t.decorationShop.xpBalance}</span>
                 <span className="text-xs sm:text-sm font-extrabold text-[#FFB22C] font-mono leading-tight">
                   {reputationXP} XP
                 </span>
@@ -170,7 +178,7 @@ export const DecorationShopModal: React.FC = () => {
             <button
               onClick={() => setShopOpen(false)}
               className="p-1.5 rounded-xl bg-[#221B17] hover:bg-[#9A342D] text-white transition-colors"
-              title="Tutup Toko"
+              title={t.common.close}
             >
               <X className="w-4 h-4" />
             </button>
@@ -188,7 +196,7 @@ export const DecorationShopModal: React.FC = () => {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Semua Koleksi</span>
+            <span>{t.decorationShop.tabAll}</span>
             <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
               {CLINIC_DECORATIONS.length}
             </span>
@@ -203,7 +211,7 @@ export const DecorationShopModal: React.FC = () => {
             }`}
           >
             <PackageCheck className="w-3.5 h-3.5" />
-            <span>Dimiliki</span>
+            <span>{t.decorationShop.tabOwned}</span>
             <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
               {unlockedDecorations.length}
             </span>
@@ -218,7 +226,7 @@ export const DecorationShopModal: React.FC = () => {
             }`}
           >
             <Lock className="w-3.5 h-3.5" />
-            <span>Belum Dimiliki</span>
+            <span>{t.decorationShop.tabUnowned}</span>
             <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
               {CLINIC_DECORATIONS.length - unlockedDecorations.length}
             </span>
@@ -230,8 +238,8 @@ export const DecorationShopModal: React.FC = () => {
           {filteredItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-xs text-[#F7F7F7]/60">
               <PackageCheck className="w-12 h-12 text-[#854836] opacity-40 mb-2" />
-              <p className="font-bold text-sm text-[#F7F7F7]">Tidak ada barang di kategori ini.</p>
-              <p className="text-[11px] text-[#FFD382] mt-1">Pilih tab "Semua Koleksi" untuk melihat dekorasi lainnya.</p>
+              <p className="font-bold text-sm text-[#F7F7F7]">{t.decorationShop.emptyCategoryTitle}</p>
+              <p className="text-[11px] text-[#FFD382] mt-1">{t.decorationShop.emptyCategoryDesc}</p>
             </div>
           ) : (
             <>
@@ -239,7 +247,7 @@ export const DecorationShopModal: React.FC = () => {
               <button
                 onClick={handlePrev}
                 className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#18120F]/90 border border-[#FFB22C]/70 hover:bg-[#FFB22C] hover:text-[#120E0C] text-[#FFB22C] transition-all flex items-center justify-center shadow-xl active:scale-90"
-                title="Sebelumnya (Panah Kiri)"
+                title={t.common.back}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -247,7 +255,7 @@ export const DecorationShopModal: React.FC = () => {
               <button
                 onClick={handleNext}
                 className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#18120F]/90 border border-[#FFB22C]/70 hover:bg-[#FFB22C] hover:text-[#120E0C] text-[#FFB22C] transition-all flex items-center justify-center shadow-xl active:scale-90"
-                title="Berikutnya (Panah Kanan)"
+                title={t.common.continue}
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -299,20 +307,20 @@ export const DecorationShopModal: React.FC = () => {
                       {/* Item Badges */}
                       <div className="flex items-center gap-2 mb-2">
                         <span className="px-2.5 py-0.5 rounded-full bg-[#FFB22C]/20 border border-[#FFB22C] text-[#FFB22C] font-mono text-[10px] font-bold uppercase tracking-wider">
-                          Kategori: {currentItem.category}
+                          {currentItem.category}
                         </span>
 
                         {isCurrentEquipped ? (
                           <span className="px-2.5 py-0.5 rounded-full bg-[#22C55E]/20 border border-[#22C55E] text-[#22C55E] font-mono text-[10px] font-bold">
-                            ● SEDANG TERPASANG
+                            ● {t.decorationShop.equippedBadge}
                           </span>
                         ) : isCurrentUnlocked ? (
                           <span className="px-2.5 py-0.5 rounded-full bg-[#3B82F6]/20 border border-[#3B82F6] text-[#60A5FA] font-mono text-[10px] font-bold">
-                            ✓ SUDAH DIBELI
+                            ✓ {t.decorationShop.ownedBadge}
                           </span>
                         ) : (
                           <span className="px-2.5 py-0.5 rounded-full bg-[#E11D48]/20 border border-[#E11D48] text-[#FDA4AF] font-mono text-[10px] font-bold">
-                            🔒 BELUM DIBELI
+                            🔒 {t.decorationShop.tabUnowned}
                           </span>
                         )}
                       </div>
@@ -320,7 +328,7 @@ export const DecorationShopModal: React.FC = () => {
                       {/* Scientific Psychological Benefit Note */}
                       <div className="w-full bg-[#120E0C]/90 p-2 sm:p-2.5 rounded-xl border border-[#854836]/40 text-center">
                         <p className="text-[10px] sm:text-[11px] text-[#FFD382] leading-tight">
-                          🌱 <strong>Manfaat Terapeutik:</strong> {currentItem.clinicalBenefit}
+                          🌱 <strong>{t.decorationShop.clinicalBenefit}:</strong> {itemBenefit}
                         </p>
                       </div>
                     </motion.div>
@@ -353,17 +361,17 @@ export const DecorationShopModal: React.FC = () => {
                   <div className="w-full sm:w-2/3 text-left">
                     <div className="flex items-center gap-2 mb-0.5">
                       <h3 className="text-xs sm:text-sm font-extrabold text-[#F7F7F7]">
-                        {currentItem.name}
+                        {itemName}
                       </h3>
                       <span className="text-[10px] font-mono text-[#FFB22C] font-semibold">
                         ({currentIndex + 1}/{filteredItems.length})
                       </span>
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-[#F7F7F7]/85 line-clamp-1 leading-snug">
-                      {currentItem.description}
+                      {itemDesc}
                     </p>
                     <span className="text-[9px] sm:text-[10px] text-[#22C55E] font-mono font-bold block mt-0.5">
-                      ✨ Efek Ruangan: {currentItem.passiveBonusText}
+                      ✨ {t.decorationShop.passiveEffect}: {itemBonus}
                     </span>
                   </div>
 
@@ -381,10 +389,10 @@ export const DecorationShopModal: React.FC = () => {
                         {isCurrentEquipped ? (
                           <>
                             <Check className="w-4 h-4" />
-                            <span>Terpasang (Lepas)</span>
+                            <span>{t.decorationShop.unequipItem}</span>
                           </>
                         ) : (
-                          <span>Pasang di Klinik</span>
+                          <span>{t.decorationShop.equipItem}</span>
                         )}
                       </button>
                     ) : (
@@ -398,7 +406,7 @@ export const DecorationShopModal: React.FC = () => {
                         }`}
                       >
                         <Sparkles className="w-4 h-4" />
-                        <span>Beli ({currentItem.costXP} XP)</span>
+                        <span>{t.decorationShop.buyItem} ({currentItem.costXP} XP)</span>
                       </button>
                     )}
                   </div>
@@ -424,28 +432,28 @@ export const DecorationShopModal: React.FC = () => {
 
                 <div>
                   <h4 className="font-extrabold text-sm text-[#F7F7F7]">
-                    Konfirmasi Pembelian Dekorasi
+                    {t.decorationShop.confirmTitle}
                   </h4>
                   <p className="text-xs text-[#F7F7F7]/85 mt-1 leading-relaxed">
-                    Apakah Anda yakin ingin menukar <strong className="text-[#FFB22C]">{confirmItem.costXP} XP</strong> untuk membeli:
+                    {t.decorationShop.confirmText} <strong className="text-[#FFB22C]">{confirmItem.costXP} XP</strong>:
                   </p>
                   <p className="text-xs font-bold text-[#FFD382] mt-0.5">
-                    "{confirmItem.name}"?
+                    "{t.decorationShop.items?.[confirmItem.id]?.name || confirmItem.name}"?
                   </p>
                 </div>
 
                 {/* Balance preview */}
                 <div className="bg-[#120E0C] p-2.5 rounded-xl border border-[#854836]/60 text-[11px] font-mono space-y-1">
                   <div className="flex justify-between text-[#F7F7F7]/70">
-                    <span>Saldo Sekarang:</span>
+                    <span>{t.common.score}:</span>
                     <span className="font-bold text-[#F7F7F7]">{reputationXP} XP</span>
                   </div>
                   <div className="flex justify-between text-[#EF4444]">
-                    <span>Harga Barang:</span>
+                    <span>{t.common.buy}:</span>
                     <span className="font-bold">-{confirmItem.costXP} XP</span>
                   </div>
                   <div className="border-t border-[#854836]/40 pt-1 flex justify-between text-[#22C55E] font-bold">
-                    <span>Sisa Saldo Nanti:</span>
+                    <span>{t.common.xp}:</span>
                     <span>{reputationXP - confirmItem.costXP} XP</span>
                   </div>
                 </div>
@@ -456,14 +464,14 @@ export const DecorationShopModal: React.FC = () => {
                     onClick={() => setConfirmItem(null)}
                     className="py-2 rounded-xl bg-[#251B17] hover:bg-[#38261E] border border-[#854836] text-xs font-bold text-[#F7F7F7] transition-all active:scale-95"
                   >
-                    Batal
+                    {t.common.cancel}
                   </button>
                   <button
                     onClick={handleConfirmPurchase}
                     className="py-2 rounded-xl bg-[#FFB22C] hover:bg-[#FFC45E] text-[#120E0C] text-xs font-extrabold transition-all shadow-md active:scale-95 flex items-center justify-center gap-1"
                   >
                     <Check className="w-4 h-4" />
-                    <span>Ya, Beli Sekarang</span>
+                    <span>{t.common.confirm}</span>
                   </button>
                 </div>
               </motion.div>
